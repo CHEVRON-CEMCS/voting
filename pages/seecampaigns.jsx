@@ -11,6 +11,7 @@ import MemberNavbar from '@/components/MemberNavbar';
 import { useNewAuth } from '@/services/NewAuthContext';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/router';
 
 function Seecampaigns() {
   const [campaignData, setCampaignData] = useState([]);
@@ -23,9 +24,13 @@ function Seecampaigns() {
   const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1);
 
+  const router = useRouter(); // Initialize the router
+
+
   const { toast } = useToast();
 
   const {currentStage} = useNewAuth();
+  const { employeeNumber } = useNewAuth();
 
   console.log(currentStage);
 
@@ -61,15 +66,15 @@ function Seecampaigns() {
 
   const handleVote = async () => {
     try {
-      setIsLoading(true); // Start loading
-  
+      setIsLoading(true);
+
       // Log the payload before sending the POST request
       console.log('Vote Payload:', {
         empno: empno,
         positionId: selectedPosition,
         votedno: voterno,
       });
-  
+
       const response = await axios.post(
         'https://virtual.chevroncemcs.com/voting/vote',
         {
@@ -79,16 +84,29 @@ function Seecampaigns() {
         },
         {
           headers: {
-            Authorization: `Bearer ${code}`, // Add your token here
+            Authorization: `Bearer ${code}`,
           },
         }
       );
-  
-      console.log(response);
-  
+
+      console.log(response.data);
+
       if (response.status === 200) {
-        // Successful voting, handle as needed
-        console.log('Vote successful');
+        // Check the response message for success
+        if (response.data.message === "Your vote has been registered!") {
+          // Successful voting, handle as needed
+          console.log('Vote successful');
+          toast({
+            title: 'Voting',
+            description: `${response.data.message}`,
+          });
+
+          // Redirect to the '/votesuccess' page
+          router.push('/votesuccess');
+        } else {
+          // Handle errors, e.g., show an error message
+          console.error('Vote failed:', response.data);
+        }
         toast({
           title: 'Voting',
           description: `${response.data.message}`,
@@ -105,9 +123,9 @@ function Seecampaigns() {
         variant: 'destructive',
       });
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
     }
-  };
+  }
   
   
 
@@ -154,16 +172,17 @@ function Seecampaigns() {
         <p>Loading...</p>
       ) : (
         <div className='mt-20'>
+                        <div className="flex flex-wrap justify-center space-x-10">
           {campaignData.map((campaign) => (
-            <div key={campaign.empno} className='flex justify-center'>
-              <Card className="w-2/6 flex flex-col justify-center items-center mb-5">
+            <div key={campaign.empno} className='flex justify-center '>
+              <Card className="w-[22rem] flex flex-col justify-center items-center mb-5">
                 <div className='relative w-full h-[20rem]'>
-                  <Image alt="" src={campaign.image} layout='fill' objectFit="cover" className='h-[300px] object-cover' />
+                  <img alt="" src={campaign.image} layout='fill' objectFit="cover" className='w-full h-[300px] object-cover' />
                 </div>
                 <div className='flex flex-col justify-center items-center'>
-                  <p className='mt-5 mb-2 text-gray-600 font-bold'>{campaign.name}</p>
-                  <p className='mt-1 mb-2 text-gray-600 font-semibold'>Employee Number - {campaign.empno}</p>
-                  <p className='mb-5 text-gray-700 text-sm mt-2'>{campaign.message}</p>
+                  <p className='mt-5 mb-2 text-gray-600 font-bold text-xl'>{campaign.name}</p>
+                  <p className='mb-2 text-gray-700 text-base mt-2'>{campaign.message}</p>
+                  <p className='mb-5 text-gray-700 text-base font-bold'>Nomination: {campaign.position_name}</p>
                   {/* <p>Nominated: {campaign.nominated}</p>
                   <p>Position ID: {campaign.positionId}</p> */}
                 </div>
@@ -178,7 +197,7 @@ function Seecampaigns() {
                   </Button> */}
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="w-full">Vote</Button>
+                      <Button className="w-full" onClick={() => {setVoterNo(campaign.empno);setEmpno(employeeNumber);}}>Vote</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[700px]">
                       <DialogHeader>
@@ -192,6 +211,7 @@ function Seecampaigns() {
                             value={empno}
                             onChange={(e) => setEmpno(e.target.value)}
                             className="col-span-3"
+                            disabled={true}
                           />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
@@ -217,6 +237,7 @@ function Seecampaigns() {
                             value={voterno}
                             onChange={(e) => setVoterNo(e.target.value)}
                             className="col-span-3"
+                            disabled={true}
                           />
                         </div>
                       </div>
@@ -240,6 +261,7 @@ function Seecampaigns() {
               </Card>
             </div>
           ))}
+          </div>
         </div>
       )}
 

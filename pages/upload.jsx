@@ -60,11 +60,7 @@ const customData = [
     <div>
       <Navbar />
       
-      {superrToken === '0' ? (
-        <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
-        YOU DO NOT HAVE ACCESS TO THIS PAGE
-      </div>
-      ) : (
+      
         <>
         <div className='max-w-6xl mx-auto mt-20'>
         {/* <h1 className='font-bold text-3xl md:text-4xl mb-5'>Upload bulk Document</h1> */}
@@ -185,6 +181,39 @@ const customData = [
         </div>
 
         {/* Render the Uploaded component */}
+        {superrToken === '0' ? (
+          <div className='hidden'>
+          <div className='flex items-center space-x-28'>
+            <Uploaded />
+            {/* <Uploadeds /> */}
+            {/* Download Document */}
+            <div className='overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last'>
+              <div className='bg-emerald-100 px-6 py-4'>
+                <p className='font-semibold py-3 flex items-center gap-1.5'>
+                  <Download className='w-4 h-4' />
+                  See all candidates
+                </p>
+              </div>
+
+              <div className='-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6'>
+                <div className='flex justify-between gap-x-4 py-3'>
+                  <p className='text-zinc-500'>
+                    Click here to view all the eligible candidates added
+                  </p>
+                </div>
+
+                <Link href="/candidates" className="w-full">
+                  <Button className="mb-5">
+                    See all candidates
+                  </Button>
+                </Link>
+
+              </div>
+            </div>
+            </div>
+
+        </div>
+      ) : (
         <div className='flex items-center space-x-28'>
           <Uploaded />
           {/* <Uploadeds /> */}
@@ -214,9 +243,10 @@ const customData = [
           </div>
 
         </div>
+      )}
       </div>
         </>
-      )}
+      
       
     </div>
   )

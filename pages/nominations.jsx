@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
+import * as XLSX from "xlsx";
 
 function Nominations() {
   const { user } = useAuth();
@@ -140,6 +141,27 @@ function Nominations() {
     }
   };
 
+  const handleExportToExcel = () => {
+    setIsLoading(true);
+
+    const dataToExport = sortedNominationsData.map((item) => ({
+      'Employee Number': item.empno,
+      Name: item.name,
+      ...positionHeaders.reduce((acc, header) => {
+        acc[header] = item.counts.find((countItem) => countItem.positionName === header)?.count || 0;
+        return acc;
+      }, {}),
+    }));
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    XLSX.utils.book_append_sheet(wb, ws, 'Nominations Data');
+
+    XLSX.writeFile(wb, 'nomination_data.xlsx');
+
+    setIsLoading(false);
+  }
+
   // Function to sort nominations data by the count for a specific position
   function sortNominationsDataByPosition(data, position) {
     return data.sort((a, b) => {
@@ -172,12 +194,13 @@ function Nominations() {
           <p>Loading...</p>
         ) : (
           <div>
-            <h2 className="text-xl font-semibold mb-2">Nominations Data</h2>
+            <Button className="mb-5" onClick={handleExportToExcel}>Export to Excel</Button>
             <div className="overflow-x-auto">
               <table className="w-full table-auto border-collapse border border-gray-300">
                 <thead>
                   <tr>
                     <th className="px-6 py-3 bg-gray-200 text-left">Employee Number</th>
+                    <th className="px-6 py-3 bg-gray-200 text-left">Name</th>
                     {positionHeaders.map((header, index) => (
                       <th
                         key={index}
@@ -200,6 +223,8 @@ function Nominations() {
                       }`}
                     >
                       <td className="px-6 py-4">{item.empno}</td>
+                      <td className="px-6 py-4">{item.name}</td>
+
                       {positionHeaders.map((header, headerIndex) => (
                         <td key={headerIndex} className="px-6 py-4">
                           {item.counts.find((countItem) => countItem.positionName === header)?.count || 0}
@@ -224,23 +249,24 @@ function Nominations() {
                               value={isEmpno}
                               onChange={(e) => setIsEmpno(e.target.value)}
                               className="col-span-3"
+                              disabled={true}
                             />
                           </div>
                           <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="positions" className="text-right">Positions</Label>
                             <select
-            id="positions"
-            className="col-span-3 border p-2 rounded-md"
-            value={selectedPosition}
-            onChange={(e) => setSelectedPosition(e.target.value)}
-          >
-            <option value="">Select Position</option>
-            {positions.map((position) => (
-              <option key={position.positionId} value={position.id}>
-                {position.name}
-              </option>
-            ))}
-          </select>
+                              id="positions"
+                              className="col-span-3 border p-2 rounded-md"
+                              value={selectedPosition}
+                              onChange={(e) => setSelectedPosition(e.target.value)}
+                            >
+                              <option value="">Select Position</option>
+                              {positions.map((position) => (
+                                <option key={position.positionId} value={position.id}>
+                                  {position.name}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                           {/* <div className="grid grid-cols-4 items-center gap-4">
                             <Label className="text-right">Candidate Employee No.</Label>

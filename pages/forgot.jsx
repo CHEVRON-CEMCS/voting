@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useToast } from '@/components/ui/use-toast';
 
-function Signin() {
+function Forgot() {
   const [isLoading, setIsLoading] = useState(false);
   const [employee, setEmployee] = useState('');
   const {user} = useAuth();
@@ -57,7 +57,7 @@ function Signin() {
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <Link
-        href="/"
+        href="/signinmember"
         className={cn(
           buttonVariants({ variant: "ghost" }),
           "absolute left-4 top-4 md:left-8 md:top-8"
@@ -77,7 +77,7 @@ function Signin() {
             <PartyPopper className='ml-1 h-8 w-8'/>
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter your employee number to sign in to your account
+            Enter your full name to get your employee number
           </p>
         </div>
         <Input 
@@ -86,7 +86,7 @@ function Signin() {
           id="text"
           value={employee}
           onChange={(e) => setEmployee(e.target.value)} 
-          placeholder="Enter your Employee Number" 
+          placeholder="Enter your Full Name" 
         />
         {/* <Input 
           type="password"
@@ -96,19 +96,12 @@ function Signin() {
           onChange={(e) => setPassword(e.target.value)} 
           placeholder="Password" 
         /> */}
-        <Button className="w-full" onClick={handleSignIn} disabled={isLoading}>{isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogInIcon className='h-4 w-4 mr-2' />}Authenticate</Button>
+        <Button className="w-full" onClick={handleSignIn} disabled={isLoading}>{isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogInIcon className='h-4 w-4 mr-2' />}Get Employee Number</Button>
         {/* <UserAuthForm /> */}
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          <Link
-            href="/forgot"
-            className="hover:text-brand underline underline-offset-4"
-          >
-            Forgot your employee number? Click here
-          </Link>
-        </p>
+        
       </div>
     </div>
   )
 }
 
-export default Signin
+export default Forgot

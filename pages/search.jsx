@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
-import { SearchIcon } from 'lucide-react';
+import { Loader2, SearchIcon } from 'lucide-react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import {
@@ -31,6 +31,7 @@ function Search() {
   const { toast } = useToast();
   const { employeeNumber } = useNewAuth();
   const { currentStage } = useNewAuth();
+  
 
   console.log('Current Stage:',currentStage);
 
@@ -44,9 +45,13 @@ function Search() {
 
   const handleNomination = async () => {
     try {
+
+      setIsLoading(true); // Set loading state to true
+
       // Check if any of the required fields are empty
       if (!empno || !selectedPosition || !nomineeno) {
         alert('Please fill in all fields before submitting.');
+        setIsLoading(false); // Reset loading state
         return;
       }
   
@@ -77,7 +82,6 @@ function Search() {
       console.log('Nomination Response:', response.data);
   
       if (response.status === 200) {
-        // alert('Your nomination has been registered!');
         // Clear the form fields after a successful nomination
         setEmpno('');
         setSelectedPosition('');
@@ -96,6 +100,8 @@ function Search() {
         description: 'There was an error nominating your candidate.',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false); // Reset loading state in any case
     }
   };
 
@@ -157,107 +163,143 @@ function Search() {
 
   return (
     <div>
-      {/* <Navbar /> */}
       <MemberNavbar />
-      <div className='mt-24 flex justify-center items-center'>
-        <div className="relative w-1/2">
-          <input
-            type="text"
-            className="py-3 px-3 rounded-md w-full outline-none search border shadow-xl border-gray-600 pl-10"
-            placeholder="Search Nominees"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-            <SearchIcon />
+      {currentStage === 'Campaign' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            THE NOMINATION STAGE HAS ENDED
           </div>
         </div>
-      </div>
+      ) : currentStage === 'Voting Ended' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            THE VOTING STAGE HAS ENDED
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className='mt-24 flex justify-center items-center'>
+            <div className="relative w-1/2">
+              <input
+                type="text"
+                className="py-3 px-3 rounded-md w-full outline-none search border shadow-xl border-gray-600 pl-10"
+                placeholder="Search Nominees"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                <SearchIcon />
+              </div>
+            </div>
+          </div>
 
-      <div className="mt-10 max-w-3xl mx-auto">
-        {searchResults.length > 0 ? (
-          <ul>
-            {searchResults.map((result) => (
-              <li className='flex justify-between items-center mb-5' key={result.id}>
-                <div className='flex flex-col'>
+          
+
+          {searchResults.length > 0 ? (
+            <ul>
+              {searchResults.map((result) => (
+                <li className='flex justify-between items-center mb-5 max-w-3xl mx-auto mt-5' key={result.id}>
+                  <div className='flex flex-col'>
                     <div>
                       <p className='font-bold'>
                         {result.name}
                       </p>
-                    </div> 
-
-                    <div className='flex flex-row space-x-3'>
-                      <p>Employee No:</p>
-                      <p>{result.empno}</p>
-                    </div>               
-                </div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                  <Button variant="outline" onClick={() => {setNomineeno(result.empno);setEmpno(employeeNumber);}}>
-  Nominate
-</Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[700px]">
-                    <DialogHeader>
-                      <DialogTitle className="">Nominate your Candidate</DialogTitle>
-    
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label className="text-right">
-                          Your Employee No.
-                        </Label>
-                        <Input
-                          type="text"
-                          value={empno}
-                          onChange={(e) => setEmpno(e.target.value)}
-                          className="col-span-3"
-                        />
-                      </div>
-                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="positions" className="text-right">
-                          Positions
-                        </Label>
-                        <select
-                          id="positions"
-                          className="col-span-3 border p-2 rounded-md"
-                          value={selectedPosition}
-                          onChange={(e) => setSelectedPosition(e.target.value)}
-                        >
-                          <option value="">Select Position</option>
-                          {positions.map((position) => (
-                            <option key={position.id} value={position.id}>
-                              {position.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label className="text-right">
-                          Nominee Employee No.
-                        </Label>
-                        <Input
-                        type="text"
-                          value={nomineeno}
-                          onChange={(e) => setNomineeno(e.target.value)}
-                          className="col-span-3"
-                        />
-                      </div>
                     </div>
-                    <DialogFooter>
-                      <Button type="submit" onClick={handleNomination}>
+                  </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" onClick={() => {setNomineeno(result.empno);setEmpno(employeeNumber);}}>
                         Nominate
                       </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No results found.</p>
-        )}
-      </div>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[700px]">
+                      <DialogHeader>
+                        <DialogTitle className="">Nominate your Candidate</DialogTitle>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label className="text-right">
+                            Your Employee No.
+                          </Label>
+                          <Input
+                            type="text"
+                            value={empno}
+                            onChange={(e) => setEmpno(e.target.value)}
+                            className="col-span-3"
+                            disabled={true}
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="positions" className="text-right">
+                            Positions
+                          </Label>
+                          <select
+                            id="positions"
+                            className="col-span-3 border p-2 rounded-md"
+                            value={selectedPosition}
+                            onChange={(e) => setSelectedPosition(e.target.value)}
+                          >
+                            <option value="">Select Position</option>
+                            {positions.map((position) => (
+                              <option key={position.id} value={position.id}>
+                                {position.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label className="text-right">
+                            Nominee Employee No.
+                          </Label>
+                          <Input
+                            type="text"
+                            value={nomineeno}
+                            onChange={(e) => setNomineeno(e.target.value)}
+                            className="col-span-3"
+                            disabled={true}
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button onClick={handleNomination} className="mb-10" disabled={isLoading}>
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Nominating...
+                            </>
+                          ) : (
+                            <>
+                              Nominate
+                            </>
+                          )}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>
+              <p className='max-w-3xl mx-auto mt-5'>No results found.</p>
+              <div className="mt-10 max-w-3xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-3">Positions</h2>
+            <div className="flex flex-wrap">
+              {positions.map((position) => (
+                <div key={position.id} className="mr-4 mb-4">
+                  <p className="font-semibold">{position.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+            </div>
+
+            
+          )}
+        </>
+      )}
     </div>
   );
 }

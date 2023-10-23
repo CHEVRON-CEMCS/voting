@@ -40,6 +40,36 @@ function Otppage() {
     }
   };
 
+  const handleSignIn = async () => {
+    setIsLoading(true);
+  
+    try {
+      const apiUrl = 'https://virtual.chevroncemcs.com/voting/voter/email';
+      const requestBody = {
+        empno: empno, // Use the value from the input field
+      };
+  
+      const response = await axios.post(apiUrl, requestBody, {
+        headers: {
+          Authorization: 'Bearer YOUR_ACCESS_TOKEN_HERE', // Replace with your access token
+        },
+      });
+  
+      console.log('Response:', response.data);
+      toast({
+        title: 'Success!!',
+        description: "Your code has been sent to your email successfully!",
+      });
+  
+      // Handle the response here, e.g., update the UI or redirect to another page.
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Use useEffect to redirect when shouldRedirect changes
   useEffect(() => {
     if (shouldRedirect) {
@@ -68,7 +98,7 @@ function Otppage() {
         </Button>
         <p className="mt-4 text-xs font-normal text-center text-gray-500">
           Did not get a code?{' '}
-          <button className="text-primary">click to resend</button>
+          <button className="text-primary" onClick={handleSignIn}>click to resend</button>
         </p>
       </div>
     </div>

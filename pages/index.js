@@ -36,11 +36,10 @@ export default function Home() {
             </Link>
         </div>
 
-
         <div className="relative w-full mt-16 h-[24rem]">
-          <Image
+          <img
             className="absolute w-full h-full"
-            src={Banner}
+            src='/banner.jpg'
             layout="fill"
             objectFit="cover"
             alt='Altina'

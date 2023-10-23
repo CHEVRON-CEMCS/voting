@@ -10,6 +10,14 @@ import { Moon, Sun } from "lucide-react"
 function Navbar() {
   const { user, logout } = useAuth();
 
+  const handleLogout = () => {
+    // Call the logout function from the AuthContext
+    logout();
+    
+    // Redirect to the desired page after logout
+    router.push('/'); // Replace 'desired-page' with the actual URL you want to go to
+  };
+
 
 //   const session = await getAuthSession()
 
@@ -34,7 +42,7 @@ function Navbar() {
                 <Link href='/ballotresultspage'>Draw</Link> */}
                 {/* <Link href='/signinmember' className={buttonVariants()} >Member SIgn In</Link> */}
                 {user ? (
-                <Button onClick={logout} >Log Out</Button>
+                <Button onClick={handleLogout} >Log Out</Button>
                 ) : (
                 <Link href='/signin' className={buttonVariants()} >Sign In</Link>
                 )}
