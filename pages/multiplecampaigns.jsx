@@ -15,6 +15,7 @@ function Multiplecampaigns() {
   const [selectedCandidatesByPosition, setSelectedCandidatesByPosition] = useState({});
   const [isloading, setIsLoading] = useState(false);
 
+
   const [errors, setErrors] = useState([]); // State variable for errors
   const { employeeNumber } = useNewAuth();
 
@@ -128,33 +129,30 @@ function Multiplecampaigns() {
   const sendVoteRequest = async () => {
     // Clear any previous error message
     setErrors([]);
-    setIsLoading(true); // Set isloading to true when you start the voting operation
-
-    // Create an array of selected candidates to vote for
-    const candidatesToVoteFor = Object.entries(selectedCandidates)
-      .filter(([empno, selected]) => selected)
-      .map(([empno]) => empno);
+    setIsLoading(true);
   
-    if (candidatesToVoteFor.length === 0) {
-      console.log("No candidates selected to vote for.");
-      setIsLoading(false); // Set isloading to false if there are no candidates to vote for
-      return;
-    }
-  
-    // Configure headers with authorization token for the POST request
     const voteHeaders = {
       Authorization: `Bearer ${code}`,
     };
   
     try {
-      for (const empno of candidatesToVoteFor) {
-        const nominatedPosition = selectedPositions[empno];
-        const name = selectedCandidatesByPosition[empno]; // Get the name
+      const votes = [];
+  
+      // Iterate over selected candidates by position
+      for (const positionName in selectedCandidatesByPosition) {
+        const empno = selectedCandidatesByPosition[positionName];
+        const position = data.find(candidate => candidate.position_name === positionName);
+        const name = data.find(candidate => candidate.empno === empno).name;
+  
+        if (!empno) {
+          // Candidate not selected for this position
+          continue;
+        }
   
         const votePayload = {
-          empno: employeeNumber, // Use the user's employee number
-          positionId: nominatedPosition, // Include nominatedPosition in the payload
-          votedno: empno, // the candidate's employee number
+          empno: employeeNumber,
+          positionId: position.positionId,
+          votedno: empno,
         };
   
         console.log('Sending vote for empno:', empno);
@@ -169,7 +167,6 @@ function Multiplecampaigns() {
   
         console.log('Vote Request Response:', response.data);
   
-        // Check if the response contains a message indicating that the vote has already been cast
         if (response.data.message === 'You have voted someone for this position already! ') {
           const errorMessage = `Voting Error: ${response.data.message}  (Candidate Name: ${name})`;
           setErrors((prevErrors) => [...prevErrors, errorMessage]);
@@ -187,38 +184,33 @@ function Multiplecampaigns() {
             description: ` ${response.data.message} ${name}`,
           });
         } else {
-            toast({
-              title: 'Voting Success',
-              description: response.data.message,
-            });
-            // Redirect to the '/votesuccess' page
-          // router.push('/votesuccess');
-  
-          // Reset the selectedCandidates and selectedPositions after successful vote
-          setSelectedCandidates({});
-          setSelectedPositions({});
-          setSelectedCandidatesByPosition({});
-  
-          console.log('Selected candidates and positions reset.');
+          toast({
+            title: 'Voting Success',
+            description: response.data.message,
+          });
         }
+  
+        votes.push({ positionName, empno });
       }
   
+      // Reset the selectedCandidatesByPosition state after successful votes
+      setSelectedCandidatesByPosition({});
+  
       console.log('All votes sent successfully.');
-      setIsLoading(false); // Set isloading to false after all votes are sent successfully
-
+      setIsLoading(false);
+  
     } catch (error) {
       const errorMessage = `Vote Request Error: ${error.message}`;
       setErrors((prevErrors) => [...prevErrors, errorMessage]);
-      setIsLoading(false); // Set isloading to false in case of an error
-
+      setIsLoading(false);
     }
   };
+  
   
   return (
     <div>
       <MemberNavbar />
       <div className='mt-20 max-w-6xl mx-auto'>
-        {/* Display the error message at the top of the page */}
         {/* Display the error messages at the top of the page */}
         {errors.length > 0 && (
           <div className="bg-red-500 text-white p-2 mb-4">
@@ -235,35 +227,37 @@ function Multiplecampaigns() {
             {groupDataByPosition().map(group => (
               <div key={group.positionName}>
                 <h2 className='font-bold text-xl mb-2'>{group.positionName}</h2>
-                <ul>
+                <select
+                  value={selectedCandidatesByPosition[group.positionName] || ''}
+                  className='border p-2 rounded-md'
+                  onChange={(e) =>
+                    setSelectedCandidatesByPosition({
+                      ...selectedCandidatesByPosition,
+                      [group.positionName]: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">Select a candidate</option>
                   {group.candidates.map(candidate => (
-                    <li key={candidate.empno}>
-                      <p
-                        className={`border p-4 font-semibold rounded mb-2 cursor-pointer ${selectedCandidates[candidate.empno] ? 'border-blue-500' : ''}`}
-                        onClick={() => handleCandidateSelection(candidate.empno, candidate.positionId, candidate.name)}
-                        >
-                        {candidate.name}
-                      </p>
-                    </li>
+                    <option key={candidate.empno} value={candidate.empno}>
+                      {candidate.name}
+                    </option>
                   ))}
-                </ul>
+                </select>
               </div>
             ))}
           </div>
         )}
         <Button onClick={sendVoteRequest} className="mt-5" disabled={isloading}>
-                        {isloading ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Voting...
-                          </>
-                        ) : (
-                          <>
-                            Vote
-                          </>
-                        )}
-                      </Button>
-        {/* <Button onClick={sendVoteRequest} className="mt-5">Submit</Button> */}
+          {isloading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Voting...
+            </>
+          ) : (
+            <>Vote</>
+          )}
+        </Button>
       </div>
     </div>
   );
