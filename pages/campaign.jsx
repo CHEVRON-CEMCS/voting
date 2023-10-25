@@ -26,6 +26,8 @@ function Campaign() {
   const router = useRouter();
   const [empno, setEmpno] = useState(employeeNumber);
 
+  console.log(employeeNumber)
+
   // Set empno to employeeNumber on initial component load
   useEffect(() => {
     setEmpno(employeeNumber);
@@ -219,7 +221,7 @@ function Campaign() {
                   <Input type="text" value={empno} className="w-1/4" onChange={handleEmpnoChange} disabled={true} />
                 </label>
                 {showSubmitButton && (
-                  <Button onClick={handleSubmit} className="mt-5 mb-10">
+                  <Button onClick={handleSubmit} className="mt-5 mb-10 bg-[#1E2C8A]">
                     Submit
                   </Button>
                 )}

@@ -88,7 +88,7 @@ function Otppage() {
           inputLength={6}
           onChangeOtp={(otp) => setOtpValue(otp)}
         />
-        <Button className="mt-5 px-7" onClick={handleSubmit} disabled={isLoading}>
+        <Button className="mt-5 px-7 bg-[#1E2C8A]" onClick={handleSubmit} disabled={isLoading}>
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

@@ -68,7 +68,7 @@ function SmallBanner() {
   };
 
   return (
-    <div className='flex flex-col justify-center pb-10 mt-20 max-w-6xl mx-auto mb-10 bg-[#212121]'>
+    <div className='flex flex-col justify-center pb-10 mt-20 max-w-6xl mx-auto mb-10 bg-[#1E2C8A]'>
       <h1 className={` mb-5 text-center text-3xl mt-14 text-white`}>
         Select the current stage of the voting process.
       </h1>
@@ -86,7 +86,7 @@ function SmallBanner() {
 
         <Button
           onClick={handleSubmit}
-          className="bg-[#D1EE1E] hover:bg-[#bdc493] text-black mt-8 px-7 py-5"
+          className="bg-[#CC444B] hover:bg-[#bdc493] text-white mt-8 px-7 py-5"
           disabled={isLoading}
         >
           {isLoading ? (

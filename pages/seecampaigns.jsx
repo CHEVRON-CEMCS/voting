@@ -156,13 +156,13 @@ function Seecampaigns() {
       <MemberNavbar />
       {currentStage === 'Nomination' ? (
         <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
-        YOU DO NOT HAVE ACCESS TO THIS PAGE
+          THE CAMPAIGN STAGE HAS NOT STARTED
       </div>
       ) : currentStage === 'Voting Ended' ? (
         <div>
           <MemberNavbar />
           <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
-            YOU DO NOT HAVE ACCESS TO THIS PAGE
+            THE CAMPAIGN STAGE HAS NOT STARTED
           </div>
         </div>
       ) : (
@@ -197,7 +197,7 @@ function Seecampaigns() {
                   </Button> */}
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="w-full" onClick={() => {setVoterNo(campaign.empno);setEmpno(employeeNumber);}}>Vote</Button>
+                      <Button className="bg-[#1E2C8A] w-full" onClick={() => {setVoterNo(campaign.empno);setEmpno(employeeNumber);}}>Vote</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[700px]">
                       <DialogHeader>
@@ -242,7 +242,7 @@ function Seecampaigns() {
                         </div>
                       </div>
                       <DialogFooter>
-                      <Button onClick={handleVote} className="mb-10" disabled={isLoading}>
+                      <Button onClick={handleVote} className="bg-[#1E2C8A] mb-10" disabled={isLoading}>
                         {isLoading ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

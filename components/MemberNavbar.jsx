@@ -12,9 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { User } from 'lucide-react';
+
+// ... (previous imports and code)
 
 function MemberNavbar() {
-  const { logout, employeeNumber, code } = useNewAuth();
+  const { logout, employeeNumber, code, nominated } = useNewAuth();
   const [showUpdateCampaignLink, setShowUpdateCampaignLink] = useState(false);
   const router = useRouter();
 
@@ -61,12 +64,12 @@ function MemberNavbar() {
 
         <div className='flex items-center space-x-8'>
           <Link href='/search'>Home</Link>
-          <Link href='/campaign'>Create campaign</Link>
+          {nominated === 0 ? null : <Link href='/campaign'>Create campaign</Link>}
           <Link href='/seecampaigns'>See Campaigns</Link>
           <Link href='/multiplecampaigns'>Vote Multiple Candidates</Link>
           {showUpdateCampaignLink && <Link href='/updatecampaign'>Update Campaign</Link>}
           {code ? (
-            <Button onClick={handleLogout}>Log Out</Button>
+            <Button className="bg-[#1E2C8A]" onClick={handleLogout}>Log Out</Button>
           ) : (
             <Link href='/signinmember' className={buttonVariants()}>
               Member Sign In
@@ -75,9 +78,9 @@ function MemberNavbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
+              <Avatar className="border border-black">
+              <AvatarImage src="" className="w-10 h-10" />
+                <AvatarFallback><User className='w-6 h-6' /></AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

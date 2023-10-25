@@ -6,9 +6,12 @@ import { useAuth } from '@/services/AuthContext';
 // import { getAuthSession } from '@/lib/auth'
 // import UserAccountNav from './UserAccountNav'
 import { Moon, Sun } from "lucide-react"
+import { useRouter } from 'next/router';
 
 function Navbar() {
   const { user, logout } = useAuth();
+
+  const router = useRouter();
 
   const handleLogout = () => {
     // Call the logout function from the AuthContext
@@ -42,7 +45,7 @@ function Navbar() {
                 <Link href='/ballotresultspage'>Draw</Link> */}
                 {/* <Link href='/signinmember' className={buttonVariants()} >Member SIgn In</Link> */}
                 {user ? (
-                <Button onClick={handleLogout} >Log Out</Button>
+                <Button onClick={handleLogout} className="bg-[#1E2C8A]" >Log Out</Button>
                 ) : (
                 <Link href='/signin' className={buttonVariants()} >Sign In</Link>
                 )}

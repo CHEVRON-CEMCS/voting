@@ -8,6 +8,7 @@ export function NewAuthProvider({ children }) {
   const [code, setCode] = useState(null);
   const [employeeNumber, setEmployeeNumber] = useState(null); // Change the name here
   const [currentStage, setCurrentStage] = useState(null);
+  const [nominated, setNominated] = useState(null);
 
   const router = useRouter();
 
@@ -27,10 +28,15 @@ export function NewAuthProvider({ children }) {
       setEmployeeNumber(response.data.empno); // Change the name here
       setCurrentStage(response.data.currentStage);
 
+      // Access the nominated value from the data array
+      const nominatedValue = response.data.data[0].nominated;
+      setNominated(nominatedValue);
+      
       // Store the code in local storage
       localStorage.setItem('code', response.data.code);
       localStorage.setItem('empno', response.data.empno);
       localStorage.setItem('currentStage', response.data.currentStage);
+      localStorage.setItem('Nominated', nominatedValue);
 
 
       return true; // Authentication success
@@ -46,9 +52,11 @@ export function NewAuthProvider({ children }) {
     setCode(null);
     setEmployeeNumber(null); // Change the name here
     setCurrentStage(null)
+    setNominated(null)
     localStorage.removeItem('code');
     localStorage.removeItem('empno');
     localStorage.removeItem('currentStage')
+    localStorage.removeItem('nominated')
     // Redirect to the home page
     router.push('/signinmember');
   };
@@ -58,6 +66,8 @@ useEffect(() => {
   const storedCode = localStorage.getItem('code');
   const storedEmployeeNumber = localStorage.getItem('empno');
   const storedCurrentStage = localStorage.getItem('currentStage');
+  const storedNominated = localStorage.getItem('nominated');
+
 
   if (storedCode) {
     setCode(storedCode);
@@ -70,11 +80,15 @@ useEffect(() => {
   if (storedCurrentStage) {
     setCurrentStage(storedCurrentStage);
   }
+
+  if (storedNominated) {
+    setNominated(storedNominated);
+  }
 }, []);
 
 
   return (
-    <NewAuthContext.Provider value={{ code, employeeNumber, currentStage, authenticate, logout }}> {/* Change the name here */}
+    <NewAuthContext.Provider value={{ code, employeeNumber, currentStage, nominated, authenticate, logout }}> {/* Change the name here */}
       {children}
     </NewAuthContext.Provider>
   );

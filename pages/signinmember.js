@@ -96,7 +96,7 @@ function Signin() {
           onChange={(e) => setPassword(e.target.value)} 
           placeholder="Password" 
         /> */}
-        <Button className="w-full" onClick={handleSignIn} disabled={isLoading}>{isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogInIcon className='h-4 w-4 mr-2' />}Authenticate</Button>
+        <Button className="w-full bg-[#1E2C8A]" onClick={handleSignIn} disabled={isLoading}>{isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogInIcon className='h-4 w-4 mr-2' />}Authenticate</Button>
         {/* <UserAuthForm /> */}
         <p className="px-8 text-center text-sm text-muted-foreground">
           <Link

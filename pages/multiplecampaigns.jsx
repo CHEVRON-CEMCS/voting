@@ -19,6 +19,10 @@ function Multiplecampaigns() {
   const [errors, setErrors] = useState([]); // State variable for errors
   const { employeeNumber } = useNewAuth();
 
+  const { currentStage } = useNewAuth();
+
+  console.log(currentStage)
+
   const { toast } = useToast();
 
   const router = useRouter(); // Initialize the router
@@ -38,7 +42,7 @@ function Multiplecampaigns() {
 
     // Configure headers with authorization token
     const headers = {
-      'Authorization': `Bearer 018112`,
+      'Authorization': `Bearer ${code}`,
       'Content-Type': 'application/json',
     };
 
@@ -46,7 +50,7 @@ function Multiplecampaigns() {
     axios.get('https://virtual.chevroncemcs.com/voting/getVoteCandidates', {
       headers: headers,
       params: {
-        empno: "2419",
+        empno: employeeNumber,
       }
     })
       .then(response => {
@@ -210,6 +214,31 @@ function Multiplecampaigns() {
   return (
     <div>
       <MemberNavbar />
+
+      {currentStage === 'Campaign' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            THE NOMINATION STAGE HAS ENDED
+          </div>
+        </div>
+      ) : currentStage === 'Voting Ended' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            THE VOTING STAGE HAS ENDED
+          </div>
+        </div>
+      ) : currentStage === 'Nomination' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            THE VOTING STAGE HAS NOT STARTED
+          </div>
+        </div>
+      ) : (
+        <>
+
       <div className='mt-20 max-w-6xl mx-auto'>
         {/* Display the error messages at the top of the page */}
         {errors.length > 0 && (
@@ -248,7 +277,7 @@ function Multiplecampaigns() {
             ))}
           </div>
         )}
-        <Button onClick={sendVoteRequest} className="mt-5" disabled={isloading}>
+        <Button onClick={sendVoteRequest} className="bg-[#1E2C8A] mt-5" disabled={isloading}>
           {isloading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -259,6 +288,8 @@ function Multiplecampaigns() {
           )}
         </Button>
       </div>
+      </>
+      )}
     </div>
   );
 }

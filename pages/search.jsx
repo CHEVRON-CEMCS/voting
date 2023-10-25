@@ -31,6 +31,7 @@ function Search() {
   const { toast } = useToast();
   const { employeeNumber } = useNewAuth();
   const { currentStage } = useNewAuth();
+  const { nominated } = useNewAuth()
   
 
   console.log('Current Stage:',currentStage);
@@ -40,6 +41,9 @@ function Search() {
   const {code} = useNewAuth()
   
   console.log(code)
+
+  console.log('Nominated:',nominated);
+
 
   const token = "025209";
 
@@ -175,7 +179,14 @@ function Search() {
         <div>
           <MemberNavbar />
           <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
-            THE VOTING STAGE HAS ENDED
+            THE NOMINATION STAGE HAS ENDED
+          </div>
+        </div>
+      ) : currentStage === 'Voting' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            THE NOMINATION STAGE HAS ENDED
           </div>
         </div>
       ) : (
@@ -263,7 +274,7 @@ function Search() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button onClick={handleNomination} className="mb-10" disabled={isLoading}>
+                        <Button onClick={handleNomination} className="mb-10 bg-[#1E2C8A]" disabled={isLoading}>
                           {isLoading ? (
                             <>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -282,19 +293,17 @@ function Search() {
               ))}
             </ul>
           ) : (
-            <div>
-              <p className='max-w-3xl mx-auto mt-5'>No results found.</p>
-              <div className="mt-10 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-semibold mb-3">Positions</h2>
-            <div className="flex flex-wrap">
-              {positions.map((position) => (
-                <div key={position.id} className="mr-4 mb-4">
-                  <p className="font-semibold">{position.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-            </div>
+            <div className="mt-10 max-w-3xl mx-auto">
+  <h2 className="text-2xl font-semibold mb-3">Positions</h2>
+  <div className="grid grid-cols-3 gap-4">
+    {positions.map((position) => (
+      <div key={position.id} className="p-4 border rounded-lg">
+        <p className="font-semibold">{position.name}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
 
             
           )}

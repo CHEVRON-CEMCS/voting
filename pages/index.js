@@ -26,14 +26,17 @@ export default function Home() {
         </div>
 
         <div className='flex space-x-5 mt-5' >
-            <Link className={buttonVariants({
-              })} href="/signinmember">
+          <Button className="bg-[#1E2C8A]">
+            <Link href="/signinmember">
             Member Sign in
             </Link>
-            <Link className={buttonVariants({
-              })} href="/signin">
-            Admin Sign in
-            </Link>
+          </Button>
+
+          <Button className="bg-[#1E2C8A]">
+              <Link  href="/signin">
+              Admin Sign in
+              </Link>
+          </Button>
         </div>
 
         <div className="relative w-full mt-16 h-[24rem]">
