@@ -26,25 +26,25 @@ export default function Home() {
         </div>
 
         <div className='flex space-x-5 mt-5' >
-          <Button className="bg-[#1E2C8A]">
+          <Button className="bg-[#2187C0]">
             <Link href="/signinmember">
-            Member Sign in
+             Sign in
             </Link>
           </Button>
 
-          <Button className="bg-[#1E2C8A]">
+          {/* <Button className="bg-[#1E2C8A]">
               <Link  href="/signin">
               Admin Sign in
               </Link>
-          </Button>
+          </Button> */}
         </div>
 
         <div className="relative w-full mt-16 h-[24rem]">
           <img
-            className="absolute w-full h-full"
-            src='/banner.jpg'
+            className="absolute w-full h-full object-cover"
+            src='/baner.jpg'
             layout="fill"
-            objectFit="cover"
+            objectFit="contain"
             alt='Altina'
           />
         </div>

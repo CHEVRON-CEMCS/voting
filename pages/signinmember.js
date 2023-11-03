@@ -70,8 +70,9 @@ function Signin() {
         </>
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-        <div className="flex flex-col space-y-2 text-center">
+        <div className="flex flex-col space-y-2 justify-center items-center">
           {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
+          <img src="/logo.png" alt="Logo" className='w-20 h-20 object-contain' />
           <h1 className="text-2xl font-semibold tracking-tight flex justify-center items-center space-x-5">
             Welcome!!
             <PartyPopper className='ml-1 h-8 w-8'/>
@@ -88,22 +89,15 @@ function Signin() {
           onChange={(e) => setEmployee(e.target.value)} 
           placeholder="Enter your Employee Number" 
         />
-        {/* <Input 
-          type="password"
-          name="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)} 
-          placeholder="Password" 
-        /> */}
-        <Button className="w-full bg-[#1E2C8A]" onClick={handleSignIn} disabled={isLoading}>{isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogInIcon className='h-4 w-4 mr-2' />}Authenticate</Button>
+        
+        <Button className="w-full bg-[#2187C0]" onClick={handleSignIn} disabled={isLoading}>{isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogInIcon className='h-4 w-4 mr-2' />}Sign In</Button>
         {/* <UserAuthForm /> */}
         <p className="px-8 text-center text-sm text-muted-foreground">
           <Link
-            href="/forgot"
-            className="hover:text-brand underline underline-offset-4"
+            href="/contact"
+            className="hover:text-brand underline underline-offset-4 font-bold"
           >
-            Forgot your employee number? Click here
+            Having troubles logging in? Click Here          
           </Link>
         </p>
       </div>

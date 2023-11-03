@@ -14,6 +14,7 @@ function Multiplecampaigns() {
   const [selectedPositions, setSelectedPositions] = useState({}); // Add a state for selected positions
   const [selectedCandidatesByPosition, setSelectedCandidatesByPosition] = useState({});
   const [isloading, setIsLoading] = useState(false);
+  const [filteredData, setFilteredData] = useState([]); // State to store filtered data
 
 
   const [errors, setErrors] = useState([]); // State variable for errors
@@ -171,7 +172,7 @@ function Multiplecampaigns() {
   
         console.log('Vote Request Response:', response.data);
   
-        if (response.data.message === 'You have voted someone for this position already! ') {
+        if (response.data.error) {
           const errorMessage = `Voting Error: ${response.data.message}  (Candidate Name: ${name})`;
           setErrors((prevErrors) => [...prevErrors, errorMessage]);
           toast({
@@ -179,7 +180,7 @@ function Multiplecampaigns() {
             title: 'Voting Errors',
             description: ` ${response.data.message} ${name}`,
           });
-        } else if (response.data.message === 'You cant vote yourself!') {
+        } else if (response.data.error) {
           const errorMessage = `Voting Error: ${response.data.message}  (Candidate Name: ${name})`;
           setErrors((prevErrors) => [...prevErrors, errorMessage]);
           toast({
@@ -209,6 +210,36 @@ function Multiplecampaigns() {
       setIsLoading(false);
     }
   };
+
+
+  useEffect(() => {
+    // Construct the API URL with the employeeNumber
+    const apiUrl = `https://virtual.chevroncemcs.com/voting/getVoteCandidates/${employeeNumber}`;
+
+    // Define the headers with Authorization
+    const headers = {
+      Authorization: `Bearer ${code}` // Assuming your authorization method is Bearer token
+    };
+
+    // Make the API GET request with authorization headers
+    axios
+      .get(apiUrl, { headers })
+      .then((response) => {
+        if (response.data && response.data.data) {
+          // Filter the response data based on the employeeNumber
+          const filteredData = response.data.data.filter(
+            (item) => item.empno === employeeNumber
+          );
+
+          setFilteredData(filteredData); // Store the filtered data in state
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        // You can add error handling or display a toast message here
+        toast.error('Error fetching data. Please try again.');
+      });
+  }, [employeeNumber, code]); // Trigger the request when employeeNumber or code changes
   
   
   return (
@@ -249,33 +280,51 @@ function Multiplecampaigns() {
           </div>
         )}
         <h1 className='mb-10 font-bold text-3xl text-center'>VOTE MULTIPLE CANDIDATES</h1>
+        <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-10 bg-[#1E2C8A]'>
+            <p className='p-5 text-white'>
+                The table allows you to vote candidates for positions. If you've voted someone already
+                their name will show on the table below the voting table.
+                You can select multiple candidates at once or select one by one to vote your candidate.
+                If you have not finished voting your candidates, you can always come back at a later time.
+            </p>
+        </div>
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <div className="grid grid-cols-3 gap-4">
-            {groupDataByPosition().map(group => (
-              <div key={group.positionName}>
-                <h2 className='font-bold text-xl mb-2'>{group.positionName}</h2>
-                <select
-                  value={selectedCandidatesByPosition[group.positionName] || ''}
-                  className='border p-2 rounded-md'
-                  onChange={(e) =>
-                    setSelectedCandidatesByPosition({
-                      ...selectedCandidatesByPosition,
-                      [group.positionName]: e.target.value,
-                    })
-                  }
-                >
-                  <option value="">Select a candidate</option>
-                  {group.candidates.map(candidate => (
-                    <option key={candidate.empno} value={candidate.empno}>
-                      {candidate.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
-          </div>
+          
+          <table className="table-auto border-collapse w-full">
+            <thead>
+              <tr>
+                <th className="border p-2">Positions</th>
+                <th className="border p-2">Candidates</th>
+              </tr>
+            </thead>
+            <tbody>
+              {groupDataByPosition().map((group) => (
+                <tr key={group.positionName}>
+                  <td className="border p-2">{group.positionName}</td>
+                  <td className="border p-2">
+                    <select
+                      value={selectedCandidatesByPosition[group.positionName] || ''}
+                      onChange={(e) =>
+                        setSelectedCandidatesByPosition({
+                          ...selectedCandidatesByPosition,
+                          [group.positionName]: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">Select a candidate</option>
+                      {group.candidates.map((candidate) => (
+                        <option key={candidate.empno} value={candidate.empno}>
+                          {candidate.name}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
         <Button onClick={sendVoteRequest} className="bg-[#1E2C8A] mt-5" disabled={isloading}>
           {isloading ? (
@@ -284,12 +333,32 @@ function Multiplecampaigns() {
               Voting...
             </>
           ) : (
-            <>Vote</>
+            <>Vote Candidates</>
           )}
         </Button>
       </div>
       </>
       )}
+
+<div className='mt-20 mb-10 max-w-6xl mx-auto'>
+        <h1 className='font-bold text-2xl'>PEOPLE YOU HAVE VOTED FOR</h1>
+        <table className="table-auto mt-5 w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
+              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Position</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((item, index) => (
+              <tr key={index}>
+                <td className="border px-4 py-2">{item.votedName}</td>
+                <td className="border px-4 py-2">{item.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

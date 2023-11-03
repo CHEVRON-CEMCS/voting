@@ -73,22 +73,27 @@ function Otppage() {
   // Use useEffect to redirect when shouldRedirect changes
   useEffect(() => {
     if (shouldRedirect) {
-      router.push('/search'); // Redirect to /search
+      router.push('/landingUser'); // Redirect to /search
     }
   }, [shouldRedirect, router]);
 
   return (
     <div className='max-w-6xl mx-auto'>
       <div className="flex flex-col items-center justify-center h-screen">
+        <img src="/logo.png" alt="Logo" className='w-20 h-20 object-contain' />
         <h1 className='text-xl font-bold'>Enter your Code</h1>
-        <p className='text-sm font-medium'>Visit your email to get your code</p>
+        <div className='flex flex-col justify-center pb-2 p-2 mt-5 max-w-6xl mx-auto mb-1 bg-[#1E2C8A]'>
+        <p className='text-sm font-medium text-white text-center'>Visit your email to get your code</p>
+        <p className='text-sm font-medium  text-white text-center'>NOTE: Check your Junk</p>
+        </div>
+        
         <OtpInput
           autoFocus
           isNumberInput
           inputLength={6}
           onChangeOtp={(otp) => setOtpValue(otp)}
         />
-        <Button className="mt-5 px-7 bg-[#1E2C8A]" onClick={handleSubmit} disabled={isLoading}>
+        <Button className="mt-5 px-7 bg-[#2187C0]" onClick={handleSubmit} disabled={isLoading}>
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (

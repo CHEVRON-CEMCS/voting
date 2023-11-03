@@ -30,9 +30,10 @@ function Navbar() {
             {/* logo */}
             <Link href='/admin' className='flex gap-2 items-center'>
               {/* <Icons.logo className='h-8 w-8 sm:h-6 sm:w-6' /> */}
-              <p className=' text-zinc-700 text-sm font-medium'>
+              {/* <p className=' text-zinc-700 text-sm font-medium'>
                 CEMCS
-              </p>
+              </p> */}
+              <img src="/logo.png" alt="Logo" className='w-12 h-12 object-contain' />
             </Link>
 
             <div className='flex items-center space-x-8'>

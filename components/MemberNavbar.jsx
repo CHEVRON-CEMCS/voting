@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from 'lucide-react';
+import logo from '@/public/logo.png'
 
 // ... (previous imports and code)
 
@@ -58,18 +59,21 @@ function MemberNavbar() {
   return (
     <div className='fixed top-0 inset-x-0 h-fit bg-zinc-100 border-b border-zinc-300 z-[10] py-2'>
       <div className='container max-w-7xl h-full mx-auto flex items-center justify-between gap-2'>
-        <Link href='/search' className='flex gap-2 items-center'>
-          <p className='text-zinc-700 text-sm font-medium'>CEMCS</p>
+        <Link href='/landingUser' className='flex gap-2 items-center'>
+          {/* <p className='text-zinc-700 text-sm font-medium'>CEMCS</p> */}
+          <img src="/logo.png" alt="Logo" className='w-12 h-12 object-contain' />
         </Link>
 
         <div className='flex items-center space-x-8'>
           <Link href='/search'>Home</Link>
-          {nominated === 0 ? null : <Link href='/campaign'>Create campaign</Link>}
-          <Link href='/seecampaigns'>See Campaigns</Link>
-          <Link href='/multiplecampaigns'>Vote Multiple Candidates</Link>
-          {showUpdateCampaignLink && <Link href='/updatecampaign'>Update Campaign</Link>}
+          <div className='hidden'>
+            {nominated === 0 ? null : <Link href='/campaign'>Create campaign</Link>}
+            <Link href='/seecampaigns'>See Campaigns</Link>
+            <Link href='/multiplecampaigns'>Vote Multiple Candidates</Link>
+            {showUpdateCampaignLink && <Link href='/updatecampaign'>Update Campaign</Link>}
+          </div>
           {code ? (
-            <Button className="bg-[#1E2C8A]" onClick={handleLogout}>Log Out</Button>
+            <Button className="bg-[#2187C0]" onClick={handleLogout}>Log Out</Button>
           ) : (
             <Link href='/signinmember' className={buttonVariants()}>
               Member Sign In
