@@ -111,32 +111,22 @@ function Viewnomsearch() {
     
 
   useEffect(() => {
-    async function fetchSearchResults(index) {
-      try {
-        const searchTerm = searchTerms[index];
-        if (searchTerm.trim() === '') {
-          setSearchResults([]);
-          return;
-        }
-
-        const response = await axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
-
-        if (response.status === 200) {
-          const newSearchResults = [...searchResults];
-          newSearchResults[index] = response.data.data;
-          setSearchResults(newSearchResults);
-        } else {
-          console.error('API request failed with status:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching search results:', error);
+    const fetchResultsPromises = searchTerms.map((searchTerm, index) => {
+      if (searchTerm.trim() === '') {
+        return Promise.resolve([]); // Return an empty array if the search term is empty
       }
-    }
-
-    searchTerms.forEach((searchTerm, index) => {
-      fetchSearchResults(index);
+      return axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
     });
-  }, [searchTerms, searchResults]);
+
+    Promise.all(fetchResultsPromises)
+      .then((responses) => {
+        const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
+        setSearchResults(newSearchResults);
+      })
+      .catch((error) => {
+        console.error('Error fetching search results:', error);
+      });
+  }, [searchTerms]);
 
   const handleNominationSubmit = async () => {
     try {
@@ -209,19 +199,20 @@ function Viewnomsearch() {
         <table className="table-auto mt-5 w-full">
           <thead>
             <tr>
-              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
               <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Position</th>
+              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
             </tr>
           </thead>
           <tbody>
             {filteredData.map((item, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{item.nominatedName}</td>
                 <td className="border px-4 py-2">{item.name}</td>
+                <td className="border px-4 py-2">{item.nominatedName}</td>
               </tr>
             ))}
             {unoccupiedPositions.map((position, index) => (
               <tr key={position.id}>
+                <td className="border px-4 py-2">{position.name}</td>
                 <td className="border px-4 py-2">
                   <input
                     type="text"
@@ -234,14 +225,13 @@ function Viewnomsearch() {
                   {showOverlays[index] && searchResults[index] && (
                     <div className="absolute bg-white rounded-md border shadow p-2 mt-1 z-10">
                       {searchResults[index].map((result) => (
-                        <div key={result.id} onClick={() => handleResultSelect(result, index)}>
+                        <div key={result.id} className='cursor-pointer' onClick={() => handleResultSelect(result, index)}>
                           {result.name}
                         </div>
                       ))}
                     </div>
                   )}
                 </td>
-                <td className="border px-4 py-2">{position.name}</td>
               </tr>
             ))}
           </tbody>
