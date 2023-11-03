@@ -26,11 +26,9 @@ export default function Home() {
         </div>
 
         <div className='flex space-x-5 mt-5' >
-          <Button className="bg-[#2187C0]">
-            <Link href="/signinmember">
+            <Link href="/signinmember" className='bg-[#2187C0] pt-2 pb-2 pl-5 pr-5 rounded-xl text-white'>
              Sign in
             </Link>
-          </Button>
 
           {/* <Button className="bg-[#1E2C8A]">
               <Link  href="/signin">

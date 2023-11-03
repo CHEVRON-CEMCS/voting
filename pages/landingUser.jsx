@@ -82,11 +82,11 @@ function LandingUser() {
                             <CardDescription>This will navigate you to the Nomination stage where you can nominate your candidates</CardDescription>
                         </CardHeader>
                         <CardContent>
-                        {currentStage === 'Nomination' || currentStage === 'Voting' || currentStage === 'Voting Ended' ? (
-                                    <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/viewnomsearch'>Go to Nomination</Link>
-                            ) : (
+                        {currentStage === 'Nomination' ? (
                                 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/viewnomsearch'>Go to Nomination</Link>
-                            )}
+                            ) : (
+                                <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Nomination</Button>
+                        )}
                         </CardContent>
                     </Card>
 
@@ -96,7 +96,7 @@ function LandingUser() {
                             <CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            {currentStage !== 'Nomination' ? (
+                        {currentStage === 'Campaign' ? (
                                 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>Go to Campaign</Link>
                             ) : (
                                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Campaign</Button>
@@ -110,7 +110,7 @@ function LandingUser() {
                             <CardDescription>This will navigate you to the Voting stage where you can cast your vote</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            {currentStage !== 'Nomination' ? (
+                        {currentStage === 'Voting' ? (
                                 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/multiplecampaigns'>Go to Voting</Link>
                             ) : (
                                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Voting</Button>
