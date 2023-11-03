@@ -108,10 +108,7 @@ function Viewnomsearch() {
     newShowOverlays[index] = true;
     setShowOverlays(newShowOverlays);
   };
-  
-  
-  // ... (rest of the code)
-  
+    
 
   useEffect(() => {
     async function fetchSearchResults(index) {
@@ -199,7 +196,7 @@ function Viewnomsearch() {
         <h1 className='font-bold text-2xl'>NOMINATE YOUR CANDIDATE</h1>
         <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-5 bg-[#1E2C8A]'>
             <p className='p-5 text-white'>
-                The table allows you to nominate candidates for positions. If you've nominated someone already
+                The table allows you to nominate candidates for positions. If you have nominated someone already
                 their name will show on the table beside the position they are nominated for. There will be no search box to search
                 for another candidate if you have nominated a candidate for a position. 
                 You can select multiple candidates at once or select one by one to nominate your candidate.

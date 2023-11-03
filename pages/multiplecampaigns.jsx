@@ -282,7 +282,7 @@ function Multiplecampaigns() {
         <h1 className='mb-10 font-bold text-3xl text-center'>VOTE MULTIPLE CANDIDATES</h1>
         <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-10 bg-[#1E2C8A]'>
             <p className='p-5 text-white'>
-                The table allows you to vote candidates for positions. If you've voted someone already
+                The table allows you to vote candidates for positions. If you have voted someone already
                 their name will show on the table below the voting table.
                 You can select multiple candidates at once or select one by one to vote your candidate.
                 If you have not finished voting your candidates, you can always come back at a later time.
