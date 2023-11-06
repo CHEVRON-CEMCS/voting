@@ -20,11 +20,14 @@ import {
 } from "@/components/ui/select"
 import Link from 'next/link'
 import { useNewAuth } from '@/services/NewAuthContext'
+import CountdownTimer from '@/components/CountdownTimer'
 
 function LandingUser() {
     const { code, employeeNumber, currentStage } = useNewAuth();
 
     const [link, setLink] = useState(false);
+
+    const targetDate = new Date('2023-12-31T23:59:59').getTime(); // Replace with your target date
 
     console.log(code)
 
@@ -74,11 +77,22 @@ function LandingUser() {
                     ) :
                         null
                     }
+
+                    <div className='mb-3'>
+                        {/* <CountdownTimer targetDate={targetDate} />
+                        <h1 className='font-bold text-xl'>
+                            The election will commence soon
+                        </h1> */}
+                    </div>
+                        
+
                 <div className="max-w-6xl mx-auto flex space-x-8">
-                    
+
+
                     <Card className="w-[350px]">
                         <CardHeader>
                             <CardTitle className="mb-3">Nomination Stage</CardTitle>
+                            {/* <CountdownTimer targetDate={targetDate} /> */}
                             <CardDescription>This will navigate you to the Nomination stage where you can nominate your candidates</CardDescription>
                         </CardHeader>
                         <CardContent>

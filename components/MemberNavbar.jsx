@@ -65,7 +65,7 @@ function MemberNavbar() {
         </Link>
 
         <div className='flex items-center space-x-8'>
-          <Link href='/search'>Home</Link>
+          <Link href='/landingUser'>Home</Link>
           <div className='hidden'>
             {nominated === 0 ? null : <Link href='/campaign'>Create campaign</Link>}
             <Link href='/seecampaigns'>See Campaigns</Link>

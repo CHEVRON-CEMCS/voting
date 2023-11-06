@@ -107,14 +107,6 @@ function Campaign() {
     }
   };
 
-  // useEffect(() => {
-  //   const loadReactQuill = async () => {
-  //     const { default: ReactQuill } = await import('react-quill');
-  //     setReactQuillComponent(() => ReactQuill);
-  //   };
-  //   loadReactQuill();
-  // }, []);
-
   const checkEmployeeInResponse = async () => {
     try {
       const apiUrl = 'https://virtual.chevroncemcs.com/voting/campaign';

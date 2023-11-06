@@ -172,7 +172,7 @@ function Seecampaigns() {
         <p>Loading...</p>
       ) : (
         <div className='mt-20'>
-                        <div className="flex flex-wrap justify-center space-x-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
           {campaignData.map((campaign) => (
             <div key={campaign.empno} className='flex justify-center '>
               <Card className="w-[22rem] flex flex-col justify-center items-center mb-5">
