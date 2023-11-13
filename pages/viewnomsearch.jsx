@@ -193,7 +193,7 @@ function Viewnomsearch() {
                 If you have not finished nominating your candidates, you can always come back at a later time.
                 You can edit your nominations up until he nominations stage has ended. */}
                 The table enables the nomination of candidates for various positions. Once you have nominated someone, 
-                their name will appear in the table alongside the position they are nominated for. If you've already nominated a candidate 
+                their name will appear in the table alongside the position they are nominated for. If you have already nominated a candidate 
                 for a specific position, the search box will be unavailable for selecting another candidate. 
                 You have the option to select multiple candidates at once or nominate them individually. 
                 If your nomination process is incomplete, you can return at a later time. 
