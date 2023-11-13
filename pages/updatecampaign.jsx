@@ -16,6 +16,8 @@ function Updatecampaign() {
   const [campaignMessage, setCampaignMessage] = useState(""); // State to store the campaign message
   const router = useRouter();
 
+  console.log(code)
+
 
   const updateCampaignMessage = async () => {
     if (isLoading) {

@@ -168,6 +168,8 @@ function Campaign() {
                 <p className='mt-20 bg-[#339989] text-white p-2 mb-4'>You have already created a campaign.</p> 
               )}
               <h1 className='font-bold text-3xl mt-5 mb-5'>Start your Campaign</h1>
+
+              <h1 className='text-base mt-5 mb-3'>Upload a Profile picture of yourself</h1>
               <div
                 className="image-upload-box mb-5 w-1/2"
                 onClick={openFileInput}

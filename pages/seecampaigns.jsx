@@ -12,6 +12,7 @@ import { useNewAuth } from '@/services/NewAuthContext';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 function Seecampaigns() {
   const [campaignData, setCampaignData] = useState([]);
@@ -181,12 +182,13 @@ function Seecampaigns() {
                 </div>
                 <div className='flex flex-col justify-center items-center'>
                   <p className='mt-5 mb-2 text-gray-600 font-bold text-xl'>{campaign.name}</p>
-                  <p className='mb-2 text-gray-700 text-base mt-2'>{campaign.message}</p>
-                  <p className='mb-5 text-gray-700 text-base font-bold'>Nomination: {campaign.position_name}</p>
+                  <p className='text-gray-700 text-base font-bold'>Nomination: {campaign.position_name}</p>
+                  <p className='mb-5 text-gray-700 text-base text-center' style={{ width: '18rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{campaign.message}</p>
                   {/* <p>Nominated: {campaign.nominated}</p>
                   <p>Position ID: {campaign.positionId}</p> */}
                 </div>
                 <div className='mb-5 w-1/2'>
+                <Link href={`/campaign/${campaign.empno}`} className='border pl-5 pr-5 pt-2 pb-2 rounded-lg bg-[#1E2C8A] text-white'>View Campaign</Link>
                   {/* <Button
                     className="w-full"
                     onClick={() => {
@@ -197,7 +199,7 @@ function Seecampaigns() {
                   </Button> */}
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="bg-[#1E2C8A] w-full" onClick={() => {setVoterNo(campaign.empno);setEmpno(employeeNumber);}}>Vote</Button>
+                      {/* <Button className="bg-[#1E2C8A] w-full" onClick={() => {setVoterNo(campaign.empno);setEmpno(employeeNumber);}}>Vote</Button> */}
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[700px]">
                       <DialogHeader>

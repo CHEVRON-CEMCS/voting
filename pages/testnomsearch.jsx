@@ -11,13 +11,17 @@ function Viewnomsearch() {
   const [filteredData, setFilteredData] = useState([]); // State to store filtered data
   const [positions, setPositions] = useState([]); // State to store positions data
   const [searchTerms, setSearchTerms] = useState([]); // State to store search terms
+  const [searchTermsOne, setSearchTermsOne] = useState([]); // State to store search terms
   const [searchResults, setSearchResults] = useState([]); // State to store search results
   const [selectedResults, setSelectedResults] = useState([]);
   const [showOverlays, setShowOverlays] = useState(Array(3).fill(false)); // State to control overlay display for each search bar
+  const [isEditing, setIsEditing] = useState([]); // Initialize isEditing as an empty array
 
   const { toast } = useToast();
 
   const employeeNumberAsNumber = parseInt(employeeNumber, 10);
+
+  console.log(code)
 
   useEffect(() => {
     // Construct the API URL with the employeeNumber
@@ -54,6 +58,8 @@ function Viewnomsearch() {
 
         if (response.status === 200) {
           setPositions(response.data.data);
+          // Initialize isEditing based on the number of positions
+          setIsEditing(Array(response.data.data.length).fill(false));
         } else {
           console.error('API request failed with status:', response.status);
         }
@@ -75,6 +81,12 @@ function Viewnomsearch() {
     newSearchTerms[index] = e.target.value;
     setSearchTerms(newSearchTerms);
   };
+  
+  const handleSearchChangeOne = (e, index) => {
+    const newSearchTermsOne = [...searchTermsOne]
+    newSearchTermsOne[index] = e.target.value;
+    setSearchTermsOne(newSearchTermsOne);
+  };
 
   const handleResultSelect = (result, index) => {
     const newSelectedResults = [...selectedResults];
@@ -91,6 +103,12 @@ function Viewnomsearch() {
       // Log the selected candidate and positionId
       console.log('Selected Candidate:', newSelectedResults[index]);
 
+      setIsEditing((prevIsEditing) => {
+        const newIsEditing = [...prevIsEditing];
+        newIsEditing[index] = false;
+        return newIsEditing;
+      });
+
       // Close the overlay card for this search bar
       setShowOverlays((prevState) => prevState.map((value, i) => (i === index ? false : value)));
     } else {
@@ -101,6 +119,47 @@ function Viewnomsearch() {
     const newSearchTerms = [...searchTerms];
     newSearchTerms[index] = result.name;
     setSearchTerms(newSearchTerms);
+  };
+
+  const handleResultSelectOne = (result, index) => {
+    const newSelectedResults = [...selectedResults];
+    const selectedPosition = positions.find((position) => position.name === filteredData[index].name);
+
+    if (selectedPosition) {
+      newSelectedResults[index] = {
+        ...result,
+        positionId: selectedPosition.id
+      };
+
+      setSelectedResults(newSelectedResults);
+
+      // Log the selected candidate and positionId
+      console.log('Selected Candidate:', newSelectedResults[index]);
+
+      setIsEditing((prevIsEditing) => {
+        const newIsEditing = [...prevIsEditing];
+        // newIsEditing[index] = false;
+        return newIsEditing;
+      });
+
+      // Close the overlay card for this search bar
+      setShowOverlays((prevState) => prevState.map((value, i) => (i === index ? false : value)));
+    } else {
+      console.error('Selected position not found for candidate:', result.name);
+    }
+
+    // Update the search term to show the selected candidate's name
+    const newSearchTermsOne = [...searchTermsOne]
+    newSearchTermsOne[index] = result.name;
+    setSearchTermsOne(newSearchTermsOne);
+  };
+
+  const toggleEdit = (index) => {
+    setIsEditing((prevIsEditing) => {
+      const newIsEditing = [...prevIsEditing];
+      newIsEditing[index] = !newIsEditing[index];
+      return newIsEditing;
+    });
   };
 
   const handleSearchFocus = (index) => {
@@ -127,6 +186,24 @@ function Viewnomsearch() {
         console.error('Error fetching search results:', error);
       });
   }, [searchTerms]);
+
+  useEffect(() => {
+    const fetchResultsPromises = searchTermsOne.map((searchTerm, index) => {
+      if (searchTerm.trim() === '') {
+        return Promise.resolve([]); // Return an empty array if the search term is empty
+      }
+      return axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
+    });
+
+    Promise.all(fetchResultsPromises)
+      .then((responses) => {
+        const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
+        setSearchResults(newSearchResults);
+      })
+      .catch((error) => {
+        console.error('Error fetching search results:', error);
+      });
+  }, [searchTermsOne]);
 
   const handleNominationSubmit = async () => {
     try {
@@ -168,7 +245,7 @@ function Viewnomsearch() {
       }
       // ...
       // Reload the page after nominations are submitted
-    // window.location.reload();
+    window.location.reload();
     } catch (error) {
         toast({
             title: 'There was a problem.',
@@ -186,18 +263,11 @@ function Viewnomsearch() {
         <h1 className='font-bold text-2xl'>NOMINATE YOUR CANDIDATE</h1>
         <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-5 bg-[#1E2C8A]'>
             <p className='p-5 text-white'>
-                {/* The table allows you to nominate candidates for positions. If you have nominated someone already
+                The table allows you to nominate candidates for positions. If you have nominated someone already
                 their name will show on the table beside the position they are nominated for. There will be no search box to search
                 for another candidate if you have nominated a candidate for a position. 
                 You can select multiple candidates at once or select one by one to nominate your candidate.
                 If you have not finished nominating your candidates, you can always come back at a later time.
-                You can edit your nominations up until he nominations stage has ended. */}
-                The table enables the nomination of candidates for various positions. Once you have nominated someone, 
-                their name will appear in the table alongside the position they are nominated for. If you've already nominated a candidate 
-                for a specific position, the search box will be unavailable for selecting another candidate. 
-                You have the option to select multiple candidates at once or nominate them individually. 
-                If your nomination process is incomplete, you can return at a later time. 
-                Editing your nominations is possible until the nomination stage concludes.
             </p>
         </div>
         <div className='mb-5'>
@@ -214,7 +284,47 @@ function Viewnomsearch() {
             {filteredData.map((item, index) => (
               <tr key={index}>
                 <td className="border px-4 py-2">{item.name}</td>
-                <td className="border px-4 py-2">{item.nominatedName}</td>
+                {/* <td className="border px-4 py-2">{item.nominatedName}</td> */}
+                <td className="border px-4 py-2 flex space-x-3">
+                {isEditing[index] ? (
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Search..."
+                          className="p-1 border rounded-md"
+                          value={searchTermsOne[index]}
+                          onChange={(e) => handleSearchChangeOne(e, index)}
+                        />
+                        {searchResults[index] && searchResults[index].length > 0 && (
+                          <div className="absolute bg-white rounded-md border shadow p-2 mt-1 z-10">
+                            {searchResults[index].map((result) => (
+                              <div
+                                key={result.id}
+                                onClick={() => handleResultSelectOne(result, index)}
+                                style={{ cursor: 'pointer' }}
+                              >
+                                {result.name}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                       <p>
+                            {item.nominatedName}
+                       </p> 
+                    )}
+                    
+                </td>
+                <td className='border px-4 py-2'>
+                <Button
+  onClick={() => toggleEdit(index)}
+  className=""
+>
+  Edit Nomination
+</Button>
+
+                </td>
               </tr>
             ))}
             {unoccupiedPositions.map((position, index) => (

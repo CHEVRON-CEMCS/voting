@@ -13,6 +13,7 @@ import * as XLSX from "xlsx";
 function Nominations() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [responseData, setResponseData] = useState(null);
 
   const userToken = user?.token;
   const userEmail = user?.email;
@@ -31,8 +32,10 @@ function Nominations() {
 
   const [sortedNominationsData, setSortedNominationsData] = useState([]);
   const [sortByPosition, setSortByPosition] = useState('');
+  const [issloading, setIssLoading] = useState(false);
 
   console.log(userToken);
+
 
   // CSS class for green rows
   const greenRowClass = 'green-row';
@@ -141,6 +144,39 @@ function Nominations() {
     }
   };
 
+  const handleSubmitNominations = async () => {
+    try {
+
+      setIssLoading(true); // Set loading state to true on request start
+
+
+      const response = await axios.post('https://virtual.chevroncemcs.com/voting/requestAcceptance', {
+        email: userEmail
+      },{
+        headers: {
+          'Authorization': `Bearer ${userToken}`,
+          'Content-Type': 'application/json'
+        }
+    });
+
+      setResponseData(response.data);
+      toast({
+        title: 'Nomination Success',
+        // description: ` ${response.data.message}`,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        variant: "destructive",
+        title: 'Nomination Error',
+        description: ` ${response.data.message}`,
+      });
+    } finally {
+      setIssLoading(false); // Reset loading state to false on request completion
+  }
+  };
+
   const handleExportToExcel = () => {
     setIsLoading(true);
 
@@ -194,7 +230,20 @@ function Nominations() {
           <p>Loading...</p>
         ) : (
           <div>
-            <Button className="mb-5" onClick={handleExportToExcel}>Export to Excel</Button>
+            <div className='flex justify-between'>
+              <Button className="mb-5" onClick={handleExportToExcel}>Export to Excel</Button>
+              {/* <Button className="mb-5" onClick={handleSubmitNominations} >Submit Nominations</Button> */}
+              <Button onClick={handleSubmitNominations} disabled={issloading} className="mb-5">
+                {issloading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                      </>
+                        ) : (
+                          <>Submit Nominations</>
+                        )}               
+              </Button>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full table-auto border-collapse border border-gray-300">
                 <thead>
@@ -219,7 +268,11 @@ function Nominations() {
                     <tr
                       key={index}
                       className={`${index % 2 === 0 ? 'bg-gray-100' : ''} ${
-                        item.nominated === 1 ? 'bg-green-500' : ''
+                        item.nominated === 1 ? 'bg-[#F2CC8F]' : ''
+                      } ${
+                        item.accepted === "1" ? 'bg-[#2FBF71]' : ''
+                      }  ${
+                        item.accepted === "2" ? 'bg-[#A62639]' : ''
                       }`}
                     >
                       <td className="px-6 py-4">{item.empno}</td>

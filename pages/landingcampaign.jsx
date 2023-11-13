@@ -26,9 +26,10 @@ import { useNewAuth } from '@/services/NewAuthContext'
 
 function LandingCampaign() {
 
-  const { employeeNumber } = useNewAuth();
+  const { employeeNumber, currentStage } = useNewAuth();
 
   const [buttonText, setButtonText] = useState('Create Campaign'); // Initialize button text
+  const [Links, setLinks] = useState('/campaign')
 
   useEffect(() => {
     // Make an API request to fetch the data
@@ -42,6 +43,7 @@ function LandingCampaign() {
         if (foundEmployee) {
           // Update the button text to "Update Campaign" if employeeNumber is found
           setButtonText('Update Campaign');
+          setLinks('/updatecampaign');
         }
       })
       .catch((error) => {
@@ -65,7 +67,11 @@ function LandingCampaign() {
             </CardHeader>
             <CardContent>
               {/* Use the buttonText state variable for the button text */}
-              <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/updatecampaign'>{buttonText}</Link>
+              {currentStage === 'Voting' || currentStage === 'Nomination' ? (
+                <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>{buttonText}</Button>
+              ) : (
+                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href={Links}>{buttonText}</Link>
+              ) }
             </CardContent>
           </Card>
 

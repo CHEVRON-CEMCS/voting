@@ -9,6 +9,8 @@ export function NewAuthProvider({ children }) {
   const [employeeNumber, setEmployeeNumber] = useState(null); // Change the name here
   const [currentStage, setCurrentStage] = useState(null);
   const [nominated, setNominated] = useState(null);
+  const [accepted, setAccepted] = useState(null);
+  const [positionId, setPositionId] = useState(null);
 
   const router = useRouter();
 
@@ -31,13 +33,21 @@ export function NewAuthProvider({ children }) {
       // Access the nominated value from the data array
       const nominatedValue = response.data.data[0].nominated;
       setNominated(nominatedValue);
+
+      //Access the accepted value from the data array
+      const acceptedValue = response.data.data[0].accepted
+      setAccepted(acceptedValue);
+
+      const positionIdValue = response.data.data[0].positionId
+      setPositionId(positionIdValue);
       
       // Store the code in local storage
       localStorage.setItem('code', response.data.code);
       localStorage.setItem('empno', response.data.empno);
       localStorage.setItem('currentStage', response.data.currentStage);
-      localStorage.setItem('Nominated', nominatedValue);
-
+      localStorage.setItem('nominated', nominatedValue);
+      localStorage.setItem('accepted', acceptedValue);
+      localStorage.setItem('positionId', positionIdValue);
 
       return true; // Authentication success
     } catch (error) {
@@ -51,12 +61,16 @@ export function NewAuthProvider({ children }) {
     // Clear the code and employeeNumber from state and local storage
     setCode(null);
     setEmployeeNumber(null); // Change the name here
-    setCurrentStage(null)
-    setNominated(null)
+    setCurrentStage(null);
+    setNominated(null);
+    setAccepted(null);
+    setPositionId(null);
     localStorage.removeItem('code');
     localStorage.removeItem('empno');
     localStorage.removeItem('currentStage')
-    localStorage.removeItem('nominated')
+    localStorage.removeItem('nominated');
+    localStorage.removeItem('accepted');
+    localStorage.removeItem('positionId');
     // Redirect to the home page
     router.push('/signinmember');
   };
@@ -67,7 +81,8 @@ useEffect(() => {
   const storedEmployeeNumber = localStorage.getItem('empno');
   const storedCurrentStage = localStorage.getItem('currentStage');
   const storedNominated = localStorage.getItem('nominated');
-
+  const storedAccepted = localStorage.getItem('accepted');
+  const storedPositionId = localStorage.getItem('positionId');
 
   if (storedCode) {
     setCode(storedCode);
@@ -82,13 +97,21 @@ useEffect(() => {
   }
 
   if (storedNominated) {
-    setNominated(storedNominated);
+    setNominated(parseInt(storedNominated)); // Parse the value to ensure it's of the correct type
+  }
+
+  if (storedAccepted) {
+    setAccepted(storedAccepted);
+  }
+
+  if (storedPositionId) {
+    setPositionId(parseInt(storedPositionId)); // Parse the value to ensure it's of the correct type
   }
 }, []);
 
 
   return (
-    <NewAuthContext.Provider value={{ code, employeeNumber, currentStage, nominated, authenticate, logout }}> {/* Change the name here */}
+    <NewAuthContext.Provider value={{ code, employeeNumber, currentStage, nominated, accepted, positionId, authenticate, logout }}> {/* Change the name here */}
       {children}
     </NewAuthContext.Provider>
   );
