@@ -19,6 +19,8 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@tiptap/extension-highlight": "^2.1.12",
+    "@tiptap/extension-text-align": "^2.1.12",
     "@tiptap/pm": "^2.1.12",
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
@@ -55,6 +57,7 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
+    "sass": "^1.69.5",
     "tailwindcss": "latest"
   }
 }

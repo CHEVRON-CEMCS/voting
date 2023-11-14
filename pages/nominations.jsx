@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
 import * as XLSX from "xlsx";
+import { resolve } from 'styled-jsx/css';
 
 function Nominations() {
   const { user } = useAuth();
@@ -44,28 +45,41 @@ function Nominations() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (!userToken || !userEmail) {
+          setLoading(false); // User is not logged in, set loading to false
+          return;
+        }
+  
+        setLoading(true); // Set loading to true while fetching data
+  
         const response = await axios.get('https://virtual.chevroncemcs.com/voting/nominations', {
           params: { email: userEmail },
-          headers: { Authorization: `Bearer ${userToken}` },
+          headers: {
+            "Authorization": `Bearer ${userToken}`,
+            'Content-Type': 'application/json',
+          },
         });
-
-        console.log(response.data);
-
+  
+        console.log('Example',response.data);
+  
         if (response.data.error === false) {
           setNominationsData(response.data.data);
-          setLoading(false);
+          console.log('example 2', response.data.data)
         } else {
           console.error('API request failed with error:', response.data);
-          setLoading(false);
+          // You can handle error states here if needed
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false);
+        // You can handle error states here if needed
+      } finally {
+        setLoading(false); // Set loading to false regardless of success or failure
       }
     };
-
+  
     fetchData();
   }, [userToken, userEmail]);
+  
 
   // Fetch positions data from the API
   useEffect(() => {
@@ -253,7 +267,7 @@ function Nominations() {
                     <th className="px-6 py-3 bg-gray-200 text-left">Name</th>
                     {positionHeaders.map((header, index) => (
                       <th
-                        key={index}
+                        key={header}
                         className="px-6 py-3 bg-gray-200 text-left cursor-pointer"
                         onClick={() => handlePositionHeaderClick(header)}
                       >
@@ -267,13 +281,13 @@ function Nominations() {
                 <tbody>
                   {sortedNominationsData.map((item, index) => (
                     <tr
-                      key={index}
+                      key={item.empno}  // or use another unique identifier
                       className={`${index % 2 === 0 ? 'bg-gray-100' : ''} ${
-                        item.nominated === 1 ? 'bg-[#F2CC8F]' : ''
+                        item?.accepted == "0" && item?.nominated === 1 ? 'bg-yellow-500' : ''
                       } ${
-                        item?.accepted === "1" ? 'bg-green-700' : ''
+                        item?.accepted == "1" ? 'bg-green-700' : ''
                       }  ${
-                        item?.accepted === "2" ? 'bg-red-700' : ''
+                        item?.accepted == "2" ? 'bg-red-700' : ''
                       }`}
                     >
                       <td className="px-6 py-4">{item.empno}</td>
