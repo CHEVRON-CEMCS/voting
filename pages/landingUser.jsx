@@ -229,7 +229,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
                                 <p className='p-5 text-white'>
                                     Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
-                                    It's important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
+                                    It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
                                     This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
                                     Keep an eye out for further instructions as we move through the stages of the voting process together!                                
                                 </p>
@@ -240,8 +240,11 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             <h1 className='mb-5 font-bold text-4xl text-center'>This is the Voting stage</h1>
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
                                 <p className='p-5 text-white'>
-                                    In this stage members only have access to the Voting section.
-                                    You cannot go to the Nomination stage and the Campaign stage yet.                                 </p>
+                                    Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
+                                    Please be aware that you are not able to navigate to the Nomination stage at this time. 
+                                    This phase is dedicated to casting your votes and making your voice heard. 
+                                    Stay engaged, as we progress through the voting journey together. 
+                                    Keep an eye out for updates on the Nomination and Campaign stages in the future!                                 </p>
                             </div>
                         </div>
                     ) : currentStage === 'Voting Ended Stage' ? (
@@ -249,11 +252,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             <h1 className='mb-5 font-bold text-4xl text-center'>This is the election has successfully come to an end.</h1>
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
                                 <p className='p-5 text-white'>
-                                    Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
-                                    Please be aware that you are not able to navigate to the Nomination stage at this time. 
-                                    This phase is dedicated to casting your votes and making your voice heard. 
-                                    Stay engaged, as we progress through the voting journey together. 
-                                    Keep an eye out for updates on the Nomination and Campaign stages in the future!
+                                   The election is over. Thank you for participating.
                                 </p>
                             </div>
                         </div>
