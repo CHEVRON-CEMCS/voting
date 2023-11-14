@@ -35,6 +35,7 @@ function Nominations() {
   const [issloading, setIssLoading] = useState(false);
 
   console.log(userToken);
+  console.log(userEmail)
 
 
   // CSS class for green rows
@@ -270,9 +271,9 @@ function Nominations() {
                       className={`${index % 2 === 0 ? 'bg-gray-100' : ''} ${
                         item.nominated === 1 ? 'bg-[#F2CC8F]' : ''
                       } ${
-                        item.accepted === "1" ? 'bg-[#2FBF71]' : ''
+                        item?.accepted === "1" ? 'bg-green-700' : ''
                       }  ${
-                        item.accepted === "2" ? 'bg-[#A62639]' : ''
+                        item?.accepted === "2" ? 'bg-red-700' : ''
                       }`}
                     >
                       <td className="px-6 py-4">{item.empno}</td>
