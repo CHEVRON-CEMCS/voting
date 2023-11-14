@@ -279,7 +279,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                         </CardHeader>
                         <CardContent>
                         {currentStage === 'Nomination' ? (
-                                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/viewnomsearch'>Go to Nomination</Link>
+                                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/testnomsearch'>Go to Nomination</Link>
                             ) : (
                                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Nomination</Button>
                         )}
