@@ -189,7 +189,7 @@ function Viewnomsearch() {
 
   useEffect(() => {
     const fetchResultsPromises = searchTermsOne.map((searchTerm, index) => {
-      if (searchTerm.trim() === '') {
+      if (searchTerm?.trim() === '') {
         return Promise.resolve([]); // Return an empty array if the search term is empty
       }
       return axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
