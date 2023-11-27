@@ -13,6 +13,10 @@ function RejectFailure() {
 //     runFireworks();
 //   }, [])
   
+const handleGoBackToHome = () => {
+  // Reload the landingUser page immediately after navigating to it
+  router.push('/landingUser').then(() => router.reload());
+};
 
   return (
     <div>
@@ -20,9 +24,9 @@ function RejectFailure() {
         <XCircle className='w-20 h-20'/>
             <h1 className='text-4xl font-bold'>You have declined your nomination</h1>
             {/* <p className='text-lg text-[black]'>You have successfully accepted your nomination</p> */}
-            <Link href="/landingUser" className='bg-[#2187C0] pt-2 pb-2 pl-5 pr-5 rounded-xl text-white mt-5'>
-                Go back to Home
-            </Link>        
+            <Button onClick={handleGoBackToHome} className="mt-5">
+          Go back to Home
+        </Button>        
         </div>
     </div>
   )

@@ -81,6 +81,15 @@ function Viewnomsearch() {
     newSearchTerms[index] = e.target.value;
     setSearchTerms(newSearchTerms);
   };
+
+  // const handleSearchChange = (e, index) => {
+  //   const newSearchTerm = e.target.value;
+  //   setSearchTerms((prevSearchTerms) => {
+  //     const newTerms = [...prevSearchTerms];
+  //     newTerms[index] = newSearchTerm;
+  //     return newTerms;
+  //   });
+  // };
   
   const handleSearchChangeOne = (e, index) => {
     const newSearchTermsOne = [...searchTermsOne]
@@ -186,6 +195,24 @@ function Viewnomsearch() {
         console.error('Error fetching search results:', error);
       });
   }, [searchTerms]);
+
+  // useEffect(() => {
+  //   const fetchResultsPromises = searchTerms.map((searchTerm, index) => {
+  //     if (searchTerm.trim() === '' || searchTerm.length === 1) {
+  //       return Promise.resolve([]); // Return an empty array if the search term is empty or has only one character
+  //     }
+  //     return axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
+  //   });
+  
+  //   Promise.all(fetchResultsPromises)
+  //     .then((responses) => {
+  //       const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
+  //       setSearchResults(newSearchResults);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching search results:', error);
+  //     });
+  // }, [searchTerms]);
 
   useEffect(() => {
     const fetchResultsPromises = searchTermsOne.map((searchTerm, index) => {

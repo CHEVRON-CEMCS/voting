@@ -1,11 +1,23 @@
 import MemberNavbar from '@/components/MemberNavbar';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, Fragment, useState } from 'react';
 import axios from 'axios';
 import { useNewAuth } from '@/services/NewAuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/router';
 import { Loader2 } from 'lucide-react';
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Dialog, Transition } from '@headlessui/react'
 
 function Multiplecampaigns() {
   const [data, setData] = useState([]);
@@ -15,7 +27,22 @@ function Multiplecampaigns() {
   const [selectedCandidatesByPosition, setSelectedCandidatesByPosition] = useState({});
   const [isloading, setIsLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]); // State to store filtered data
+  const [selectedCandidatesForVoting, setSelectedCandidatesForVoting] = useState({});
+  const [showSelectedNames, setShowSelectedNames] = useState(false);
 
+  let [isOpen, setIsOpen] = useState(false)
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+
+  function openModal() {
+    setIsOpen(true)
+  }
+
+  const toggleSelectedNames = () => {
+    setShowSelectedNames(!showSelectedNames);
+  };
 
   const [errors, setErrors] = useState([]); // State variable for errors
   const { employeeNumber } = useNewAuth();
@@ -71,7 +98,7 @@ function Multiplecampaigns() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [code, employeeNumber]);
 
   const handleCandidateSelection = (empno, positionId, name) => {
     // Check if the candidate is already selected
@@ -116,6 +143,20 @@ function Multiplecampaigns() {
   
 
   // Create a function to group data by positionName
+  // const groupDataByPosition = () => {
+  //   const groupedData = {};
+  //   data.forEach(item => {
+  //     if (!groupedData[item.position_name]) {
+  //       groupedData[item.position_name] = {
+  //         positionName: item.position_name,
+  //         candidates: [],
+  //       };
+  //     }
+  //     groupedData[item.position_name].candidates.push(item);
+  //   });
+  //   return Object.values(groupedData);
+  // };
+
   const groupDataByPosition = () => {
     const groupedData = {};
     data.forEach(item => {
@@ -125,10 +166,14 @@ function Multiplecampaigns() {
           candidates: [],
         };
       }
-      groupedData[item.position_name].candidates.push(item);
+      groupedData[item.position_name].candidates.push({
+        empno: item.empno,
+        name: item.name, // Include candidate name in the grouped data
+      });
     });
     return Object.values(groupedData);
   };
+  
   
 
   const sendVoteRequest = async () => {
@@ -203,6 +248,9 @@ function Multiplecampaigns() {
   
       console.log('All votes sent successfully.');
       setIsLoading(false);
+
+      // Close the modal after the votes are sent
+    closeModal();
   
     } catch (error) {
       const errorMessage = `Vote Request Error: ${error.message}`;
@@ -304,15 +352,20 @@ function Multiplecampaigns() {
                 <tr key={group.positionName}>
                   <td className="border p-2">{group.positionName}</td>
                   <td className="border p-2">
-                    <select
-                      value={selectedCandidatesByPosition[group.positionName] || ''}
-                      onChange={(e) =>
-                        setSelectedCandidatesByPosition({
-                          ...selectedCandidatesByPosition,
-                          [group.positionName]: e.target.value,
-                        })
-                      }
-                    >
+                  <select
+  value={selectedCandidatesByPosition[group.positionName] || ''}
+  onChange={(e) => {
+    const selectedEmpno = e.target.value;
+    const selectedCandidate = group.candidates.find(candidate => candidate.empno === selectedEmpno);
+    console.log(`Selected Candidate: ${selectedCandidate.name} for Position: ${group.positionName}`);
+    setSelectedCandidatesByPosition({
+      ...selectedCandidatesByPosition,
+      [group.positionName]: selectedEmpno,
+    });
+  }}
+>
+
+
                       <option value="">Select a candidate</option>
                       {group.candidates.map((candidate) => (
                         <option key={candidate.empno} value={candidate.empno}>
@@ -326,7 +379,130 @@ function Multiplecampaigns() {
             </tbody>
           </table>
         )}
-        <Button onClick={sendVoteRequest} className="bg-[#1E2C8A] mt-5" disabled={isloading}>
+
+        {/* Button to display selected names */}
+        {/* <Button onClick={toggleSelectedNames} className="bg-[#1E2C8A] mt-5">
+          Display Selected Names
+        </Button> */}
+
+        {/* Display selected names if the button is clicked */}
+        {/* {showSelectedNames && (
+          <div className="mt-5">
+            <h2 className="font-bold text-xl">Selected Names:</h2>
+            <ul>
+              {Object.entries(selectedCandidatesByPosition).map(([positionName, empno]) => {
+                const selectedCandidate = groupDataByPosition()
+                  .find(group => group.positionName === positionName)
+                  .candidates.find(candidate => candidate.empno === empno);
+                return (
+                  <li key={positionName}>
+                    Position: {positionName}, Candidate: {selectedCandidate.name}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )} */}
+
+<>
+<Button
+  onClick={() => {
+    toggleSelectedNames(); // Call toggleSelectedNames before opening the modal
+    openModal(); // Open the modal
+  }}
+  className="mt-5"
+>
+  Submit Votes
+</Button>
+
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    Are you sure you want to vote for these candidates?                  
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    {/* <p className="text-sm text-gray-500">
+                      Your payment has been successfully submitted. We’ve sent
+                      you an email with all of the details of your order.
+                    </p> */}
+                     {showSelectedNames && (
+          <div className="mt-5">
+            {/* <h2 className="font-bold">Selected Names:</h2> */}
+            <ul>
+              {Object.entries(selectedCandidatesByPosition).map(([positionName, empno]) => {
+                const selectedCandidate = groupDataByPosition()
+                  .find(group => group.positionName === positionName)
+                  .candidates.find(candidate => candidate.empno === empno);
+                return (
+                  <li key={positionName}>
+                    <p><span className='font-bold'>Position:</span> {positionName} - Candidate: {selectedCandidate.name}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+         )}
+                    
+                  </div>
+
+                  <div className="mt-4">
+                  <Button onClick={sendVoteRequest} className="bg-[#1E2C8A] mt-5" disabled={isloading}>
+          {isloading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Voting...
+            </>
+          ) : (
+            <>Yes, I do</>
+          )}
+        </Button>
+                    {/* <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={closeModal}
+                    >
+                      Got it, thanks!
+                    </button> */}
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
+
+
+
+        {/* <Button onClick={sendVoteRequest} className="bg-[#1E2C8A] mt-5" disabled={isloading}>
           {isloading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -335,7 +511,7 @@ function Multiplecampaigns() {
           ) : (
             <>Vote Candidates</>
           )}
-        </Button>
+        </Button> */}
       </div>
       </>
       )}

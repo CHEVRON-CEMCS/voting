@@ -40,7 +40,7 @@ export default function Home() {
         <div className="relative w-full mt-16 h-[24rem]">
           <img
             className="absolute w-full h-full object-cover"
-            src='/baner.jpg'
+            src='/image001.jpg'
             layout="fill"
             objectFit="contain"
             alt='Altina'
