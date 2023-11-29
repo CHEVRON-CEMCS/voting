@@ -410,7 +410,7 @@ function Multiplecampaigns() {
     toggleSelectedNames(); // Call toggleSelectedNames before opening the modal
     openModal(); // Open the modal
   }}
-  className="mt-5"
+  className="mt-5 bg-[#2187C0]"
 >
   Submit Votes
 </Button>
@@ -474,7 +474,7 @@ function Multiplecampaigns() {
                   </div>
 
                   <div className="mt-4">
-                  <Button onClick={sendVoteRequest} className="bg-[#1E2C8A] mt-5" disabled={isloading}>
+                  <Button onClick={sendVoteRequest} className="bg-[#2187C0] mt-5" disabled={isloading}>
           {isloading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

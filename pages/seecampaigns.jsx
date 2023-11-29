@@ -188,7 +188,7 @@ function Seecampaigns() {
                   <p>Position ID: {campaign.positionId}</p> */}
                 </div>
                 <div className='mb-5 w-1/2'>
-                <Link href={`/campaign/${campaign.empno}`} className='border pl-5 pr-5 pt-2 pb-2 rounded-lg bg-[#1E2C8A] text-white'>View Campaign</Link>
+                <Link href={`/campaign/${campaign.empno}`} className='border pl-5 pr-5 pt-2 pb-2 rounded-lg bg-[#2187C0] text-white'>View Campaign</Link>
                   {/* <Button
                     className="w-full"
                     onClick={() => {
@@ -244,7 +244,7 @@ function Seecampaigns() {
                         </div>
                       </div>
                       <DialogFooter>
-                      <Button onClick={handleVote} className="bg-[#1E2C8A] mb-10" disabled={isLoading}>
+                      <Button onClick={handleVote} className="bg-[#2187C0] mb-10" disabled={isLoading}>
                         {isLoading ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

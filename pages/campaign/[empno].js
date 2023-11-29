@@ -87,7 +87,7 @@ function Test({ apiData }) {
               </h1>
               <div className='flex justify-center mt-3'>
 
-              <Button onClick={handleVote} className="" disabled={isloading}>
+              <Button onClick={handleVote} className="bg-[#2187C0]" disabled={isloading}>
                 {isloading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

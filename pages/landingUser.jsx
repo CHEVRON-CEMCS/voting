@@ -184,7 +184,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             You can accept or decline the nomination.
                         </p>
                         <div className='flex space-x-5 justify-center mt-5'>
-                            <Button onClick={handleAccept} disabled={isloading}>
+                            <Button className="bg-[#149911]" onClick={handleAccept} disabled={isloading}>
                                 {isloading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -194,7 +194,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                         <>Accept</>
                                     )}
                             </Button>
-                            <Button onClick={handleReject} disabled={loading}>
+                            <Button className="bg-[#3F0D12]" onClick={handleReject} disabled={loading}>
                                 {loading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

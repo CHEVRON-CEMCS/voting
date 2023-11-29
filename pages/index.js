@@ -37,15 +37,16 @@ export default function Home() {
           </Button> */}
         </div>
 
-        <div className="relative w-full mt-16 h-[24rem]">
-          <img
-            className="absolute w-full h-full object-cover"
-            src='/image001.jpg'
-            layout="fill"
-            objectFit="contain"
-            alt='Altina'
-          />
-        </div>
+        <div className="relative w-full mt-16 h-[30rem]">
+  <img
+    className="absolute w-full h-full object-cover"
+    src='/image001.jpg'
+    layout="fill"
+    objectFit="contain"
+    alt='Altina'
+  />
+</div>
+
        
       </main>
       
