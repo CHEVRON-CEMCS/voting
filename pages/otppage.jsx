@@ -84,7 +84,7 @@ function Otppage() {
         <h1 className='text-xl font-bold'>Enter your Code</h1>
         <div className='flex flex-col justify-center pb-2 p-2 mt-5 max-w-6xl mx-auto mb-1 bg-[#1E2C8A]'>
         <p className='text-sm font-medium text-white text-center'>Visit your email to get your code</p>
-        <p className='text-sm font-medium  text-white text-center'>NOTE: Check your Junk</p>
+        <p className='text-sm font-medium  text-white text-center'>NOTE: Check your Junk mail folder</p>
         </div>
         
         <OtpInput

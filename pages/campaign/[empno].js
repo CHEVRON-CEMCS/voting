@@ -1,5 +1,5 @@
 import MemberNavbar from '@/components/MemberNavbar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Hero from '@/public/hero.jpg';
 import Banner from '@/public/banner.jpg';
 import Office from '@/public/office2.jpg';
@@ -17,11 +17,30 @@ function Test({ apiData }) {
   const [voted, setVoted] = useState(false);
   const {employeeNumber, code} = useNewAuth();
   const [isloading, setIsLoading] = useState(false);
+  const [currentStageData, setCurrentStageData] = useState(null);
 
   const { toast } = useToast();
 
   console.log(code)
   const router = useRouter();
+
+  useEffect(() => {
+    async function fetchCurrentStage() {
+      try {
+        const response = await axios.get('https://virtual.chevroncemcs.com/voting/stage/current', {
+          headers: {
+            Authorization: `Bearer ${code}`,
+          },
+        });
+        setCurrentStageData(response.data.data.name);
+        console.log('Current Stage Data:', response.data.data.name);
+      } catch (error) {
+        console.error('Error fetching current stage:', error);
+      }
+    }
+
+    fetchCurrentStage();
+  }, [code]); // Ensure to include the necessary dependencies in the dependency array
 
   const handleVote = async () => {
     setIsLoading(true);
@@ -54,7 +73,7 @@ function Test({ apiData }) {
         // Handle errors or display a message to the user
         toast({
           variant: "destructive",
-          title: 'Voting Error',
+          title: 'Oops!!',
           description: ` ${response.data.message}`,
         });
       }
@@ -87,16 +106,20 @@ function Test({ apiData }) {
               </h1>
               <div className='flex justify-center mt-3'>
 
-              <Button onClick={handleVote} className="bg-[#2187C0]" disabled={isloading}>
-                {isloading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Voting...
-                  </>
-                ) : (
-                  <>Vote For Me</>
-                )}
-              </Button>
+              {currentStageData === 'Campaign' ? (
+                null
+              ):(
+                <Button onClick={handleVote} className="bg-[#2187C0]" disabled={isloading}>
+                    {isloading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Voting...
+                      </>
+                    ) : (
+                      <>Vote For Me</>
+                    )}
+                </Button>
+              )}
             </div>
               <p className='text-lg text-gray-500 text-center'>
                 Running for the Position of {apiData.data[0]?.position_name}

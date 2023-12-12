@@ -109,6 +109,50 @@ useEffect(() => {
   }
 }, []);
 
+// Function to reset authentication after inactivity
+const resetAuthentication = () => {
+  // Clear the code and employeeNumber from state and local storage
+  setCode(null);
+  setEmployeeNumber(null);
+  setCurrentStage(null);
+  setNominated(null);
+  setAccepted(null);
+  setPositionId(null);
+  localStorage.removeItem('code');
+  localStorage.removeItem('empno');
+  localStorage.removeItem('currentStage');
+  localStorage.removeItem('nominated');
+  localStorage.removeItem('accepted');
+  localStorage.removeItem('positionId');
+  // Redirect to the home page
+  router.push('/signinmember');
+};
+
+useEffect(() => {
+  const inactivityTimeout = setTimeout(() => {
+    // Trigger automatic logout after 10 minutes of inactivity
+    resetAuthentication();
+  }, 1 * 60 * 1000); // 10 minutes in milliseconds
+
+  console.log('Inactivity timeout set');
+
+
+  // Reset the inactivity timeout on user activity
+  const handleUserActivity = () => {
+    clearTimeout(inactivityTimeout);
+  };
+
+  // Attach event listeners for user activity
+  document.addEventListener('mousemove', handleUserActivity);
+  document.addEventListener('keydown', handleUserActivity);
+
+  return () => {
+    clearTimeout(inactivityTimeout);
+    document.removeEventListener('mousemove', handleUserActivity);
+    document.removeEventListener('keydown', handleUserActivity);
+  };
+}, []); // Run only on component mount
+
 
   return (
     <NewAuthContext.Provider value={{ code, employeeNumber, currentStage, nominated, accepted, positionId, authenticate, logout }}> {/* Change the name here */}

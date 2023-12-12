@@ -78,6 +78,7 @@ function SmallBanner() {
           className="w-[300px] px-4 py-2 rounded-md shadow-md bg-gray-200 text-gray-800 focus:outline-none focus:ring focus:border-blue-300"
           defaultValue={selectedStageRef.current}
         >
+          <option value={3}>Not Started</option>
           <option value={4}>Nomination stage</option>
           <option value={5}>Campaign Stage</option>
           <option value={6}>Voting Stage</option>

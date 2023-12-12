@@ -27,12 +27,12 @@ function Viewnominations() {
         if (response.data && response.data.data) {
           // Filter the response data based on the employeeNumber
           const filteredData = response.data.data.filter(
-            (item) => item.empno === employeeNumberAsNumber
+            (item) => item.empno === employeeNumber
           );
 
           setFilteredData(filteredData); // Store the filtered data in state
-          console.log(response.data)
-          console.log(filteredData)
+          console.log('data',response.data)
+          console.log('filtered data',filteredData)
         }
       })
       .catch((error) => {
@@ -49,15 +49,15 @@ function Viewnominations() {
         <table className="table-auto mt-5 w-full">
           <thead>
             <tr>
-              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
               <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Position</th>
+              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
             </tr>
           </thead>
           <tbody>
             {filteredData.map((item, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{item.nominatedName}</td>
                 <td className="border px-4 py-2">{item.name}</td>
+                <td className="border px-4 py-2">{item.nominatedName}</td>
               </tr>
             ))}
           </tbody>

@@ -33,10 +33,29 @@ function LandingUser() {
     const [loading, IssLoading] = useState(false);
     const [acceptedState, setAccepted] = useState(accepted);
     const [positions, setPositions] = useState([]);
+    const [currentStageData, setCurrentStageData] = useState(null);
 
     console.log('Position', positionId);
 
     const router = useRouter();
+
+    useEffect(() => {
+        async function fetchCurrentStage() {
+          try {
+            const response = await axios.get('https://virtual.chevroncemcs.com/voting/stage/current', {
+              headers: {
+                Authorization: `Bearer ${code}`,
+              },
+            });
+            setCurrentStageData(response.data.data.name);
+            console.log('Current Stage Data:', response.data.data.name);
+          } catch (error) {
+            console.error('Error fetching current stage:', error);
+          }
+        }
+    
+        fetchCurrentStage();
+      }, [code]); // Ensure to include the necessary dependencies in the dependency array
 
     useEffect(() => {
         async function fetchPositions() {
@@ -211,7 +230,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
             </Dialog>
             )}
                 
-                {currentStage === 'Nomination' ? (
+                {currentStageData === 'Nomination' ? (
                         <div>
                             <h1 className='mb-5 font-bold text-4xl text-center'>This is the Nomination stage</h1>
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
@@ -223,7 +242,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 </p>
                             </div>
                         </div>
-                    ) : currentStage === 'Campaign' ? (
+                    ) : currentStageData === 'Campaign' ? (
                         <div>
                             <h1 className='mb-5 font-bold text-4xl text-center'>This is the Campaign stage</h1>
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
@@ -235,7 +254,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 </p>
                             </div>
                         </div>
-                    ) : currentStage === 'Voting' ? (
+                    ) : currentStageData === 'Voting' ? (
                         <div>
                             <h1 className='mb-5 font-bold text-4xl text-center'>This is the Voting stage</h1>
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
@@ -247,7 +266,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                     Keep an eye out for updates on the Nomination and Campaign stages in the future!                                 </p>
                             </div>
                         </div>
-                    ) : currentStage === 'Voting Ended Stage' ? (
+                    ) : currentStageData === 'Voting Ended Stage' ? (
                         <div>
                             <h1 className='mb-5 font-bold text-4xl text-center'>This is the election has successfully come to an end.</h1>
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
@@ -278,7 +297,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             <CardDescription>This will navigate you to the Nomination stage where you can nominate your candidates</CardDescription>
                         </CardHeader>
                         <CardContent>
-                        {currentStage === 'Nomination' ? (
+                        {currentStageData === 'Nomination' ? (
                                 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/testnomsearch'>Go to Nomination</Link>
                             ) : (
                                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Nomination</Button>
@@ -287,18 +306,23 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                     </Card>
 
                     <Card className="w-[350px]">
-                        <CardHeader>
-                            <CardTitle className="mb-3">Campaign Stage</CardTitle>
-                            <CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                        {currentStage === 'Campaign' || currentStage === 'Voting' ? (
-                                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>Go to Campaign</Link>
-                            ) : (
-                                <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Campaign</Button>
-                            )}
-                        </CardContent>
-                    </Card>
+  <CardHeader>
+    <CardTitle className="mb-3">Campaign Stage</CardTitle>
+    <CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
+  </CardHeader>
+  <CardContent>
+    {currentStageData === 'Nomination' ? (
+      <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
+        Go to Campaign
+      </Button>
+    ) : (
+      <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>
+        Go to Campaign
+      </Link>
+    )}
+  </CardContent>
+</Card>
+
 
                     <Card className="w-[350px]">
                         <CardHeader>
@@ -306,7 +330,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             <CardDescription>This will navigate you to the Voting stage where you can cast your vote</CardDescription>
                         </CardHeader>
                         <CardContent>
-                        {currentStage === 'Voting' ? (
+                        {currentStageData === 'Voting' ? (
                                 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/multiplecampaigns'>Go to Voting</Link>
                             ) : (
                                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Voting</Button>

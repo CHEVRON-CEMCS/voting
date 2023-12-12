@@ -20,6 +20,7 @@ function Viewnomsearch() {
   const { toast } = useToast();
 
   const employeeNumberAsNumber = parseInt(employeeNumber, 10);
+  console.log(employeeNumber)
 
   console.log(code)
 
@@ -39,11 +40,12 @@ function Viewnomsearch() {
         if (response.data && response.data.data) {
           // Filter the response data based on the employeeNumber
           const filteredData = response.data.data.filter(
-            (item) => item.empno === employeeNumberAsNumber
+            (item) => item.empno === employeeNumber
           );
 
           setFilteredData(filteredData); // Store the filtered data in state
         }
+        console.log('data',response.data.data)
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -298,7 +300,7 @@ function Viewnomsearch() {
             </p>
         </div>
         <div className='mb-5'>
-          Having challenges you can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b>
+          Having challenges you can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b> or Call us at <a className='underline font-bold' href="tel:+2348092362752">08092362752</a>
         </div>
         <table className="table-auto mt-5 w-full">
           <thead>
