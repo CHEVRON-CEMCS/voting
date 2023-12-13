@@ -18,6 +18,7 @@ import { Loader2 } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, Transition } from '@headlessui/react'
+import { Drawer } from 'vaul';
 
 function Multiplecampaigns() {
   const [data, setData] = useState([]);
@@ -30,7 +31,9 @@ function Multiplecampaigns() {
   const [selectedCandidatesForVoting, setSelectedCandidatesForVoting] = useState({});
   const [showSelectedNames, setShowSelectedNames] = useState(false);
   const [currentStageData, setCurrentStageData] = useState(null);
-
+// State to track whether the screen size is mobile or not
+const [isMobile, setIsMobile] = useState(false);
+const [open, setOpen] = useState(false);
 
   let [isOpen, setIsOpen] = useState(false)
 
@@ -68,6 +71,23 @@ function Multiplecampaigns() {
   const {code} = useNewAuth();
 
   console.log(code);
+
+  useEffect(() => {
+    // Check the screen size on component mount
+    setIsMobile(window.innerWidth <= 768);
+
+    // Add event listener to check screen size on window resize
+    const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Remove the event listener when the component is unmounted
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
 
   useEffect(() => {
     async function fetchCurrentStage() {
@@ -350,13 +370,74 @@ function Multiplecampaigns() {
           </div>
         )}
         <h1 className='mb-10 font-bold text-3xl text-center'>VOTE MULTIPLE CANDIDATES</h1>
-        <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-10 bg-[#1E2C8A]'>
-            <p className='p-5 text-white'>
+        <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-10'>
+        {isMobile ? (
+                                <div className=''>
+                                    <div className='bg-[#CF1A32]'>
+                                        <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
+                                    </div>
+                                    <div>
+                                    <Drawer.Root dismissible={false} open={open}>
+                                        <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
+                                            <div className='flex justify-center'>
+                                            <Button>Show Information</Button>
+                                            </div>
+                                        </Drawer.Trigger>
+                                        <Drawer.Portal>
+                                        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+                                        <Drawer.Content
+                                            data-testid="content"
+                                            className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
+                                        >
+                                            <div className="p-4 bg-white rounded-t-[10px] flex-1">
+                                            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
+                                            <div className="max-w-md mx-auto">
+                                                <Drawer.Title className="font-medium mb-4">Voting Stage</Drawer.Title>
+                                                <p className="text-zinc-600 mb-2">
+                                                  The table allows you to vote candidates for positions. If you have voted someone already
+                                                  their name will show on the table below the voting table.
+                                                  You can select multiple candidates at once or select one by one to vote your candidate.
+                                                  If you have not finished voting your candidates, you can always come back at a later time.
+                                                </p>
+                                                
+
+                                                <button
+                                                type="button"
+                                                data-testid="dismiss-button"
+                                                onClick={() => setOpen(false)}
+                                                className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                                                >
+                                                Click to close
+                                                </button>
+                                            </div>
+                                            </div>
+                                            <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
+                                            <div className="flex gap-6 justify-end max-w-md mx-auto">
+                                                Powered by CEMCS
+                                            </div>
+                                            </div>
+                                        </Drawer.Content>
+                                        </Drawer.Portal>
+                                    </Drawer.Root>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>
+                                    {/* ... (existing code) */}
+                                    <p className='p-5 text-white bg-[#1E2C8A]'>
+                                      The table allows you to vote candidates for positions. If you have voted someone already
+                                      their name will show on the table below the voting table.
+                                      You can select multiple candidates at once or select one by one to vote your candidate.
+                                      If you have not finished voting your candidates, you can always come back at a later time.                                 
+                                    </p>
+                                </div>
+                            )}
+            {/* <p className='p-5 text-white'>
                 The table allows you to vote candidates for positions. If you have voted someone already
                 their name will show on the table below the voting table.
                 You can select multiple candidates at once or select one by one to vote your candidate.
                 If you have not finished voting your candidates, you can always come back at a later time.
-            </p>
+            </p> */}
         </div>
         {loading ? (
           <p>Loading...</p>
@@ -538,15 +619,15 @@ function Multiplecampaigns() {
         <table className="table-auto mt-5 w-full">
           <thead>
             <tr>
-              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
               <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Position</th>
+              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
             </tr>
           </thead>
           <tbody>
             {filteredData.map((item, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{item.votedName}</td>
                 <td className="border px-4 py-2">{item.name}</td>
+                <td className="border px-4 py-2">{item.votedName}</td>
               </tr>
             ))}
           </tbody>

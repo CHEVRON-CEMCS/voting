@@ -127,10 +127,10 @@ function Test({ apiData }) {
             </div>
 
             <div className='max-w-6xl mx-auto flex flex-col justify-center items-center'>
-              <h1 className='font-extrabold text-4xl mt-4 text-center'>
+              <h1 className='font-extrabold text-2xl md:text-4xl mt-4 text-center'>
                 Campaign Message
               </h1>
-              <p className='mt-5 text-center p-5 md:p-0'>
+              <p className='mt-2 md:mt-5 text-center p-5 md:p-0'>
                 {apiData.data[0]?.message}
               </p>
             </div>

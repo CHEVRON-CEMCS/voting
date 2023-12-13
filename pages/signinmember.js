@@ -8,6 +8,8 @@ import { useAuth } from '@/services/AuthContext';
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useToast } from '@/components/ui/use-toast';
+import Head from 'next/head';
+
 
 function Signin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +57,11 @@ function Signin() {
   
 
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <div className="container flex md:h-screen md:w-screen flex-col items-center justify-center">
+      <Head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  {/* Other head elements */}
+</Head>
       <Link
         href="/"
         className={cn(
@@ -69,7 +75,7 @@ function Signin() {
           Back
         </>
       </Link>
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] mt-32 lg:mt-0">
         <div className="flex flex-col space-y-2 justify-center items-center">
           {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
           <img src="/logo.png" alt="Logo" className='w-20 h-20 object-contain' />

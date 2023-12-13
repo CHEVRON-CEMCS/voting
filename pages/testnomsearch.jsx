@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { Drawer } from 'vaul';
 
 function Viewnomsearch() {
   const { employeeNumber, code } = useNewAuth();
@@ -16,6 +17,10 @@ function Viewnomsearch() {
   const [selectedResults, setSelectedResults] = useState([]);
   const [showOverlays, setShowOverlays] = useState(Array(3).fill(false)); // State to control overlay display for each search bar
   const [isEditing, setIsEditing] = useState([]); // Initialize isEditing as an empty array
+  // State to track whether the screen size is mobile or not
+  const [isMobile, setIsMobile] = useState(false);
+  const [open, setOpen] = useState(false);
+
 
   const { toast } = useToast();
 
@@ -23,6 +28,23 @@ function Viewnomsearch() {
   console.log(employeeNumber)
 
   console.log(code)
+
+  useEffect(() => {
+    // Check the screen size on component mount
+    setIsMobile(window.innerWidth <= 768);
+
+    // Add event listener to check screen size on window resize
+    const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Remove the event listener when the component is unmounted
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
 
   useEffect(() => {
     // Construct the API URL with the employeeNumber
@@ -290,14 +312,77 @@ function Viewnomsearch() {
       <MemberNavbar />
       <div className='mt-20 max-w-6xl mx-auto'>
         <h1 className='font-bold text-2xl text-center md:text-left'>NOMINATE YOUR CANDIDATE</h1>
-        <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-5 bg-[#1E2C8A]'>
-            <p className='p-5 text-white'>
+        <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-5 '>
+        {isMobile ? (
+                                <div className=''>
+                                    <div className='bg-[#CF1A32]'>
+                                        <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
+                                    </div>
+                                    <div>
+                                    <Drawer.Root dismissible={false} open={open}>
+                                        <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
+                                            <div className='flex justify-center'>
+                                            <Button>Show Information</Button>
+                                            </div>
+                                        </Drawer.Trigger>
+                                        <Drawer.Portal>
+                                        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+                                        <Drawer.Content
+                                            data-testid="content"
+                                            className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
+                                        >
+                                            <div className="p-4 bg-white rounded-t-[10px] flex-1">
+                                            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
+                                            <div className="max-w-md mx-auto">
+                                                <Drawer.Title className="font-medium mb-4">Nomination Stage</Drawer.Title>
+                                                <p className="text-zinc-600 mb-2">
+                                                  The table allows you to nominate candidates for positions. If you have nominated someone already
+                                                  their name will show on the table beside the position they are nominated for. There will be no search box to search
+                                                  for another candidate if you have nominated a candidate for a position. 
+                                                  You can select multiple candidates at once or select one by one to nominate your candidate.
+                                                  If you have not finished nominating your candidates, you can always come back at a later time.
+                                                </p>
+                                                
+
+                                                <button
+                                                type="button"
+                                                data-testid="dismiss-button"
+                                                onClick={() => setOpen(false)}
+                                                className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                                                >
+                                                Click to close
+                                                </button>
+                                            </div>
+                                            </div>
+                                            <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
+                                            <div className="flex gap-6 justify-end max-w-md mx-auto">
+                                                Powered by CEMCS
+                                            </div>
+                                            </div>
+                                        </Drawer.Content>
+                                        </Drawer.Portal>
+                                    </Drawer.Root>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>
+                                    {/* ... (existing code) */}
+                                    <p className='p-5 text-white bg-[#1E2C8A]'>
+                                      The table allows you to nominate candidates for positions. If you have nominated someone already
+                                      their name will show on the table beside the position they are nominated for. There will be no search box to search
+                                      for another candidate if you have nominated a candidate for a position. 
+                                      You can select multiple candidates at once or select one by one to nominate your candidate.
+                                      If you have not finished nominating your candidates, you can always come back at a later time.                                 
+                                    </p>
+                                </div>
+                            )}
+            {/* <p className='p-5 text-white'>
                 The table allows you to nominate candidates for positions. If you have nominated someone already
                 their name will show on the table beside the position they are nominated for. There will be no search box to search
                 for another candidate if you have nominated a candidate for a position. 
                 You can select multiple candidates at once or select one by one to nominate your candidate.
                 If you have not finished nominating your candidates, you can always come back at a later time.
-            </p>
+            </p> */}
         </div>
         <div className='mb-5 text-center md:text-left'>
           Having challenges you can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b> or Call us at <a className='underline font-bold' href="tel:+2348092362752">08092362752</a>
@@ -385,7 +470,7 @@ function Viewnomsearch() {
           </table>
 
         </div>
-        <div className='mt-5 mb-5'>
+        <div className='mt-5 mb-5 ml-2 lg:ml-0'>
           <Button onClick={handleNominationSubmit}>Submit</Button>
         </div>
 

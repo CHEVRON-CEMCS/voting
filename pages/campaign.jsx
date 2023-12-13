@@ -9,6 +9,7 @@ import { PacmanLoader } from 'react-spinners';
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from 'next/router';
 import { useToast } from '@/components/ui/use-toast';
+import Head from 'next/head';
 
 function Campaign() {
   const [editorHtml, setEditorHtml] = useState('');
@@ -158,6 +159,10 @@ function Campaign() {
 
   return (
     <div>
+      <Head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  {/* Other head elements */}
+</Head>
       <MemberNavbar />
       {isLoading ? ( // Check if isLoading is true
         <div className="fixed top-0 left-0 w-screen h-screen flex flex-col justify-center items-center bg-white opacity-100 z-50">
