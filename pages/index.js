@@ -18,9 +18,9 @@ export default function Home() {
       {/* <Navbar /> */}
       <NavLanding />
 
-      <main className="flex flex-col items-center justify-center w-full mt-20 mb-16">
-        <div className="w-[30rem] ">
-          <h1 className="text-4xl font-bold text-center text-secondary leading-[2.75rem]">
+      <div className="flex flex-col items-center justify-center w-full mt-20 mb-16">
+        <div className="md:w-[30rem] ">
+          <h1 className="text-2xl md:text-4xl font-bold text-center text-secondary leading-[2.75rem]">
             WELCOME TO THE CEMCS VOTING PLATFORM
           </h1>
         </div>
@@ -37,7 +37,7 @@ export default function Home() {
           </Button> */}
         </div>
 
-        <div className="relative w-full mt-16 h-[30rem]">
+        <div className="relative w-full mt-16 h-[30rem] border">
   <img
     className="absolute w-full h-full object-cover"
     src='/image001.jpg'
@@ -48,7 +48,7 @@ export default function Home() {
 </div>
 
        
-      </main>
+      </div>
       
     </div>
   )
