@@ -130,7 +130,7 @@ function Test({ apiData }) {
               <h1 className='font-extrabold text-4xl mt-4 text-center'>
                 Campaign Message
               </h1>
-              <p className='mt-5 text-center'>
+              <p className='mt-5 text-center p-5 md:p-0'>
                 {apiData.data[0]?.message}
               </p>
             </div>

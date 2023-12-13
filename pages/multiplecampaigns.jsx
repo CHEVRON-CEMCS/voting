@@ -29,6 +29,8 @@ function Multiplecampaigns() {
   const [filteredData, setFilteredData] = useState([]); // State to store filtered data
   const [selectedCandidatesForVoting, setSelectedCandidatesForVoting] = useState({});
   const [showSelectedNames, setShowSelectedNames] = useState(false);
+  const [currentStageData, setCurrentStageData] = useState(null);
+
 
   let [isOpen, setIsOpen] = useState(false)
 
@@ -43,6 +45,8 @@ function Multiplecampaigns() {
   const toggleSelectedNames = () => {
     setShowSelectedNames(!showSelectedNames);
   };
+
+  
 
   const [errors, setErrors] = useState([]); // State variable for errors
   const { employeeNumber } = useNewAuth();
@@ -64,6 +68,24 @@ function Multiplecampaigns() {
   const {code} = useNewAuth();
 
   console.log(code);
+
+  useEffect(() => {
+    async function fetchCurrentStage() {
+      try {
+        const response = await axios.get('https://virtual.chevroncemcs.com/voting/stage/current', {
+          headers: {
+            Authorization: `Bearer ${code}`,
+          },
+        });
+        setCurrentStageData(response.data.data.name);
+        console.log('Current Stage Data:', response.data.data.name);
+      } catch (error) {
+        console.error('Error fetching current stage:', error);
+      }
+    }
+
+    fetchCurrentStage();
+  }, [code]); // Ensure to include the necessary dependencies in the dependency array
 
   useEffect(() => {
     const email = 'charles.osegbue@chevron.com';
@@ -294,21 +316,21 @@ function Multiplecampaigns() {
     <div>
       <MemberNavbar />
 
-      {currentStage === 'Campaign' ? (
+      {currentStageData === 'Campaign' ? (
         <div>
           <MemberNavbar />
           <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
             THE NOMINATION STAGE HAS ENDED
           </div>
         </div>
-      ) : currentStage === 'Voting Ended' ? (
+      ) : currentStageData === 'Voting Ended' ? (
         <div>
           <MemberNavbar />
           <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
             THE VOTING STAGE HAS ENDED
           </div>
         </div>
-      ) : currentStage === 'Nomination' ? (
+      ) : currentStageData === 'Nomination' ? (
         <div>
           <MemberNavbar />
           <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
@@ -410,7 +432,7 @@ function Multiplecampaigns() {
     toggleSelectedNames(); // Call toggleSelectedNames before opening the modal
     openModal(); // Open the modal
   }}
-  className="mt-5 bg-[#2187C0]"
+  className="mt-5 ml-2 md:ml-0 bg-[#2187C0]"
 >
   Submit Votes
 </Button>

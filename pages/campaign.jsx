@@ -17,7 +17,7 @@ function Campaign() {
   const [isMessage, setIsMessage] = useState('');
   const [showSubmitButton, setShowSubmitButton] = useState(true); // Control whether to show the submit button
   const [hasCreatedCampaign, setHasCreatedCampaign] = useState(false); // Check if the user has already created a campaign
-
+  const [currentStageData, setCurrentStageData] = useState(null);
 
   const inputRef = useRef(null);
   const { employeeNumber } = useNewAuth();
@@ -55,6 +55,24 @@ function Campaign() {
   const openFileInput = () => {
     inputRef.current.click();
   };
+
+  useEffect(() => {
+    async function fetchCurrentStage() {
+      try {
+        const response = await axios.get('https://virtual.chevroncemcs.com/voting/stage/current', {
+          headers: {
+            Authorization: `Bearer ${code}`,
+          },
+        });
+        setCurrentStageData(response.data.data.name);
+        console.log('Current Stage Data:', response.data.data.name);
+      } catch (error) {
+        console.error('Error fetching current stage:', error);
+      }
+    }
+
+    fetchCurrentStage();
+  }, [code]); // Ensure to include the necessary dependencies in the dependency array
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,14 +166,14 @@ function Campaign() {
         </div>
       ) : (
         <div className="mt-20 max-w-6xl mx-auto">
-          {currentStage === 'Nomination' ? (
+          {currentStageData === 'Nomination' ? (
             <div>
               <MemberNavbar />
               <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
                 YOU DO NOT HAVE ACCESS TO THIS PAGE
               </div>
             </div>
-          ) : currentStage === 'Voting Ended' ? (
+          ) : currentStageData === 'Voting Ended' ? (
             <div>
               <MemberNavbar />
               <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
@@ -167,11 +185,11 @@ function Campaign() {
             {hasCreatedCampaign && (
                 <p className='mt-20 bg-[#339989] text-white p-2 mb-4'>You have already created a campaign.</p> 
               )}
-              <h1 className='font-bold text-3xl mt-5 mb-5'>Start your Campaign</h1>
+              <h1 className='font-bold text-3xl mt-5 mb-5 text-center md:text-left'>Start your Campaign</h1>
 
-              <h1 className='text-base mt-5 mb-3'>Upload a Profile picture of yourself</h1>
+              <h1 className='text-base mt-5 mb-3 text-center md:text-left'>Upload a Profile picture of yourself</h1>
               <div
-                className="image-upload-box mb-5 w-1/2"
+                className="image-upload-box mb-5 w-1/2 max-w-6xl mx-auto md:mx-0"
                 onClick={openFileInput}
                 style={{
                   border: '2px dashed #cccccc',
@@ -200,7 +218,7 @@ function Campaign() {
                   onChange={handleImageChange}
                 />
               </div>
-              <div className='w-1/2'>
+              <div className='w-1/2 max-w-6xl mx-auto md:mx-0'>
                 <Textarea
                   placeholder="Type your campaign message here."
                   style={{ height: '200px' }}
@@ -210,15 +228,18 @@ function Campaign() {
                 />
               </div>
               <div className="mt-10">
-                <label>
-                  Employee Number:
-                  <Input type="text" value={empno} className="w-1/4" onChange={handleEmpnoChange} disabled={true} />
+                <label className=''>
+                  <p className='text-center md:text-left'>Employee Number:</p>
+                  <Input type="text" value={empno} className="w-1/4 max-w-6xl mx-auto md:mx-0" onChange={handleEmpnoChange} disabled={true} />
                 </label>
+                <div className='flex justify-center items-center md:justify-start'>
                 {showSubmitButton && (
-                  <Button onClick={handleSubmit} className="mt-5 mb-10 bg-[#1E2C8A]">
+                  <Button onClick={handleSubmit} className="mt-5 mb-10 bg-[#1E2C8A] w-1/2">
                     Submit
                   </Button>
                 )}
+                </div>
+                
                 {!showSubmitButton && (
                   <p className='mt-5 mb-10'>You have already created a campaign.</p>
                 )}

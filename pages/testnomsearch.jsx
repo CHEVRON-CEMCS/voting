@@ -289,7 +289,7 @@ function Viewnomsearch() {
     <div>
       <MemberNavbar />
       <div className='mt-20 max-w-6xl mx-auto'>
-        <h1 className='font-bold text-2xl'>NOMINATE YOUR CANDIDATE</h1>
+        <h1 className='font-bold text-2xl text-center md:text-left'>NOMINATE YOUR CANDIDATE</h1>
         <div className='flex flex-col justify-center pb-2 mt-5 max-w-6xl mx-auto mb-5 bg-[#1E2C8A]'>
             <p className='p-5 text-white'>
                 The table allows you to nominate candidates for positions. If you have nominated someone already
@@ -299,89 +299,92 @@ function Viewnomsearch() {
                 If you have not finished nominating your candidates, you can always come back at a later time.
             </p>
         </div>
-        <div className='mb-5'>
+        <div className='mb-5 text-center md:text-left'>
           Having challenges you can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b> or Call us at <a className='underline font-bold' href="tel:+2348092362752">08092362752</a>
         </div>
-        <table className="table-auto mt-5 w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Position</th>
-              <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((item, index) => (
-              <tr key={index}>
-                <td className="border px-4 py-2">{item.name}</td>
-                {/* <td className="border px-4 py-2">{item.nominatedName}</td> */}
-                <td className="border px-4 py-2 flex space-x-3">
-                {isEditing[index] ? (
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          className="p-1 border rounded-md"
-                          value={searchTermsOne[index]}
-                          onChange={(e) => handleSearchChangeOne(e, index)}
-                        />
-                        {searchResults[index] && searchResults[index].length > 0 && (
-                          <div className="absolute bg-white rounded-md border shadow p-2 mt-1 z-10">
-                            {searchResults[index].map((result) => (
-                              <div
-                                key={result.id}
-                                onClick={() => handleResultSelectOne(result, index)}
-                                style={{ cursor: 'pointer' }}
-                              >
-                                {result.name}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                       <p>
-                            {item.nominatedName}
-                       </p> 
-                    )}
-                    
-                </td>
-                <td className='border px-4 py-2'>
-                <Button
-  onClick={() => toggleEdit(index)}
-  className=""
->
-  Edit Nomination
-</Button>
-
-                </td>
+        <div className='mt-5 mb-5 overflow-x-auto'>
+          <table className="table-auto mt-5 w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Position</th>
+                <th className="px-4 py-2 bg-gray-200 text-gray-700">Candidate Name</th>
               </tr>
-            ))}
-            {unoccupiedPositions.map((position, index) => (
-              <tr key={position.id}>
-                <td className="border px-4 py-2">{position.name}</td>
-                <td className="border px-4 py-2">
-                  <input
-                    type="text"
-                    placeholder="Search for a candidate"
-                    value={searchTerms[index] || ''}
-                    onChange={(e) => handleSearchChange(e, index)}
-                    className="p-1 border border-black rounded-md"
-                    onFocus={() => handleSearchFocus(index)}
-                  />
-                  {showOverlays[index] && searchResults[index] && (
-                    <div className="absolute bg-white rounded-md border shadow p-2 mt-1 z-10">
-                      {searchResults[index].map((result) => (
-                        <div key={result.id} className='cursor-pointer' onClick={() => handleResultSelect(result, index)}>
-                          {result.name}
+            </thead>
+            <tbody>
+              {filteredData.map((item, index) => (
+                <tr key={index}>
+                  <td className="border px-4 py-2">{item.name}</td>
+                  {/* <td className="border px-4 py-2">{item.nominatedName}</td> */}
+                  <td className="border px-4 py-2 flex space-x-3">
+                  {isEditing[index] ? (
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="Search..."
+                            className="p-1 border rounded-md"
+                            value={searchTermsOne[index]}
+                            onChange={(e) => handleSearchChangeOne(e, index)}
+                          />
+                          {searchResults[index] && searchResults[index].length > 0 && (
+                            <div className="absolute bg-white rounded-md border shadow p-2 mt-1 z-10">
+                              {searchResults[index].map((result) => (
+                                <div
+                                  key={result.id}
+                                  onClick={() => handleResultSelectOne(result, index)}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  {result.name}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                      ) : (
+                        <p>
+                              {item.nominatedName}
+                        </p> 
+                      )}
+                      
+                  </td>
+                  <td className='border px-4 py-2'>
+                  <Button
+    onClick={() => toggleEdit(index)}
+    className=""
+  >
+    Edit Nomination
+  </Button>
+
+                  </td>
+                </tr>
+              ))}
+              {unoccupiedPositions.map((position, index) => (
+                <tr key={position.id}>
+                  <td className="border px-4 py-2">{position.name}</td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      placeholder="Search for a candidate"
+                      value={searchTerms[index] || ''}
+                      onChange={(e) => handleSearchChange(e, index)}
+                      className="p-1 border border-black rounded-md"
+                      onFocus={() => handleSearchFocus(index)}
+                    />
+                    {showOverlays[index] && searchResults[index] && (
+                      <div className="absolute bg-white rounded-md border shadow p-2 mt-1 z-10">
+                        {searchResults[index].map((result) => (
+                          <div key={result.id} className='cursor-pointer' onClick={() => handleResultSelect(result, index)}>
+                            {result.name}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+        </div>
         <div className='mt-5 mb-5'>
           <Button onClick={handleNominationSubmit}>Submit</Button>
         </div>

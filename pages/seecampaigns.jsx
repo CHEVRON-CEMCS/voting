@@ -24,6 +24,7 @@ function Seecampaigns() {
   const [voterno, setVoterNo] = useState(''); // State for positions
   const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1);
+  const [currentStageData, setCurrentStageData] = useState(null);
 
   const router = useRouter(); // Initialize the router
 
@@ -38,6 +39,24 @@ function Seecampaigns() {
   const {code} = useNewAuth();
 
   console.log(code);
+
+  useEffect(() => {
+    async function fetchCurrentStage() {
+      try {
+        const response = await axios.get('https://virtual.chevroncemcs.com/voting/stage/current', {
+          headers: {
+            Authorization: `Bearer ${code}`,
+          },
+        });
+        setCurrentStageData(response.data.data.name);
+        console.log('Current Stage Data:', response.data.data.name);
+      } catch (error) {
+        console.error('Error fetching current stage:', error);
+      }
+    }
+
+    fetchCurrentStage();
+  }, [code]); // Ensure to include the necessary dependencies in the dependency array
 
   const fetchData = async () => {
     try {
@@ -155,11 +174,11 @@ function Seecampaigns() {
   return (
     <div>
       <MemberNavbar />
-      {currentStage === 'Nomination' ? (
+      {currentStageData === 'Nomination' ? (
         <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
           THE CAMPAIGN STAGE HAS NOT STARTED
       </div>
-      ) : currentStage === 'Voting Ended' ? (
+      ) : currentStageData === 'Voting Ended' ? (
         <div>
           <MemberNavbar />
           <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
