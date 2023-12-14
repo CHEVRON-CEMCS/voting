@@ -152,21 +152,23 @@ const OtpInputField = ({
       {Array(inputLength)
         .fill("")
         .map((_, index) => (
-            <SingleInput
-            focus={activeInput === index}
-            key={`input-${index}`}
-            type={"text"}
-            value={otpValues && otpValues[index]}
-            autoFocus={autoFocus}
-            onFocus={handleOnFocus(index)}
-            onChange={handleOnChange}
-            onKeyDown={handleOnKeyDown}
-            onBlur={onBlur}
-            onPaste={handleOnPaste}
-            disabled={disabled}
-            placeholder={0}
-            className="w-10 h-10 xl:w-20 xl:h-20 text-4xl font-medium text-center border rounded-lg outline-none border-[#272E3F] border-opacity-20 font-sora text-primary focus:shadow-sm focus:shadow-[#272E3F] placeholder:text-gray-300 placeholder:text-4xl selection:text-[#272E3F] overflow-y-hidden" // Add the overflow-x-hidden class
-          />
+          <SingleInput
+          focus={activeInput === index}
+          key={`input-${index}`}
+          type={"text"}
+          value={otpValues && otpValues[index]}
+          autoFocus={autoFocus}
+          onFocus={handleOnFocus(index)}
+          onChange={handleOnChange}
+          onKeyDown={handleOnKeyDown}
+          onBlur={onBlur}
+          onPaste={handleOnPaste}
+          disabled={disabled}
+          placeholder={0}
+          inputMode="numeric" // Add inputMode here to specify numeric keyboard
+          className="w-10 h-10 xl:w-20 xl:h-20 text-4xl font-medium text-center border rounded-lg outline-none border-[#272E3F] border-opacity-20 font-sora text-primary focus:shadow-sm focus:shadow-[#272E3F] placeholder:text-gray-300 placeholder:text-4xl selection:text-[#272E3F] overflow-y-hidden" // Add the overflow-x-hidden class
+        />
+        
           
         ))}
     </div>
