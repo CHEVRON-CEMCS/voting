@@ -28,7 +28,7 @@ import { Loader2 } from 'lucide-react'
 import { Drawer } from 'vaul';
 
 function LandingUser() {
-    const { code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible } = useNewAuth();
+    const { code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible, canLogin, message } = useNewAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [isloading, setIsLoading] = useState(false);
     const [loading, IssLoading] = useState(false);
@@ -43,6 +43,8 @@ function LandingUser() {
     console.log('Position', positionId);
     console.log('Name:', name)
     console.log('Eligible', eligible)
+    console.log('CanLogin', canLogin)
+    console.log('message', message)
 
     const router = useRouter();
 
@@ -201,362 +203,374 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
 
     return (
         <div>
-            <MemberNavbar />
-
-            <div className="flex flex-col items-center justify-center md:h-screen mt-24 md:mt-0">
-
-            {isOpen && (
-                <Dialog
-                open={isOpen} 
-                onClose={closeModal}
-                className="relative z-50"
-            >
-                {/* The backdrop, rendered as a fixed sibling to the panel container */}
-                <div className="fixed inset-0 bg-black/30 backdrop-blur-md" aria-hidden="true" />
-
-                {/* Full-screen container to center the panel */}
-                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                    {/* The actual dialog panel  */}
-                    <Dialog.Panel className="mx-auto max-w-xl w-[50rem] h-44 rounded bg-white">
-                        <Dialog.Title className="text-center mb-2 mt-3 font-bold text-xl lg:text-2xl">Congratulations!!</Dialog.Title>
-                        <Dialog.Description className="text-center">
-                            You have been Nominated for the position of <p className='font-bold'>{nominatedPositionName}</p>
-                        </Dialog.Description>
-
-                        <p className='text-center'>
-                            You can accept or decline the nomination.
-                        </p>
-                        <div className='flex space-x-5 justify-center mt-1'>
-                            <Button className="bg-[#149911]" onClick={handleAccept} disabled={isloading}>
-                                {isloading ? (
-                                    <>
-                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Accepting...
-                                    </>
-                                    ) : (
-                                        <>Accept</>
-                                    )}
-                            </Button>
-                            <Button className="bg-[#da3a4a]" onClick={handleReject} disabled={loading}>
-                                {loading ? (
-                                    <>
-                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Declining...
-                                    </>
-                                    ) : (
-                                        <>Decline</>
-                                    )}
-                            </Button>
-                        </div>
-                        {/* ... */}
-                    </Dialog.Panel>
+            {canLogin === 0 ? (
+                <div>
+                    <MemberNavbar />
+                <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500 text-center w-10/12">
+                  <h1 className='text-lg lg:text-2xl'>{message}</h1>
                 </div>
-            </Dialog>
-            )}
-                
-                {currentStageData === 'Nomination' ? (
-                        <div>
-                            <h1 className='mb-5 font-bold md:text-4xl text-2xl text-center'>This is the Nomination stage</h1>
-                            <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3'>
-                            {isMobile ? (
-                                <div className=''>
-                                    <div className='bg-[#CF1A32]'>
-                                        <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
-                                    </div>
-                                    <div>
-                                    <Drawer.Root dismissible={false} open={open}>
-                                        <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
-                                            <div className='flex justify-center'>
-                                            <Button>Show Information</Button>
-                                            </div>
-                                        </Drawer.Trigger>
-                                        <Drawer.Portal>
-                                        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-                                        <Drawer.Content
-                                            data-testid="content"
-                                            className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
-                                        >
-                                            <div className="p-4 bg-white rounded-t-[10px] flex-1">
-                                            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
-                                            <div className="max-w-md mx-auto">
-                                                <Drawer.Title className="font-medium mb-4">Nomination Stage</Drawer.Title>
-                                                <p className="text-zinc-600 mb-2">
-                                                    Welcome to our voting platform! At this stage, members are exclusively granted access to the Nomination section. 
-                                                    Please note that you are not able to proceed to the campaign and voting stages at this moment. 
-                                                    This phase is dedicated to the nomination process, where members can put forth their candidates or choices. 
-                                                    Stay tuned for updates as we progress through the voting journey together!
-                                                </p>
-                                                
+              </div>
+            ):(
+                <div>
+                    <MemberNavbar />
 
-                                                <button
-                                                type="button"
-                                                data-testid="dismiss-button"
-                                                onClick={() => setOpen(false)}
-                                                className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
-                                                >
-                                                Click to close
-                                                </button>
-                                            </div>
-                                            </div>
-                                            <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
-                                            <div className="flex gap-6 justify-end max-w-md mx-auto">
-                                                Powered by CEMCS
-                                            </div>
-                                            </div>
-                                        </Drawer.Content>
-                                        </Drawer.Portal>
-                                    </Drawer.Root>
-                                    </div>
+<div className="flex flex-col items-center justify-center md:h-screen mt-24 md:mt-0">
+
+{isOpen && (
+    <Dialog
+    open={isOpen} 
+    onClose={closeModal}
+    className="relative z-50"
+>
+    {/* The backdrop, rendered as a fixed sibling to the panel container */}
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-md" aria-hidden="true" />
+
+    {/* Full-screen container to center the panel */}
+    <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+        {/* The actual dialog panel  */}
+        <Dialog.Panel className="mx-auto max-w-xl w-[50rem] h-44 rounded bg-white">
+            <Dialog.Title className="text-center mb-2 mt-3 font-bold text-xl lg:text-2xl">Congratulations!!</Dialog.Title>
+            <Dialog.Description className="text-center">
+                You have been Nominated for the position of <p className='font-bold'>{nominatedPositionName}</p>
+            </Dialog.Description>
+
+            <p className='text-center'>
+                You can accept or decline the nomination.
+            </p>
+            <div className='flex space-x-5 justify-center mt-1'>
+                <Button className="bg-[#149911]" onClick={handleAccept} disabled={isloading}>
+                    {isloading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Accepting...
+                        </>
+                        ) : (
+                            <>Accept</>
+                        )}
+                </Button>
+                <Button className="bg-[#da3a4a]" onClick={handleReject} disabled={loading}>
+                    {loading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Declining...
+                        </>
+                        ) : (
+                            <>Decline</>
+                        )}
+                </Button>
+            </div>
+            {/* ... */}
+        </Dialog.Panel>
+    </div>
+</Dialog>
+)}
+    
+    {currentStageData === 'Nomination' ? (
+            <div>
+                <h1 className='mb-5 font-bold md:text-4xl text-2xl text-center'>This is the Nomination stage</h1>
+                <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3'>
+                {isMobile ? (
+                    <div className=''>
+                        <div className='bg-[#CF1A32]'>
+                            <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
+                        </div>
+                        <div>
+                        <Drawer.Root dismissible={false} open={open}>
+                            <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
+                                <div className='flex justify-center'>
+                                <Button>Show Information</Button>
                                 </div>
-                            ) : (
-                                <div>
-                                    {/* ... (existing code) */}
-                                    <p className='p-5 text-white bg-[#1E2C8A]'>
+                            </Drawer.Trigger>
+                            <Drawer.Portal>
+                            <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+                            <Drawer.Content
+                                data-testid="content"
+                                className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
+                            >
+                                <div className="p-4 bg-white rounded-t-[10px] flex-1">
+                                <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
+                                <div className="max-w-md mx-auto">
+                                    <Drawer.Title className="font-medium mb-4">Nomination Stage</Drawer.Title>
+                                    <p className="text-zinc-600 mb-2">
                                         Welcome to our voting platform! At this stage, members are exclusively granted access to the Nomination section. 
                                         Please note that you are not able to proceed to the campaign and voting stages at this moment. 
                                         This phase is dedicated to the nomination process, where members can put forth their candidates or choices. 
-                                        Stay tuned for updates as we progress through the voting journey together!                                 
+                                        Stay tuned for updates as we progress through the voting journey together!
                                     </p>
-                                </div>
-                            )}
-                                {/* <p className='p-5 text-white text-center md:text-lg text-base hidden'>
-                                    Welcome to our voting platform! At this stage, members are exclusively granted access to the Nomination section. 
-                                    Please note that you are not able to proceed to the campaign and voting stages at this moment. 
-                                    This phase is dedicated to the nomination process, where members can put forth their candidates or choices. 
-                                    Stay tuned for updates as we progress through the voting journey together!
-                                </p> */}
-                            </div>
-                        </div>
-                    ) : currentStageData === 'Campaign' ? (
-                        <div>
-                            <h1 className='mb-5 font-bold md:text-4xl text-2xl text-center'>This is the Campaign stage</h1>
-                            <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3'>
-                                {isMobile ? (
-                                <div className=''>
-                                    <div className='bg-[#CF1A32]'>
-                                        <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
-                                    </div>
-                                    <div>
-                                    <Drawer.Root dismissible={false} open={open}>
-                                        <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
-                                            <div className='flex justify-center'>
-                                            <Button>Show Information</Button>
-                                            </div>
-                                        </Drawer.Trigger>
-                                        <Drawer.Portal>
-                                        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-                                        <Drawer.Content
-                                            data-testid="content"
-                                            className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
-                                        >
-                                            <div className="p-4 bg-white rounded-t-[10px] flex-1">
-                                            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
-                                            <div className="max-w-md mx-auto">
-                                                <Drawer.Title className="font-medium mb-4">Campaign Stage</Drawer.Title>
-                                                <p className="text-zinc-600 mb-2">
-                                                    Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
-                                                    It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
-                                                    This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
-                                                    Keep an eye out for further instructions as we move through the stages of the voting process together!
-                                                </p>
-                                                
+                                    
 
-                                                <button
-                                                type="button"
-                                                data-testid="dismiss-button"
-                                                onClick={() => setOpen(false)}
-                                                className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
-                                                >
-                                                Click to close
-                                                </button>
-                                            </div>
-                                            </div>
-                                            <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
-                                            <div className="flex gap-6 justify-end max-w-md mx-auto">
-                                                Powered by CEMCS
-                                            </div>
-                                            </div>
-                                        </Drawer.Content>
-                                        </Drawer.Portal>
-                                    </Drawer.Root>
-                                    </div>
+                                    <button
+                                    type="button"
+                                    data-testid="dismiss-button"
+                                    onClick={() => setOpen(false)}
+                                    className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                                    >
+                                    Click to close
+                                    </button>
                                 </div>
-                            ) : (
-                                <div>
-                                    {/* ... (existing code) */}
-                                    <p className='p-5 text-white bg-[#1E2C8A]'>
-                                    Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
-                                    It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
-                                    This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
-                                    Keep an eye out for further instructions as we move through the stages of the voting process together!                                 
-                                            </p>
                                 </div>
-                            )}
-                                {/* <p className='p-5 text-white hidden'>
-                                    Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
-                                    It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
-                                    This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
-                                    Keep an eye out for further instructions as we move through the stages of the voting process together!                                
-                                </p> */}
-                            </div>
+                                <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
+                                <div className="flex gap-6 justify-end max-w-md mx-auto">
+                                    Powered by CEMCS
+                                </div>
+                                </div>
+                            </Drawer.Content>
+                            </Drawer.Portal>
+                        </Drawer.Root>
                         </div>
-                    ) : currentStageData === 'Voting' ? (
+                    </div>
+                ) : (
+                    <div>
+                        {/* ... (existing code) */}
+                        <p className='p-5 text-white bg-[#1E2C8A]'>
+                            Welcome to our voting platform! At this stage, members are exclusively granted access to the Nomination section. 
+                            Please note that you are not able to proceed to the campaign and voting stages at this moment. 
+                            This phase is dedicated to the nomination process, where members can put forth their candidates or choices. 
+                            Stay tuned for updates as we progress through the voting journey together!                                 
+                        </p>
+                    </div>
+                )}
+                    {/* <p className='p-5 text-white text-center md:text-lg text-base hidden'>
+                        Welcome to our voting platform! At this stage, members are exclusively granted access to the Nomination section. 
+                        Please note that you are not able to proceed to the campaign and voting stages at this moment. 
+                        This phase is dedicated to the nomination process, where members can put forth their candidates or choices. 
+                        Stay tuned for updates as we progress through the voting journey together!
+                    </p> */}
+                </div>
+            </div>
+        ) : currentStageData === 'Campaign' ? (
+            <div>
+                <h1 className='mb-5 font-bold md:text-4xl text-2xl text-center'>This is the Campaign stage</h1>
+                <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3'>
+                    {isMobile ? (
+                    <div className=''>
+                        <div className='bg-[#CF1A32]'>
+                            <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
+                        </div>
                         <div>
-                            <h1 className='mb-5 font-bold md:text-4xl text-2xl text-center'>This is the Voting stage</h1>
-                            <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 '>
-                            {isMobile ? (
-                                <div className=''>
-                                    <div className='bg-[#CF1A32]'>
-                                        <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
-                                    </div>
-                                    <div>
-                                    <Drawer.Root dismissible={false} open={open}>
-                                        <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
-                                            <div className='flex justify-center'>
-                                            <Button>Show Information</Button>
-                                            </div>
-                                        </Drawer.Trigger>
-                                        <Drawer.Portal>
-                                        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-                                        <Drawer.Content
-                                            data-testid="content"
-                                            className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
-                                        >
-                                            <div className="p-4 bg-white rounded-t-[10px] flex-1">
-                                            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
-                                            <div className="max-w-md mx-auto">
-                                                <Drawer.Title className="font-medium mb-4">Voting Stage</Drawer.Title>
-                                                <p className="text-zinc-600 mb-2">
-                                                Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
-                                                                    Please be aware that you are not able to navigate to the Nomination stage at this time. 
-                                                                    This phase is dedicated to casting your votes and making your voice heard. 
-                                                                    Stay engaged, as we progress through the voting journey together. 
-                                                                    Keep an eye out for updates on the Nomination and Campaign stages in the future!
-                                                </p>
-                                                
+                        <Drawer.Root dismissible={false} open={open}>
+                            <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
+                                <div className='flex justify-center'>
+                                <Button>Show Information</Button>
+                                </div>
+                            </Drawer.Trigger>
+                            <Drawer.Portal>
+                            <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+                            <Drawer.Content
+                                data-testid="content"
+                                className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
+                            >
+                                <div className="p-4 bg-white rounded-t-[10px] flex-1">
+                                <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
+                                <div className="max-w-md mx-auto">
+                                    <Drawer.Title className="font-medium mb-4">Campaign Stage</Drawer.Title>
+                                    <p className="text-zinc-600 mb-2">
+                                        Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
+                                        It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
+                                        This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
+                                        Keep an eye out for further instructions as we move through the stages of the voting process together!
+                                    </p>
+                                    
 
-                                                <button
-                                                type="button"
-                                                data-testid="dismiss-button"
-                                                onClick={() => setOpen(false)}
-                                                className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
-                                                >
-                                                Click to close
-                                                </button>
-                                            </div>
-                                            </div>
-                                            <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
-                                            <div className="flex gap-6 justify-end max-w-md mx-auto">
-                                                Powered by CEMCS
-                                            </div>
-                                            </div>
-                                        </Drawer.Content>
-                                        </Drawer.Portal>
-                                    </Drawer.Root>
-                                    </div>
+                                    <button
+                                    type="button"
+                                    data-testid="dismiss-button"
+                                    onClick={() => setOpen(false)}
+                                    className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                                    >
+                                    Click to close
+                                    </button>
                                 </div>
-                            ) : (
-                                <div>
-                                    {/* ... (existing code) */}
-                                    <p className='p-5 text-white bg-[#1E2C8A]'>
-                                                Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
-                                                Please be aware that you are not able to navigate to the Nomination stage at this time. 
-                                                This phase is dedicated to casting your votes and making your voice heard. 
-                                                Stay engaged, as we progress through the voting journey together. 
-                                                Keep an eye out for updates on the Nomination and Campaign stages in the future!                                 
-                                            </p>
                                 </div>
-                            )}
-                                {/* <p className='p-5 text-white hidden'>
+                                <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
+                                <div className="flex gap-6 justify-end max-w-md mx-auto">
+                                    Powered by CEMCS
+                                </div>
+                                </div>
+                            </Drawer.Content>
+                            </Drawer.Portal>
+                        </Drawer.Root>
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        {/* ... (existing code) */}
+                        <p className='p-5 text-white bg-[#1E2C8A]'>
+                        Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
+                        It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
+                        This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
+                        Keep an eye out for further instructions as we move through the stages of the voting process together!                                 
+                                </p>
+                    </div>
+                )}
+                    {/* <p className='p-5 text-white hidden'>
+                        Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
+                        It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
+                        This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
+                        Keep an eye out for further instructions as we move through the stages of the voting process together!                                
+                    </p> */}
+                </div>
+            </div>
+        ) : currentStageData === 'Voting' ? (
+            <div>
+                <h1 className='mb-5 font-bold md:text-4xl text-2xl text-center'>This is the Voting stage</h1>
+                <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 '>
+                {isMobile ? (
+                    <div className=''>
+                        <div className='bg-[#CF1A32]'>
+                            <p className='p-5 text-center text-white mb-2'>Please click on the button below to find out more about this stage</p>
+                        </div>
+                        <div>
+                        <Drawer.Root dismissible={false} open={open}>
+                            <Drawer.Trigger data-testid="trigger" asChild onClick={() => setOpen(true)}>
+                                <div className='flex justify-center'>
+                                <Button>Show Information</Button>
+                                </div>
+                            </Drawer.Trigger>
+                            <Drawer.Portal>
+                            <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+                            <Drawer.Content
+                                data-testid="content"
+                                className="bg-zinc-100 flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0"
+                            >
+                                <div className="p-4 bg-white rounded-t-[10px] flex-1">
+                                <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
+                                <div className="max-w-md mx-auto">
+                                    <Drawer.Title className="font-medium mb-4">Voting Stage</Drawer.Title>
+                                    <p className="text-zinc-600 mb-2">
+                                    Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
+                                                        Please be aware that you are not able to navigate to the Nomination stage at this time. 
+                                                        This phase is dedicated to casting your votes and making your voice heard. 
+                                                        Stay engaged, as we progress through the voting journey together. 
+                                                        Keep an eye out for updates on the Nomination and Campaign stages in the future!
+                                    </p>
+                                    
+
+                                    <button
+                                    type="button"
+                                    data-testid="dismiss-button"
+                                    onClick={() => setOpen(false)}
+                                    className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                                    >
+                                    Click to close
+                                    </button>
+                                </div>
+                                </div>
+                                <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
+                                <div className="flex gap-6 justify-end max-w-md mx-auto">
+                                    Powered by CEMCS
+                                </div>
+                                </div>
+                            </Drawer.Content>
+                            </Drawer.Portal>
+                        </Drawer.Root>
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        {/* ... (existing code) */}
+                        <p className='p-5 text-white bg-[#1E2C8A]'>
                                     Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
                                     Please be aware that you are not able to navigate to the Nomination stage at this time. 
                                     This phase is dedicated to casting your votes and making your voice heard. 
                                     Stay engaged, as we progress through the voting journey together. 
                                     Keep an eye out for updates on the Nomination and Campaign stages in the future!                                 
-                                </p> */}
-                            </div>
-                        </div>
-                    ) : currentStageData === 'Voting Ended Stage' ? (
-                        <div>
-                            <h1 className='mb-5 font-bold text-4xl text-center'>This is the election has successfully come to an end.</h1>
-                            <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
-                                <p className='p-5 text-white bg-[#1E2C8A]'>
-                                   The election is over. Thank you for participating.
                                 </p>
-                            </div>
-                        </div>
-                    ) :
-                        null
-                    }
-
-                    <div className='mb-3'>
-                        {/* <CountdownTimer targetDate={targetDate} />
-                        <h1 className='font-bold text-xl'>
-                            The election will commence soon
-                        </h1> */}
-                        {/* {isMobile ? (
-                    <p>This is the mobile view</p>
-                ) : (
-                    <div>
-                        Large view
                     </div>
                 )}
-                         */}
-                    </div>
-                        
+                    {/* <p className='p-5 text-white hidden'>
+                        Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
+                        Please be aware that you are not able to navigate to the Nomination stage at this time. 
+                        This phase is dedicated to casting your votes and making your voice heard. 
+                        Stay engaged, as we progress through the voting journey together. 
+                        Keep an eye out for updates on the Nomination and Campaign stages in the future!                                 
+                    </p> */}
+                </div>
+            </div>
+        ) : currentStageData === 'Voting Ended Stage' ? (
+            <div>
+                <h1 className='mb-5 font-bold text-4xl text-center'>This is the election has successfully come to an end.</h1>
+                <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
+                    <p className='p-5 text-white bg-[#1E2C8A]'>
+                       The election is over. Thank you for participating.
+                    </p>
+                </div>
+            </div>
+        ) :
+            null
+        }
 
-                <div className="max-w-6xl mx-auto md:flex md:flex-row flex-col md:space-x-8 md:space-y-0 space-y-5 mb-10 md:mb-0">
-
-
-                    <Card className="w-[350px]">
-                        <CardHeader>
-                            <CardTitle className="mb-3">Nomination Stage</CardTitle>
-                            {/* <CountdownTimer targetDate={targetDate} /> */}
-                            <CardDescription>This will navigate you to the Nomination stage where you can nominate your candidates</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                        {currentStageData === 'Nomination' ? (
-                                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/testnomsearch'>Go to Nomination</Link>
-                            ) : (
-                                <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Nomination</Button>
-                        )}
-                        </CardContent>
-                    </Card>
-
-                    <Card className="w-[350px]">
-  <CardHeader>
-    <CardTitle className="mb-3">Campaign Stage</CardTitle>
-    <CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
-  </CardHeader>
-  <CardContent>
-    {currentStageData === 'Nomination' ? (
-      <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
-        Go to Campaign
-      </Button>
+        <div className='mb-3'>
+            {/* <CountdownTimer targetDate={targetDate} />
+            <h1 className='font-bold text-xl'>
+                The election will commence soon
+            </h1> */}
+            {/* {isMobile ? (
+        <p>This is the mobile view</p>
     ) : (
-      <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>
-        Go to Campaign
-      </Link>
+        <div>
+            Large view
+        </div>
     )}
-  </CardContent>
+             */}
+        </div>
+            
+
+    <div className="max-w-6xl mx-auto md:flex md:flex-row flex-col md:space-x-8 md:space-y-0 space-y-5 mb-10 md:mb-0">
+
+
+        <Card className="w-[350px]">
+            <CardHeader>
+                <CardTitle className="mb-3">Nomination Stage</CardTitle>
+                {/* <CountdownTimer targetDate={targetDate} /> */}
+                <CardDescription>This will navigate you to the Nomination stage where you can nominate your candidates</CardDescription>
+            </CardHeader>
+            <CardContent>
+            {currentStageData === 'Nomination' ? (
+                    <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/testnomsearch'>Go to Nomination</Link>
+                ) : (
+                    <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Nomination</Button>
+            )}
+            </CardContent>
+        </Card>
+
+        <Card className="w-[350px]">
+<CardHeader>
+<CardTitle className="mb-3">Campaign Stage</CardTitle>
+<CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
+</CardHeader>
+<CardContent>
+{currentStageData === 'Nomination' ? (
+<Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
+Go to Campaign
+</Button>
+) : (
+<Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>
+Go to Campaign
+</Link>
+)}
+</CardContent>
 </Card>
 
 
-                    <Card className="w-[350px]">
-                        <CardHeader>
-                            <CardTitle className="mb-3">Voting Stage</CardTitle>
-                            <CardDescription>This will navigate you to the Voting stage where you can cast your vote</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                        {currentStageData === 'Voting' ? (
-                                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/multiplecampaigns'>Go to Voting</Link>
-                            ) : (
-                                <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Voting</Button>
-                            )}
-                        </CardContent>
-                    </Card>
+        <Card className="w-[350px]">
+            <CardHeader>
+                <CardTitle className="mb-3">Voting Stage</CardTitle>
+                <CardDescription>This will navigate you to the Voting stage where you can cast your vote</CardDescription>
+            </CardHeader>
+            <CardContent>
+            {currentStageData === 'Voting' ? (
+                    <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/multiplecampaigns'>Go to Voting</Link>
+                ) : (
+                    <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>Go to Voting</Button>
+                )}
+            </CardContent>
+        </Card>
+    </div>
+</div>
                 </div>
-            </div>
+            )}
+            
         </div>
     )
 }

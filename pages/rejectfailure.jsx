@@ -21,9 +21,9 @@ const handleGoBackToHome = () => {
   return (
     <div>
         <div class="flex flex-col items-center justify-center h-screen font-sora">
-        <XCircle className='w-20 h-20'/>
-            <h1 className='text-4xl font-bold'>You have declined your nomination</h1>
-            {/* <p className='text-lg text-[black]'>You have successfully accepted your nomination</p> */}
+        <XCircle className='w-20 h-20 text-red-700'/>
+            <h1 className='text-4xl font-bold'></h1>
+            <p className='text-lg lg:text-2xl text-[black]'>You have declined your nomination</p>
             <Button onClick={handleGoBackToHome} className="mt-5">
           Go back to Home
         </Button>        

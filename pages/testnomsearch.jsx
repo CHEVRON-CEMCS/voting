@@ -104,6 +104,7 @@ function Viewnomsearch() {
     const newSearchTerms = [...searchTerms];
     newSearchTerms[index] = e.target.value;
     setSearchTerms(newSearchTerms);
+    // console.log('search', newSearchTerms[index])
   };
 
   // const handleSearchChange = (e, index) => {
@@ -204,30 +205,61 @@ function Viewnomsearch() {
 
   useEffect(() => {
     const fetchResultsPromises = searchTerms.map((searchTerm, index) => {
-      if (searchTerm.trim() === '') {
+      if (searchTerm?.trim() === '') {
         return Promise.resolve([]); // Return an empty array if the search term is empty
       }
-      return axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
+  
+      // Modify the axios.get call to include the positionId in the endpoint URL
+      const positionId = unoccupiedPositions[index]?.id; // Retrieve the positionId based on the index
+      const apiUrl = `https://virtual.chevroncemcs.com/voting/member/${searchTerm}/${positionId || ''}`;
+  
+      return axios.get(apiUrl);
     });
-
+  
     Promise.all(fetchResultsPromises)
       .then((responses) => {
         const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
         setSearchResults(newSearchResults);
+        console.log('search', newSearchResults);
       })
       .catch((error) => {
         console.error('Error fetching search results:', error);
       });
   }, [searchTerms]);
 
+  useEffect(() => {
+    const fetchResultsPromises = searchTermsOne.map((searchTerm, index) => {
+      if (searchTerm?.trim() === '') {
+        return Promise.resolve([]); // Return an empty array if the search term is empty
+      }
+  
+      // Modify the axios.get call to include the positionId in the endpoint URL
+      const positionId = unoccupiedPositions[index]?.id; // Retrieve the positionId based on the index
+      const apiUrl = `https://virtual.chevroncemcs.com/voting/member/${searchTerm}/${positionId || ''}`;
+  
+      return axios.get(apiUrl);
+    });
+  
+    Promise.all(fetchResultsPromises)
+      .then((responses) => {
+        const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
+        setSearchResults(newSearchResults);
+        console.log('search', newSearchResults);
+      })
+      .catch((error) => {
+        console.error('Error fetching search results:', error);
+      });
+  }, [searchTermsOne]);
+  
+
   // useEffect(() => {
-  //   const fetchResultsPromises = searchTerms.map((searchTerm, index) => {
-  //     if (searchTerm.trim() === '' || searchTerm.length === 1) {
-  //       return Promise.resolve([]); // Return an empty array if the search term is empty or has only one character
+  //   const fetchResultsPromises = searchTermsOne.map((searchTerm, index) => {
+  //     if (searchTerm?.trim() === '') {
+  //       return Promise.resolve([]); // Return an empty array if the search term is empty
   //     }
   //     return axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
   //   });
-  
+
   //   Promise.all(fetchResultsPromises)
   //     .then((responses) => {
   //       const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
@@ -236,25 +268,7 @@ function Viewnomsearch() {
   //     .catch((error) => {
   //       console.error('Error fetching search results:', error);
   //     });
-  // }, [searchTerms]);
-
-  useEffect(() => {
-    const fetchResultsPromises = searchTermsOne.map((searchTerm, index) => {
-      if (searchTerm?.trim() === '') {
-        return Promise.resolve([]); // Return an empty array if the search term is empty
-      }
-      return axios.get(`https://virtual.chevroncemcs.com/voting/member/${searchTerm}`);
-    });
-
-    Promise.all(fetchResultsPromises)
-      .then((responses) => {
-        const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
-        setSearchResults(newSearchResults);
-      })
-      .catch((error) => {
-        console.error('Error fetching search results:', error);
-      });
-  }, [searchTermsOne]);
+  // }, [searchTermsOne]);
 
   const handleNominationSubmit = async () => {
     try {
