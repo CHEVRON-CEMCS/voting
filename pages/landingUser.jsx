@@ -28,7 +28,7 @@ import { Loader2 } from 'lucide-react'
 import { Drawer } from 'vaul';
 
 function LandingUser() {
-    const { code, employeeNumber, currentStage, nominated, accepted, positionId } = useNewAuth();
+    const { code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible } = useNewAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [isloading, setIsLoading] = useState(false);
     const [loading, IssLoading] = useState(false);
@@ -41,6 +41,8 @@ function LandingUser() {
 
 
     console.log('Position', positionId);
+    console.log('Name:', name)
+    console.log('Eligible', eligible)
 
     const router = useRouter();
 
@@ -216,15 +218,15 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                 <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                     {/* The actual dialog panel  */}
                     <Dialog.Panel className="mx-auto max-w-xl w-[50rem] h-44 rounded bg-white">
-                        <Dialog.Title className="text-center mb-2 mt-3 font-bold text-2xl">Congratulations!!</Dialog.Title>
+                        <Dialog.Title className="text-center mb-2 mt-3 font-bold text-xl lg:text-2xl">Congratulations!!</Dialog.Title>
                         <Dialog.Description className="text-center">
-                            You have been Nominated for the position of {nominatedPositionName}.
+                            You have been Nominated for the position of <p className='font-bold'>{nominatedPositionName}</p>
                         </Dialog.Description>
 
                         <p className='text-center'>
                             You can accept or decline the nomination.
                         </p>
-                        <div className='flex space-x-5 justify-center mt-5'>
+                        <div className='flex space-x-5 justify-center mt-1'>
                             <Button className="bg-[#149911]" onClick={handleAccept} disabled={isloading}>
                                 {isloading ? (
                                     <>
@@ -235,7 +237,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                         <>Accept</>
                                     )}
                             </Button>
-                            <Button className="bg-[#3F0D12]" onClick={handleReject} disabled={loading}>
+                            <Button className="bg-[#da3a4a]" onClick={handleReject} disabled={loading}>
                                 {loading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -382,7 +384,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             ) : (
                                 <div>
                                     {/* ... (existing code) */}
-                                    <p className='p-5 text-white'>
+                                    <p className='p-5 text-white bg-[#1E2C8A]'>
                                     Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
                                     It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
                                     This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
@@ -456,7 +458,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                             ) : (
                                 <div>
                                     {/* ... (existing code) */}
-                                    <p className='p-5 text-white'>
+                                    <p className='p-5 text-white bg-[#1E2C8A]'>
                                                 Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
                                                 Please be aware that you are not able to navigate to the Nomination stage at this time. 
                                                 This phase is dedicated to casting your votes and making your voice heard. 
@@ -478,7 +480,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                         <div>
                             <h1 className='mb-5 font-bold text-4xl text-center'>This is the election has successfully come to an end.</h1>
                             <div className='flex flex-col justify-center pb-2 mt-3 max-w-6xl mx-auto mb-3 bg-[#1E2C8A]'>
-                                <p className='p-5 text-white'>
+                                <p className='p-5 text-white bg-[#1E2C8A]'>
                                    The election is over. Thank you for participating.
                                 </p>
                             </div>

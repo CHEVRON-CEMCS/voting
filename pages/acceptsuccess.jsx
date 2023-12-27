@@ -23,7 +23,7 @@ function AcceptSuccess() {
       <div className="flex flex-col items-center justify-center h-screen font-sora">
         <PartyPopper className="w-20 h-20" />
         <h1 className="text-4xl font-bold">Hooray!!</h1>
-        <p className="text-lg text-[black]">You have successfully accepted your nomination</p>
+        <p className="text-base lg:text-lg text-[black]">You have successfully accepted your nomination</p>
         <Button onClick={handleGoBackToHome} className="mt-5">
           Go back to Home
         </Button>
