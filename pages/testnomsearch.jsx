@@ -20,6 +20,9 @@ function Viewnomsearch() {
   // State to track whether the screen size is mobile or not
   const [isMobile, setIsMobile] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State to track loading state
+
+  const [cache, setCache] = useState({});
 
 
   const { toast } = useToast();
@@ -106,15 +109,6 @@ function Viewnomsearch() {
     setSearchTerms(newSearchTerms);
     // console.log('search', newSearchTerms[index])
   };
-
-  // const handleSearchChange = (e, index) => {
-  //   const newSearchTerm = e.target.value;
-  //   setSearchTerms((prevSearchTerms) => {
-  //     const newTerms = [...prevSearchTerms];
-  //     newTerms[index] = newSearchTerm;
-  //     return newTerms;
-  //   });
-  // };
   
   const handleSearchChangeOne = (e, index) => {
     const newSearchTermsOne = [...searchTermsOne]
@@ -206,19 +200,29 @@ function Viewnomsearch() {
   useEffect(() => {
     const fetchResultsPromises = searchTerms.map((searchTerm, index) => {
       if (searchTerm?.trim() === '') {
-        return Promise.resolve([]); // Return an empty array if the search term is empty
+        return setSearchResults([]); // Return an empty array if the search term is empty
       }
   
-      // Modify the axios.get call to include the positionId in the endpoint URL
-      const positionId = unoccupiedPositions[index]?.id; // Retrieve the positionId based on the index
+      const positionId = unoccupiedPositions[index]?.id;
       const apiUrl = `https://virtual.chevroncemcs.com/voting/member/${searchTerm}/${positionId || ''}`;
   
-      return axios.get(apiUrl);
+      // Create a function that captures the correct index
+      const handleSearchResults = (response) => {
+        if (response.status === 200) {
+          // Filter the results to only include names starting with the search term
+          return response.data.data.filter((result) =>
+          result.name.toLowerCase().startsWith((searchTerms[index] ?? '').toLowerCase())
+        );
+        } else {
+          return [];
+        }
+      };
+  
+      return axios.get(apiUrl).then(handleSearchResults); // Use the function as the callback
     });
   
     Promise.all(fetchResultsPromises)
-      .then((responses) => {
-        const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
+      .then((newSearchResults) => {
         setSearchResults(newSearchResults);
         console.log('search', newSearchResults);
       })
@@ -233,16 +237,27 @@ function Viewnomsearch() {
         return Promise.resolve([]); // Return an empty array if the search term is empty
       }
   
-      // Modify the axios.get call to include the positionId in the endpoint URL
-      const positionId = unoccupiedPositions[index]?.id; // Retrieve the positionId based on the index
+      const positionId = unoccupiedPositions[index]?.id;
       const apiUrl = `https://virtual.chevroncemcs.com/voting/member/${searchTerm}/${positionId || ''}`;
   
-      return axios.get(apiUrl);
+      // Create a function that captures the correct index
+      const handleSearchResults = (response) => {
+        if (response.status === 200) {
+          // Filter the results to only include names starting with the search term
+          return response.data.data.filter((result) =>
+          result.name.toLowerCase().startsWith((searchTermsOne[index] ?? '').toLowerCase())
+        );
+        } else {
+          return [];
+        }
+      };
+
+  
+      return axios.get(apiUrl).then(handleSearchResults); // Use the function as the callback
     });
   
     Promise.all(fetchResultsPromises)
-      .then((responses) => {
-        const newSearchResults = responses.map((response) => (response.status === 200 ? response.data.data : []));
+      .then((newSearchResults) => {
         setSearchResults(newSearchResults);
         console.log('search', newSearchResults);
       })
@@ -250,6 +265,7 @@ function Viewnomsearch() {
         console.error('Error fetching search results:', error);
       });
   }, [searchTermsOne]);
+  
   
 
   // useEffect(() => {
@@ -272,6 +288,8 @@ function Viewnomsearch() {
 
   const handleNominationSubmit = async () => {
     try {
+      setIsLoading(true); // Set loading to true when nomination starts
+
       for (const result of selectedResults) {
         if (result) { // Check if result is defined
           const { positionId, empno } = result;
@@ -308,6 +326,8 @@ function Viewnomsearch() {
           }
         }
       }
+      // Reset the loading state after nominations are submitted
+      setIsLoading(false);
       // ...
       // Reload the page after nominations are submitted
     window.location.reload();
@@ -316,7 +336,8 @@ function Viewnomsearch() {
             title: 'There was a problem.',
             description: 'There was an error nominating your candidate.',
             variant: 'destructive',
-          });      
+          });    
+          setIsLoading(false); // Reset the loading state in case of an error  
           // ...
     }
   };
@@ -421,7 +442,7 @@ function Viewnomsearch() {
                             type="text"
                             placeholder="Search..."
                             className="p-1 border rounded-md"
-                            value={searchTermsOne[index]}
+                            value={searchTermsOne[index] || ''}
                             onChange={(e) => handleSearchChangeOne(e, index)}
                           />
                           {searchResults[index] && searchResults[index].length > 0 && (
@@ -485,7 +506,9 @@ function Viewnomsearch() {
 
         </div>
         <div className='mt-5 mb-5 ml-2 lg:ml-0'>
-          <Button onClick={handleNominationSubmit}>Submit</Button>
+          <Button onClick={handleNominationSubmit} disabled={isLoading}>
+            {isLoading ? 'Submitting...' : 'Submit'}
+          </Button>
         </div>
 
         
