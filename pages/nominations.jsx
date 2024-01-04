@@ -35,6 +35,8 @@ function Nominations() {
   const [sortByPosition, setSortByPosition] = useState('');
   const [issloading, setIssLoading] = useState(false);
 
+  const [clickedHeader, setClickedHeader] = useState('');
+
   console.log(userToken);
   console.log(userEmail)
 
@@ -231,6 +233,7 @@ function Nominations() {
       // Sort the data by the selected position.
       setSortByPosition(position);
       setSortedNominationsData(sortNominationsDataByPosition([...nominationsData], position));
+      setClickedHeader(position); // Set the clicked header
     }
   };
   
@@ -241,6 +244,9 @@ function Nominations() {
       
       <div className="container mx-auto mt-20 mb-20">
         <h1 className="text-3xl font-semibold mb-4">Nominations</h1>
+        <h1 className="text-3xl font-semibold mb-4">
+          Nominations {clickedHeader && `for ${clickedHeader}`}
+        </h1>
         {loading ? (
           <p>Loading...</p>
         ) : (
