@@ -376,6 +376,8 @@ function Viewnomsearch() {
                                                   for another candidate if you have nominated a candidate for a position. 
                                                   You can select multiple candidates at once or select one by one to nominate your candidate.
                                                   If you have not finished nominating your candidates, you can always come back at a later time.
+
+                                                  <br />NOTE: WHEN YOU SEARCH FOR YOUR CANDIDATE. IF THEIR NAME DOES NOT APPEAR ON THE RESULT, THEN SEARCH FOR THEM STARTING WITH THEIR LAST NAME INSTEAD.
                                                 </p>
                                                 
 
@@ -407,7 +409,9 @@ function Viewnomsearch() {
                                       their name will show on the table beside the position they are nominated for. There will be no search box to search
                                       for another candidate if you have nominated a candidate for a position. 
                                       You can select multiple candidates at once or select one by one to nominate your candidate.
-                                      If you have not finished nominating your candidates, you can always come back at a later time.                                 
+                                      If you have not finished nominating your candidates, you can always come back at a later time.     
+
+                                      <br />NOTE: WHEN YOU SEARCH FOR YOUR CANDIDATE. IF THEIR NAME DOES NOT APPEAR ON THE RESULT, THEN SEARCH FOR THEM STARTING WITH THEIR LAST NAME INSTEAD.                            
                                     </p>
                                 </div>
                             )}

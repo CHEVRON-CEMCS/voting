@@ -315,6 +315,7 @@ const [open, setOpen] = useState(false);
     axios
       .get(apiUrl, { headers })
       .then((response) => {
+        console.log('res',response); // Log the response to the console
         if (response.data && response.data.data) {
           // Filter the response data based on the employeeNumber
           const filteredData = response.data.data.filter(
@@ -327,7 +328,7 @@ const [open, setOpen] = useState(false);
       .catch((error) => {
         console.error('Error fetching data:', error);
         // You can add error handling or display a toast message here
-        toast.error('Error fetching data. Please try again.');
+        // toast.error('Error fetching data. Please try again.');
       });
   }, [employeeNumber, code]); // Trigger the request when employeeNumber or code changes
   
