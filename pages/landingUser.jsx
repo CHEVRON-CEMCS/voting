@@ -28,7 +28,7 @@ import { Loader2 } from 'lucide-react'
 import { Drawer } from 'vaul';
 
 function LandingUser() {
-    const { code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible, canLogin, message } = useNewAuth();
+    const { code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible, canLogin, message, positionIdArray, positionName } = useNewAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [isloading, setIsLoading] = useState(false);
     const [loading, IssLoading] = useState(false);
@@ -38,13 +38,15 @@ function LandingUser() {
     // State to track whether the screen size is mobile or not
     const [isMobile, setIsMobile] = useState(false);
     const [open, setOpen] = useState(false);
-
+    const [selectedPosition, setSelectedPosition] = useState([]);
 
     console.log('Position', positionId);
     console.log('Name:', name)
     console.log('Eligible', eligible)
     console.log('CanLogin', canLogin)
     console.log('message', message)
+    console.log('positionIdArray', positionIdArray)
+    console.log('positionName', positionName);
 
     const router = useRouter();
 
@@ -147,7 +149,11 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
 
             const requestBody = {
                 empno: employeeNumber, // Assuming the employee number is to be used from the context
+                position: selectedPosition
             };
+
+            // Log the payload before sending the request
+        console.log('Request Payload:', requestBody);
 
             const response = await axios.post(apiUrl, requestBody, {
                 headers: {
@@ -201,6 +207,17 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
         }
     };
 
+    if (currentStageData === 'Not Started') {
+        return (
+            <div>
+                <MemberNavbar />
+                <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500 text-center w-10/12">
+                    <h1 className='text-lg lg:text-2xl'>THE VOTING PROCESS HAS NOT STARTED.</h1>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div>
             {canLogin === "0" ? (
@@ -228,16 +245,43 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
     {/* Full-screen container to center the panel */}
     <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
         {/* The actual dialog panel  */}
-        <Dialog.Panel className="mx-auto max-w-xl w-[50rem] h-44 rounded bg-white">
+        <Dialog.Panel className="mx-auto max-w-xl w-[50rem] h-3/5 rounded bg-white">
             <Dialog.Title className="text-center mb-2 mt-3 font-bold text-xl lg:text-2xl">Congratulations!!</Dialog.Title>
             <Dialog.Description className="text-center">
-                You have been Nominated for the position of <p className='font-bold'>{nominatedPositionName}</p>
+                {/* You have been Nominated for the position of <p className='font-bold'>{nominatedPositionName}</p> */}
+                You have been Nominated
             </Dialog.Description>
 
             <p className='text-center'>
-                You can accept or decline the nomination.
+                You can accept or reject the nomination.
             </p>
-            <div className='flex space-x-5 justify-center mt-1'>
+
+            <div className='px-10 text-center'>
+                <p>NOTE: You can only select and accept one position.</p>
+                <p>Click on the drop down to select the position you want to be voted for and click on the Accept Button.</p>
+                <p>However, if you do not wish to accept any of the positions you have been nominated for, you can click on the Reject all button.</p>
+            </div>
+            <div>
+                {/* Select dropdown for position */}
+    <div className='flex flex-col items-center mt-2 px-10'>
+        <Label className="text-lg mb-2">Select Position:</Label>
+        <select
+            value={selectedPosition} // Assuming you want to default to the current positionId
+            onChange={(e) => {
+                setSelectedPosition(e.target.value);
+                console.log('Selected Position Id:', e.target.value);
+            }} // Update the state on change
+            className="border rounded-md p-2 w-full"
+        >
+{positionName.map((name, index) => (
+                <option key={positionIdArray[index]} value={positionIdArray[index]}>
+                    {name}
+                </option>
+            ))}
+        </select>
+    </div>
+            </div>
+            <div className='flex space-x-5 justify-center mt-5'>
                 <Button className="bg-[#149911]" onClick={handleAccept} disabled={isloading}>
                     {isloading ? (
                         <>
@@ -252,10 +296,10 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                     {loading ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Declining...
+                                Rejecting all...
                         </>
                         ) : (
-                            <>Decline</>
+                            <>Reject all</>
                         )}
                 </Button>
             </div>

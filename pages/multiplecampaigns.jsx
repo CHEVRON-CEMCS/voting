@@ -452,34 +452,40 @@ const [open, setOpen] = useState(false);
               </tr>
             </thead>
             <tbody>
-              {groupDataByPosition().map((group) => (
-                <tr key={group.positionName}>
-                  <td className="border p-2">{group.positionName}</td>
-                  <td className="border p-2">
-                  <select
-  value={selectedCandidatesByPosition[group.positionName] || ''}
-  onChange={(e) => {
-    const selectedEmpno = e.target.value;
-    const selectedCandidate = group.candidates.find(candidate => candidate.empno === selectedEmpno);
-    console.log(`Selected Candidate: ${selectedCandidate.name} for Position: ${group.positionName}`);
-    setSelectedCandidatesByPosition({
-      ...selectedCandidatesByPosition,
-      [group.positionName]: selectedEmpno,
-    });
-  }}
->
+            {groupDataByPosition().map((group) => (
+  <tr key={group.positionName}>
+    <td className="border p-2">{group.positionName}</td>
+    <td className="border p-2">
+      {group.candidates.some((candidate) => filteredData.some((voted) => voted.name === group.positionName)) ? (
+        // Render the name of the candidate who has already been voted for
+        <span className="text-gray-500">
+          Already voted for: {filteredData.find((voted) => voted.name === group.positionName).votedName}
+        </span>
+      ) : (
+        <select
+          value={selectedCandidatesByPosition[group.positionName] || ''}
+          onChange={(e) => {
+            const selectedEmpno = e.target.value;
+            const selectedCandidate = group.candidates.find(candidate => candidate.empno === selectedEmpno);
+            console.log(`Selected Candidate: ${selectedCandidate.name} for Position: ${group.positionName}`);
+            setSelectedCandidatesByPosition({
+              ...selectedCandidatesByPosition,
+              [group.positionName]: selectedEmpno,
+            });
+          }}
+        >
+          <option value="">Select a candidate</option>
+          {group.candidates.map((candidate) => (
+            <option key={candidate.empno} value={candidate.empno}>
+              {candidate.name}
+            </option>
+          ))}
+        </select>
+      )}
+    </td>
+  </tr>
+))}
 
-
-                      <option value="">Select a candidate</option>
-                      {group.candidates.map((candidate) => (
-                        <option key={candidate.empno} value={candidate.empno}>
-                          {candidate.name}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              ))}
             </tbody>
           </table>
         )}
@@ -615,7 +621,7 @@ const [open, setOpen] = useState(false);
       </>
       )}
 
-<div className='mt-20 mb-10 max-w-6xl mx-auto'>
+{/* <div className='mt-20 mb-10 max-w-6xl mx-auto'>
         <h1 className='font-bold text-2xl'>PEOPLE YOU HAVE VOTED FOR</h1>
         <table className="table-auto mt-5 w-full">
           <thead>
@@ -633,7 +639,9 @@ const [open, setOpen] = useState(false);
             ))}
           </tbody>
         </table>
-      </div>
+
+        
+      </div> */}
     </div>
   );
 }

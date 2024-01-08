@@ -15,6 +15,8 @@ export function NewAuthProvider({ children }) {
   const [eligible, setEligible] = useState(null);
   const [canLogin, setCanLogin] = useState(null);
   const [message, setMessage] = useState(null);
+  const [positionIdArray, setPositionIdArray] = useState(null);
+  const [positionName, setPositionName] = useState(null);
 
   const router = useRouter();
 
@@ -56,6 +58,12 @@ export function NewAuthProvider({ children }) {
 
       const messageValue = response.data.data[0].message
       setMessage(messageValue);
+
+      const positionIdArrayValue = response.data.positionId;
+      setPositionIdArray(positionIdArrayValue);
+
+      const positionNameValue = response.data.positionName;
+setPositionName(positionNameValue);
       
       // Store the code in local storage
       localStorage.setItem('code', response.data.code);
@@ -68,6 +76,8 @@ export function NewAuthProvider({ children }) {
       localStorage.setItem('eligible', eligibleValue);
       localStorage.setItem('canLogin', canLoginValue);
       localStorage.setItem('message', messageValue);
+      localStorage.setItem('positionIdArray', JSON.stringify(positionIdArrayValue));
+      localStorage.setItem('positionName', JSON.stringify(positionNameValue));
 
       return true; // Authentication success
     } catch (error) {
@@ -89,6 +99,8 @@ export function NewAuthProvider({ children }) {
     setEligible(null);
     setCanLogin(null);
     setMessage(null);
+    setPositionIdArray(null);
+    setPositionName(null)
     localStorage.removeItem('code');
     localStorage.removeItem('empno');
     localStorage.removeItem('currentStage')
@@ -99,6 +111,8 @@ export function NewAuthProvider({ children }) {
     localStorage.removeItem('eligible');
     localStorage.removeItem('canLogin');
     localStorage.removeItem('message');
+    localStorage.removeItem('positionIdArray');
+    localStorage.removeItem('positionName');
     // Redirect to the home page
     router.push('/signinmember');
   };
@@ -115,6 +129,8 @@ useEffect(() => {
   const storedEligible = localStorage.getItem('eligible');
   const storedCanLogin = localStorage.getItem('canLogin');
   const storedMessage = localStorage.getItem('message');
+  const storedPositionIdArray = JSON.parse(localStorage.getItem('positionIdArray'));
+  const storedPositionName = JSON.parse(localStorage.getItem('positionName'));
 
   if (storedCode) {
     setCode(storedCode);
@@ -156,6 +172,14 @@ useEffect(() => {
     setMessage(storedMessage);
   }
 
+  if (storedPositionIdArray) {
+    setPositionIdArray(storedPositionIdArray);
+  }
+
+  if (storedPositionName) {
+    setPositionName(storedPositionName);
+  }
+
 }, []);
 
 // Function to reset authentication after inactivity
@@ -171,6 +195,8 @@ const resetAuthentication = () => {
   setEligible(null);
   setCanLogin(null);
   setMessage(null);
+  setPositionIdArray(null);
+  setPositionName(null);
   localStorage.removeItem('code');
   localStorage.removeItem('empno');
   localStorage.removeItem('currentStage');
@@ -181,6 +207,8 @@ const resetAuthentication = () => {
   localStorage.removeItem('eligible');
   localStorage.removeItem('canLogin');
   localStorage.removeItem('message');
+  localStorage.removeItem('positionIdArray');
+  localStorage.removeItem('positionName');
   // Redirect to the home page
   router.push('/signinmember');
 };
@@ -212,7 +240,7 @@ useEffect(() => {
 
 
   return (
-    <NewAuthContext.Provider value={{ code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible, canLogin, message, authenticate, logout }}> {/* Change the name here */}
+    <NewAuthContext.Provider value={{ code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible, canLogin, message, positionIdArray, positionName, authenticate, logout }}> {/* Change the name here */}
       {children}
     </NewAuthContext.Provider>
   );
