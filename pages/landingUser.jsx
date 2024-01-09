@@ -249,7 +249,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
             <Dialog.Title className="text-center mb-2 mt-3 font-bold text-xl lg:text-2xl">Congratulations!!</Dialog.Title>
             <Dialog.Description className="text-center">
                 {/* You have been Nominated for the position of <p className='font-bold'>{nominatedPositionName}</p> */}
-                You have been Nominated
+                Congratulations on your nomination.
             </Dialog.Description>
 
             <p className='text-center'>
@@ -335,12 +335,15 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
                                 <div className="max-w-md mx-auto">
                                     <Drawer.Title className="font-medium mb-4">Nomination Stage</Drawer.Title>
-                                    <p className="text-zinc-600 mb-2">
-                                        Welcome to our voting platform! At this stage, members are exclusively granted access to the Nomination section. 
-                                        Please note that you are not able to proceed to the campaign and voting stages at this moment. 
-                                        This phase is dedicated to the nomination process, where members can put forth their candidates or choices. 
-                                        Stay tuned for updates as we progress through the voting journey together!
-                                    </p>
+                                    <div className="text-zinc-600 mb-2">
+                                        <ul>
+                                            <li> • Welcome to our voting platform!</li>
+                                            <li> • At this stage, members are exclusively granted access to the Nomination section.</li>
+                                            <li> • Please note that you are not able to proceed to the campaign and voting stages at this moment.</li>
+                                            <li> • This phase is dedicated to the nomination process, where members can put forth their candidates or choices.</li>
+                                            <li> • Stay tuned for updates as we progress through the voting journey together!</li>
+                                        </ul>
+                                    </div>
                                     
 
                                     <button
@@ -366,12 +369,16 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                 ) : (
                     <div>
                         {/* ... (existing code) */}
-                        <p className='p-5 text-white bg-[#1E2C8A]'>
-                            Welcome to our voting platform! At this stage, members are exclusively granted access to the Nomination section. 
-                            Please note that you are not able to proceed to the campaign and voting stages at this moment. 
-                            This phase is dedicated to the nomination process, where members can put forth their candidates or choices. 
-                            Stay tuned for updates as we progress through the voting journey together!                                 
-                        </p>
+                        <div className='p-5 text-white bg-[#1E2C8A]'>
+                        <ul>
+                            <li> • Welcome to our voting platform!</li>
+                            <li> • At this stage, members are exclusively granted access to the Nomination section.</li>
+                            <li> • Please note that you are not able to proceed to the campaign and voting stages at this moment.</li>
+                            <li> • This phase is dedicated to the nomination process, where members can put forth their candidates or choices.</li>
+                            <li> • Stay tuned for updates as we progress through the voting journey together!</li>
+                        </ul>
+                                 
+                        </div>
                     </div>
                 )}
                     {/* <p className='p-5 text-white text-center md:text-lg text-base hidden'>
@@ -408,12 +415,15 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
                                 <div className="max-w-md mx-auto">
                                     <Drawer.Title className="font-medium mb-4">Campaign Stage</Drawer.Title>
-                                    <p className="text-zinc-600 mb-2">
-                                        Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
-                                        It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
-                                        This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
-                                        Keep an eye out for further instructions as we move through the stages of the voting process together!
-                                    </p>
+                                    <div className="text-zinc-600 mb-2">
+                                        <ul>
+                                            <li> • Welcome to our voting platform!</li>
+                                            <li> • Currently, members have exclusive access to the Campaign section.</li>
+                                            <li> • It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time.</li>
+                                            <li> • This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes.</li>
+                                            <li> • Keep an eye out for further instructions as we move through the stages of the voting process together!</li>
+                                        </ul>
+                                    </div>
                                     
 
                                     <button
@@ -439,12 +449,16 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                 ) : (
                     <div>
                         {/* ... (existing code) */}
-                        <p className='p-5 text-white bg-[#1E2C8A]'>
-                        Welcome to our voting platform! Currently, members have exclusive access to the Campaign section. 
-                        It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time. 
-                        This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes. 
-                        Keep an eye out for further instructions as we move through the stages of the voting process together!                                 
-                                </p>
+                        <div className='p-5 text-white bg-[#1E2C8A]'>
+                        <ul>
+                            <li> • Welcome to our voting platform!</li>
+                            <li> • Currently, members have exclusive access to the Campaign section.</li>
+                            <li> • It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time.</li>
+                            <li> • This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes.</li>
+                            <li> • Keep an eye out for further instructions as we move through the stages of the voting process together!</li>
+                        </ul>
+                                 
+                                </div>
                     </div>
                 )}
                     {/* <p className='p-5 text-white hidden'>
@@ -481,13 +495,16 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
                                 <div className="max-w-md mx-auto">
                                     <Drawer.Title className="font-medium mb-4">Voting Stage</Drawer.Title>
-                                    <p className="text-zinc-600 mb-2">
-                                    Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
-                                                        Please be aware that you are not able to navigate to the Nomination stage at this time. 
-                                                        This phase is dedicated to casting your votes and making your voice heard. 
-                                                        Stay engaged, as we progress through the voting journey together. 
-                                                        Keep an eye out for updates on the Nomination and Campaign stages in the future!
-                                    </p>
+                                    <div className="text-zinc-600 mb-2">
+                                    <ul>
+                                        <li> • Welcome to our voting platform!</li>
+                                        <li> • At this stage, members exclusively have access to the Voting section.</li>
+                                        <li> • Please be aware that you are not able to navigate to the Nomination stage at this time.</li>
+                                        <li> • This phase is dedicated to casting your votes and making your voice heard.</li>
+                                        <li> • Stay engaged, as we progress through the voting journey together.</li>
+                                        <li> • Keep an eye out for updates on the Nomination and Campaign stages in the future!</li>
+                                    </ul>
+                                    </div>
                                     
 
                                     <button
@@ -513,13 +530,16 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                 ) : (
                     <div>
                         {/* ... (existing code) */}
-                        <p className='p-5 text-white bg-[#1E2C8A]'>
-                                    Welcome to our voting platform! At this stage, members exclusively have access to the Voting section. 
-                                    Please be aware that you are not able to navigate to the Nomination stage at this time. 
-                                    This phase is dedicated to casting your votes and making your voice heard. 
-                                    Stay engaged, as we progress through the voting journey together. 
-                                    Keep an eye out for updates on the Nomination and Campaign stages in the future!                                 
-                                </p>
+                        <div className='p-5 text-white bg-[#1E2C8A]'>
+                            <ul>
+                                <li> • Welcome to our voting platform!</li>
+                                <li> • At this stage, members exclusively have access to the Voting section.</li>
+                                <li> • Please be aware that you are not able to navigate to the Nomination stage at this time.</li>
+                                <li> • This phase is dedicated to casting your votes and making your voice heard.</li>
+                                <li> • Stay engaged, as we progress through the voting journey together.</li>
+                                <li> • Keep an eye out for updates on the Nomination and Campaign stages in the future!</li>
+                            </ul>
+                        </div>
                     </div>
                 )}
                     {/* <p className='p-5 text-white hidden'>

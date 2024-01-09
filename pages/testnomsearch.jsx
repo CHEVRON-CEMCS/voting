@@ -211,7 +211,7 @@ function Viewnomsearch() {
         if (response.status === 200) {
           // Filter the results to only include names starting with the search term
           return response.data.data.filter((result) =>
-          result.name.toLowerCase().startsWith((searchTerms[index] ?? '').toLowerCase())
+          result.name.toLowerCase().includes((searchTerms[index] ?? '').toLowerCase())
         );
         } else {
           return [];
@@ -245,7 +245,7 @@ function Viewnomsearch() {
         if (response.status === 200) {
           // Filter the results to only include names starting with the search term
           return response.data.data.filter((result) =>
-          result.name.toLowerCase().startsWith((searchTermsOne[index] ?? '').toLowerCase())
+          result.name.toLowerCase().includes((searchTermsOne[index] ?? '').toLowerCase())
         );
         } else {
           return [];
@@ -372,15 +372,22 @@ function Viewnomsearch() {
                                             <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-8" />
                                             <div className="max-w-md mx-auto">
                                                 <Drawer.Title className="font-medium mb-4">Nomination Stage</Drawer.Title>
-                                                <p className="text-zinc-600 mb-2">
-                                                  The table allows you to nominate candidates for positions. If you have nominated someone already
+                                                <div className="text-zinc-600 mb-2">
+                                                <ul>
+                                                  <li> • The table allows nomination of candidates for positions.</li>
+                                                  <li> • Nominated candidates names appear next to the respective positions on the table.</li>
+                                                  <li> • No search box is available if a candidate has already been nominated for a position.</li>
+                                                  <li> • Multiple candidates can be selected at once or nominated one by one.</li>
+                                                  <li> • If candidate nomination is incomplete, it can be resumed at a later time.</li>
+                                                </ul>
+                                                  {/* The table allows you to nominate candidates for positions. If you have nominated someone already
                                                   their name will show on the table beside the position they are nominated for. There will be no search box to search
                                                   for another candidate if you have nominated a candidate for a position. 
                                                   You can select multiple candidates at once or select one by one to nominate your candidate.
                                                   If you have not finished nominating your candidates, you can always come back at a later time.
 
-                                                  <br />NOTE: WHEN YOU SEARCH FOR YOUR CANDIDATE. IF THEIR NAME DOES NOT APPEAR ON THE RESULT, THEN SEARCH FOR THEM STARTING WITH THEIR LAST NAME INSTEAD.
-                                                </p>
+                                                  <br />NOTE: WHEN YOU SEARCH FOR YOUR CANDIDATE. IF THEIR NAME DOES NOT APPEAR ON THE RESULT, THEN SEARCH FOR THEM STARTING WITH THEIR LAST NAME INSTEAD. */}
+                                                </div>
                                                 
 
                                                 <button
@@ -406,15 +413,19 @@ function Viewnomsearch() {
                             ) : (
                                 <div>
                                     {/* ... (existing code) */}
-                                    <p className='p-5 text-white bg-[#1E2C8A]'>
-                                      The table allows you to nominate candidates for positions. If you have nominated someone already
-                                      their name will show on the table beside the position they are nominated for. There will be no search box to search
-                                      for another candidate if you have nominated a candidate for a position. 
-                                      You can select multiple candidates at once or select one by one to nominate your candidate.
-                                      If you have not finished nominating your candidates, you can always come back at a later time.     
+                                    <div className='p-5 text-white bg-[#1E2C8A]'>
+                                      <p className='font-bold text-center mb-3 text-2xl'>INSTRUCTIONS</p>
+                                    <ul>
+                                      <li> • The table allows nomination of candidates for positions.</li>
+                                      <li> • Nominated candidates names appear next to the respective positions on the table.</li>
+                                      <li> • No search box is available if a candidate has already been nominated for a position.</li>
+                                      <li> • Multiple candidates can be selected at once or nominated one by one.</li>
+                                      <li> • If candidate nomination is incomplete, it can be resumed at a later time.</li>
+                                    </ul>
+     
 
-                                      <br />NOTE: WHEN YOU SEARCH FOR YOUR CANDIDATE. IF THEIR NAME DOES NOT APPEAR ON THE RESULT, THEN SEARCH FOR THEM STARTING WITH THEIR LAST NAME INSTEAD.                            
-                                    </p>
+                                      {/* <br />NOTE: WHEN YOU SEARCH FOR YOUR CANDIDATE. IF THEIR NAME DOES NOT APPEAR ON THE RESULT, THEN SEARCH FOR THEM STARTING WITH THEIR LAST NAME INSTEAD.                             */}
+                                    </div>
                                 </div>
                             )}
             {/* <p className='p-5 text-white'>
