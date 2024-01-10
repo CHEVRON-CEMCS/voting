@@ -21,7 +21,7 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center w-full mt-20 mb-16">
         <div className="md:w-[30rem] ">
           <h1 className="text-2xl md:text-4xl font-bold text-center text-secondary md:leading-[2.75rem]">
-            WELCOME TO THE CEMCS VOTING PLATFORM
+            WELCOME TO THE CEMCS ELECTION PLATFORM
           </h1>
         </div>
 

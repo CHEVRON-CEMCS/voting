@@ -7,7 +7,7 @@ import { ChevronLeft, Loader2, LogInIcon, PartyPopper } from 'lucide-react'
 import { useAuth } from '@/services/AuthContext';
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/use-toast'; 
 import Head from 'next/head';
 
 
@@ -98,14 +98,17 @@ function Signin() {
         
         <Button className="w-full bg-[#2187C0]" onClick={handleSignIn} disabled={isLoading}>{isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogInIcon className='h-4 w-4 mr-2' />}Sign In</Button>
         {/* <UserAuthForm /> */}
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          <Link
+        <div className="text-center text-sm text-muted-foreground">
+        <p className='mb-5'>
+          Having challenges? You can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b> Additionally, you can include the following email addresses in your communication: <b><a className='underline' href="mailto:chiomaokafor@chevron.com">chiomaokafor@chevron.com</a></b>, <b><a className='underline' href="mailto:tunde.oyedele@chevron.com">tunde.oyedele@chevron.com</a></b>
+        </p>
+          {/* <Link
             href="/contact"
             className="hover:text-brand underline underline-offset-4 font-bold"
           >
             Having troubles logging in? Click Here          
-          </Link>
-        </p>
+          </Link> */}
+        </div>
       </div>
     </div>
   )

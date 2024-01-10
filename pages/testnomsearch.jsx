@@ -436,9 +436,9 @@ function Viewnomsearch() {
                 If you have not finished nominating your candidates, you can always come back at a later time.
             </p> */}
         </div>
-        <div className='mb-5 text-center md:text-left'>
-          Having challenges? You can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b> or Call us at <a className='underline font-bold' href="tel:+2348092362752">08092362752</a>
-        </div>
+        <p className='mb-5 text-center'>
+          Having challenges? You can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b> Additionally, you can include the following email addresses in your communication: <b><a className='underline' href="mailto:chiomaokafor@chevron.com">chiomaokafor@chevron.com</a></b>, <b><a className='underline' href="mailto:tunde.oyedele@chevron.com">tunde.oyedele@chevron.com</a></b>
+        </p>
         <div className='mt-5 mb-5 overflow-x-auto'>
           <table className="table-auto mt-5 w-full">
             <thead>

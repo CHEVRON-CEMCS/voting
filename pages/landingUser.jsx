@@ -26,6 +26,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { Loader2 } from 'lucide-react'
 import { Drawer } from 'vaul';
+import Footer from '@/components/Footer'
 
 function LandingUser() {
     const { code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible, canLogin, message, positionIdArray, positionName } = useNewAuth();
@@ -578,6 +579,12 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
     )}
              */}
         </div>
+
+        <div>
+        <p className='mb-5 text-center'>
+          Having challenges? You can reach out to us directly at: <b><a className='underline' href="mailto:l9lek325-smb@chevron.com">l9lek325-smb@chevron.com</a></b> Additionally, you can include the following email addresses in your communication: <br /><b><a className='underline' href="mailto:chiomaokafor@chevron.com">chiomaokafor@chevron.com</a></b>, <b><a className='underline' href="mailto:tunde.oyedele@chevron.com">tunde.oyedele@chevron.com</a></b>
+        </p>
+        </div>
             
 
     <div className="max-w-6xl mx-auto md:flex md:flex-row flex-col md:space-x-8 md:space-y-0 space-y-5 mb-10 md:mb-0">
@@ -634,6 +641,8 @@ Go to Campaign
 </div>
                 </div>
             )}
+
+            {/* <Footer /> */}
             
         </div>
     )
