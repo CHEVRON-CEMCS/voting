@@ -40,6 +40,8 @@ function Navbar() {
                 <Link href='/admin'>Home</Link>
                 <Link href='/upload'>Upload Candidates</Link>
                 <Link href='/nominations'>See Nominations</Link>
+                <Link href='/nominatedposition'>Nominate Position</Link>
+                <Link href='/testtable'>Raw Nominations</Link>
                 <Link href='/seevotes'>Votes</Link>
 
                 {/* <Link href='/upload'>Upload</Link>
