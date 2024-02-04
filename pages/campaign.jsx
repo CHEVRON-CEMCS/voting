@@ -1,15 +1,24 @@
 import MemberNavbar from '@/components/MemberNavbar';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import Profile from '@/public/profile.jpg';
+import White from '@/public/white.jpg';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/router';
+import { useNewAuth } from '@/services/NewAuthContext';
+import axios from 'axios';
+import { useToast } from '@/components/ui/use-toast';
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import TipTapMenuBar from '@/components/TipTapMenuBar';
+
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useNewAuth } from '@/services/NewAuthContext';
 import { PacmanLoader } from 'react-spinners';
 import { Textarea } from "@/components/ui/textarea"
-import { useRouter } from 'next/router';
-import { useToast } from '@/components/ui/use-toast';
 import Head from 'next/head';
+import { User } from 'lucide-react';
+import Placeholder from '@tiptap/extension-placeholder';
 
 function Campaign() {
   const [editorHtml, setEditorHtml] = useState('');
@@ -22,10 +31,26 @@ function Campaign() {
 
   const inputRef = useRef(null);
   const { employeeNumber } = useNewAuth();
-  const { code } = useNewAuth();
+  const { code, name } = useNewAuth();
   const { currentStage } = useNewAuth();
   const router = useRouter();
   const [empno, setEmpno] = useState(employeeNumber);
+
+  const [editorState, setEditorState] = useState('');
+  const editor = useEditor({
+    autofocus: true,
+    extensions: [
+        StarterKit,
+        Placeholder.configure({
+            placeholder: "Enter your campaign message here...", // Example placeholder text
+        }),
+    ],
+    content: editorState,
+    onUpdate: ({ editor }) => {
+        setEditorState(editor.getHTML());
+    },
+});
+
 
   console.log(employeeNumber)
 
@@ -89,7 +114,7 @@ function Campaign() {
     if (selectedImage) {
       formData.append('image', selectedImage);
     }
-    formData.append('message', isMessage);
+    formData.append('message', editorState);
 
     try {
       const response = await fetch(url, {
@@ -157,12 +182,20 @@ function Campaign() {
     }
   }, [employeeNumber]); // Include checkEmployeeInResponse as a dependency
 
+  const handlePreview = () => {
+    const previewUrl = `/campaignPreview?empno=${empno}&message=${encodeURIComponent(editorState)}&image=${encodeURIComponent(URL.createObjectURL(selectedImage))}`;
+  
+    window.open(previewUrl, '_blank');
+  };
+
+  // Update the condition for enabling the Publish button
+const isPublishEnabled = editorState.trim() !== '' && selectedImage !== null;
+
+// Update the condition for enabling the Preview button
+const isPreviewEnabled = editorState.trim() !== '' && selectedImage !== null;
+
   return (
     <div>
-      <Head>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  {/* Other head elements */}
-</Head>
       <MemberNavbar />
       {isLoading ? ( // Check if isLoading is true
         <div className="fixed top-0 left-0 w-screen h-screen flex flex-col justify-center items-center bg-white opacity-100 z-50">
@@ -170,100 +203,89 @@ function Campaign() {
           <PacmanLoader size={50} color="#272E3F" />
         </div>
       ) : (
-        <div className="mt-20 max-w-6xl mx-auto">
-          {currentStageData === 'Nomination' ? (
-            <div>
-              <MemberNavbar />
-              <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
-                YOU DO NOT HAVE ACCESS TO THIS PAGE
+      <div className="main-content mt-10 mb-44">
+          <div>
+            <div className="relative h-[300px] sm:h-[400px] lg:h-[300px] xl:h-[300px] 2xl:h-[300px]">
+              <img src='/office2.jpg' layout="fill" objectFit="cover" alt="" className='h-[300px] w-full object-cover' />
+              <div className="absolute bottom-[-70px] left-1/2 transform translate-x-[-50%]">
+              <div className="relative w-32 h-32 cursor-pointer" onClick={openFileInput}>
+  <Image src='/white.jpg' layout="fill" alt="" className="absolute inset-0 w-full h-full object-cover rounded-full" />
+  {/* <User className="absolute inset-0 w-full h-full object-cover rounded-full" /> */}
+  {selectedImage ? (
+    <img
+      src={URL.createObjectURL(selectedImage)}
+      alt="Selected"
+      className="absolute inset-0 w-full h-full object-cover rounded-full"
+    />
+  ) : (
+    <>
+      <p className='absolute inset-0 flex justify-center items-center text-center font-bold'>Click to Select Image</p>
+      <input
+        type="file"
+        accept="image/*"
+        ref={inputRef}
+        style={{ display: 'none' }}
+        onChange={handleImageChange}
+      />
+    </>
+  )}
+</div>
+
               </div>
             </div>
-          ) : currentStageData === 'Voting Ended' ? (
-            <div>
-              <MemberNavbar />
-              <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
-                NOT AVAILABLE
-              </div>
+
+            <div className="flex flex-col space-y-1 justify-center items-center mt-24">
+              <h1 className='font-extrabold text-2xl'>
+                {name}
+              </h1>
+              <div className='flex justify-center mt-3'>
+
             </div>
-          ) : (
-            <>
-            {hasCreatedCampaign && (
-                <p className='mt-20 bg-[#339989] text-white p-2 mb-4'>You have already created a campaign.</p> 
-              )}
-              <h1 className='font-bold text-3xl mt-5 mb-5 text-center md:text-left'>Start your Campaign</h1>
+              {/* <p className='text-lg text-gray-500 text-center'>
+                Running for the Position of President
+              </p> */}
+            </div>
 
-              <h1 className='text-base mt-5 mb-3 text-center md:text-left'>Upload a Profile picture of yourself</h1>
-              <div
-                className="image-upload-box mb-5 w-1/2 max-w-6xl mx-auto md:mx-0"
-                onClick={openFileInput}
-                style={{
-                  border: '2px dashed #cccccc',
-                  borderRadius: '4px',
-                  padding: '16px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  height: '300px',
-                }}
-              >
-                {selectedImage ? (
-                  <img
-                    src={URL.createObjectURL(selectedImage)}
-                    alt="Selected"
-                    style={{ maxWidth: '100%', maxHeight: '100%' }}
-                  />
-                ) : (
-                  <p className='flex justify-center items-center mt-32'>Click to Select Image</p>
-                )}
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={inputRef}
-                  style={{ display: 'none' }}
-                  onChange={handleImageChange}
-                />
-              </div>
-              <div className='w-1/2 max-w-6xl mx-auto md:mx-0'>
-                <Textarea
-                  placeholder="Type your campaign message here."
-                  style={{ height: '200px' }}
-                  type="text"
-                  value={isMessage}
-                  onChange={handleIsMessageChange}
-                />
-              </div>
-              <div className="mt-10">
-                <label className=''>
-                  <p className='text-center md:text-left'>Employee Number:</p>
-                  <Input type="text" value={empno} className="w-1/4 max-w-6xl mx-auto md:mx-0" onChange={handleEmpnoChange} disabled={true} />
-                </label>
-                <div className='flex justify-center items-center md:justify-start'>
-                {showSubmitButton && (
-                  <Button onClick={handleSubmit} className="mt-5 mb-10 bg-[#1E2C8A] w-1/2">
-                    Submit
-                  </Button>
-                )}
+            <div className='max-w-6xl mx-auto flex flex-col justify-center items-center'>
+              <h1 className='font-extrabold text-2xl md:text-4xl mt-4 text-center'>
+                Campaign Message
+              </h1>
+              {/* <p className='mt-2 md:mt-5 text-center p-5 md:p-0'>
+                I am the man for the job.
+              </p> */}
+              {/* <EditorContent editor={editor} /> */}
+              <div className="border-stone-200 shadow-xl border rounded-lg px-16 py-8 w-9/12 mt-5">
+                <div className='flex w-full'>
+                  {editor && <TipTapMenuBar editor={editor} />}
                 </div>
-                
-                {!showSubmitButton && (
-                  <p className='mt-5 mb-10'>You have already created a campaign.</p>
-                )}
+                <div className='prose w-full'>
+                  <EditorContent editor={editor} />
+                </div>
               </div>
-            </>
-          )}
+              
+            </div>
+            
+          </div>
+        
+        <div className="flex justify-center items-center space-x-5">
+          <div className='flex justify-center'>
+          {/* {showSubmitButton && ( */}
+                    <Button onClick={handleSubmit} className="mt-5 mb-10 bg-[#1E2C8A]" disabled={!isPublishEnabled}>
+                      Publish
+                    </Button>
+                  {/* )} */}
+          </div>
+          <div>
+            <Button onClick={handlePreview} className="mt-5 mb-10 bg-[#1E2C8A]" disabled={!isPreviewEnabled}>
+                Preview Page
+            </Button>
+          </div>
+
         </div>
+      </div>
       )}
     </div>
-  );
+  )
 }
 
-Campaign.modules = {
-  toolbar: [
-    [{ header: '1' }, { header: '2' }, { font: [] }],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    ['bold', 'italic', 'underline'],
-    ['link'],
-  ],
-};
-
-export default Campaign;
+export default Campaign

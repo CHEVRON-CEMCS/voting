@@ -5,6 +5,7 @@ import Banner from '@/public/banner.jpg';
 import Office from '@/public/office2.jpg';
 import Profile from '@/public/profile.jpg';
 import Image from 'next/image';
+import Tiptap from '@/components/Tiptap';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/router';
 import { useNewAuth } from '@/services/NewAuthContext';
@@ -126,13 +127,15 @@ function Test({ apiData }) {
             </div>
 
             <div className='max-w-6xl mx-auto flex flex-col justify-center items-center'>
-              <h1 className='font-extrabold text-2xl md:text-4xl mt-4 text-center'>
-                Campaign Message
-              </h1>
-              <p className='mt-2 md:mt-5 text-center p-5 md:p-0'>
-                {apiData.data[0]?.message}
-              </p>
-            </div>
+  <h1 className='font-extrabold text-2xl md:text-4xl mt-4 text-center'>
+    Campaign Message
+  </h1>
+  <div
+    className='mt-2 md:mt-5 prose'
+    dangerouslySetInnerHTML={{ __html: apiData.data[0]?.message }}
+  />
+</div>
+
             
           </div>
         ) : (

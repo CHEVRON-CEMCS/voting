@@ -150,5 +150,6 @@ module.exports = {
   plugins: [
     require('tailwindcss-animate'),
     require('@headlessui/react'),
+    require('@tailwindcss/typography'),
   ],
 }
