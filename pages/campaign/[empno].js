@@ -5,7 +5,6 @@ import Banner from '@/public/banner.jpg';
 import Office from '@/public/office2.jpg';
 import Profile from '@/public/profile.jpg';
 import Image from 'next/image';
-import Tiptap from '@/components/Tiptap';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/router';
 import { useNewAuth } from '@/services/NewAuthContext';
