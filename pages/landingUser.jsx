@@ -417,13 +417,14 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 <div className="max-w-md mx-auto">
                                     <Drawer.Title className="font-medium mb-4">Campaign Stage</Drawer.Title>
                                     <div className="text-zinc-600 mb-2">
-                                        <ul>
+                                    <p className='font-bold'>Campaign stage will be active on the 22nd of February according to the election time table.</p>
+                                        {/* <ul>
                                             <li> • Welcome to our voting platform!</li>
                                             <li> • Currently, members have exclusive access to the Campaign section.</li>
                                             <li> • It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time.</li>
                                             <li> • This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes.</li>
                                             <li> • Keep an eye out for further instructions as we move through the stages of the voting process together!</li>
-                                        </ul>
+                                        </ul> */}
                                     </div>
                                     
 
@@ -439,7 +440,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 </div>
                                 <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
                                 <div className="flex gap-6 justify-end max-w-md mx-auto">
-                                    Powered by CEMCS
+                                    Powered by CEMCS IT
                                 </div>
                                 </div>
                             </Drawer.Content>
@@ -451,13 +452,14 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                     <div>
                         {/* ... (existing code) */}
                         <div className='p-5 text-white bg-[#1E2C8A]'>
-                        <ul>
+                            <p className='font-bold text-2xl'>Campaign stage will be active on the 22nd of February according to the election time table.</p>
+                        {/* <ul>
                             <li> • Welcome to our voting platform!</li>
                             <li> • Currently, members have exclusive access to the Campaign section.</li>
                             <li> • It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time.</li>
                             <li> • This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes.</li>
                             <li> • Keep an eye out for further instructions as we move through the stages of the voting process together!</li>
-                        </ul>
+                        </ul> */}
                                  
                                 </div>
                     </div>
@@ -520,7 +522,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                 </div>
                                 <div className="p-4 bg-zinc-100 border-t border-zinc-200 mt-auto">
                                 <div className="flex gap-6 justify-end max-w-md mx-auto">
-                                    Powered by CEMCS
+                                    Powered by CEMCS IT
                                 </div>
                                 </div>
                             </Drawer.Content>
