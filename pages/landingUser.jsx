@@ -616,12 +616,30 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
 Go to Campaign
 </Button>
 ) : (
+<Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
+Go to Campaign
+</Button>
+)}
+</CardContent>
+</Card>
+
+        {/* <Card className="w-[350px]">
+<CardHeader>
+<CardTitle className="mb-3">Campaign Stage</CardTitle>
+<CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
+</CardHeader>
+<CardContent>
+{currentStageData === 'Nomination' ? (
+<Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
+Go to Campaign
+</Button>
+) : (
 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>
 Go to Campaign
 </Link>
 )}
 </CardContent>
-</Card>
+</Card> */}
 
 
         <Card className="w-[350px]">
