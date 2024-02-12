@@ -27,6 +27,7 @@ import { useRouter } from 'next/router'
 import { Loader2 } from 'lucide-react'
 import { Drawer } from 'vaul';
 import Footer from '@/components/Footer'
+import { useToast } from '@/components/ui/use-toast'
 
 function LandingUser() {
     const { code, employeeNumber, currentStage, nominated, accepted, positionId, name, eligible, canLogin, message, positionIdArray, positionName } = useNewAuth();
@@ -39,7 +40,7 @@ function LandingUser() {
     // State to track whether the screen size is mobile or not
     const [isMobile, setIsMobile] = useState(false);
     const [open, setOpen] = useState(false);
-    const [selectedPosition, setSelectedPosition] = useState([]);
+    const [selectedPosition, setSelectedPosition] = useState(null);
 
     console.log('Position', positionId);
     console.log('Name:', name)
@@ -48,6 +49,9 @@ function LandingUser() {
     console.log('message', message)
     console.log('positionIdArray', positionIdArray)
     console.log('positionName', positionName);
+
+    const { toast } = useToast();
+
 
     const router = useRouter();
 
@@ -141,42 +145,91 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
     console.log('nominate', nominated)
     console.log('accepted', accepted);
 
+    // const handleAccept = async () => {
+    //     try {
+    //         setIsLoading(true); // Set loading state to true on request start
+
+    //         // Make the API request to accept the nomination
+    //         const apiUrl = 'https://virtual.chevroncemcs.com/voting/acceptrequest';
+
+    //         const requestBody = {
+    //             empno: employeeNumber, // Assuming the employee number is to be used from the context
+    //             position: selectedPosition
+    //         };
+
+    //         // Log the payload before sending the request
+    //     console.log('Request Payload:', requestBody);
+
+    //         const response = await axios.post(apiUrl, requestBody, {
+    //             headers: {
+    //                 Authorization: `Bearer ${code}`, // Replace with your actual access token
+    //             },
+    //         });
+
+    //         // Handle the response as needed
+    //         console.log('Accept request response:', response.data);
+
+    //         // Close the modal or update state as required
+    //         setAccepted('1');
+    //         localStorage.setItem('accepted', '1');
+    //         setIsOpen(false);
+    //         // router.push('/acceptsuccess');
+    //     } catch (error) {
+    //         // Handle errors appropriately
+    //         console.error('Accept request error:', error);
+    //     } finally {
+    //         setIsLoading(false); // Reset loading state to false on request completion
+    //     }
+    // };
+
     const handleAccept = async () => {
         try {
             setIsLoading(true); // Set loading state to true on request start
-
+    
             // Make the API request to accept the nomination
             const apiUrl = 'https://virtual.chevroncemcs.com/voting/acceptrequest';
-
+    
             const requestBody = {
                 empno: employeeNumber, // Assuming the employee number is to be used from the context
                 position: selectedPosition
             };
-
+    
             // Log the payload before sending the request
-        console.log('Request Payload:', requestBody);
-
+            console.log('Request Payload:', requestBody);
+    
             const response = await axios.post(apiUrl, requestBody, {
                 headers: {
                     Authorization: `Bearer ${code}`, // Replace with your actual access token
                 },
             });
-
-            // Handle the response as needed
+    
+            // Log the response for debugging
             console.log('Accept request response:', response.data);
-
-            // Close the modal or update state as required
-            setAccepted('1');
-            localStorage.setItem('accepted', '1');
-            setIsOpen(false);
-            router.push('/acceptsuccess');
+    
+            // Check if there is an error in the response
+            if (response.data.error) {
+                toast({
+                    title: 'Accepting Nominations',
+                    description: `${response.data.message}`,
+                  });
+                console.error('Error in response:', response.data.message);
+                // Optionally, handle the error by showing a message to the user or other actions
+            } else {
+                // If there is no error, proceed to update the state and navigate to the success page
+                setAccepted('1');
+                localStorage.setItem('accepted', '1');
+                setIsOpen(false);
+                router.push('/acceptsuccess');
+            }
         } catch (error) {
             // Handle errors appropriately
             console.error('Accept request error:', error);
+            // Optionally, handle the error by showing an error message to the user or other actions
         } finally {
             setIsLoading(false); // Reset loading state to false on request completion
         }
     };
+    
 
     const handleReject = async () => {
         try {
@@ -274,6 +327,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
             }} // Update the state on change
             className="border rounded-md p-2 w-full"
         >
+                                    <option value="">Select Position</option>
 {positionName.map((name, index) => (
                 <option key={positionIdArray[index]} value={positionIdArray[index]}>
                     {name}
@@ -283,27 +337,38 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
     </div>
             </div>
             <div className='flex space-x-5 justify-center mt-5'>
-                <Button className="bg-[#149911]" onClick={handleAccept} disabled={isloading}>
-                    {isloading ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Accepting...
-                        </>
-                        ) : (
-                            <>Accept</>
-                        )}
-                </Button>
-                <Button className="bg-[#da3a4a]" onClick={handleReject} disabled={loading}>
-                    {loading ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Rejecting all...
-                        </>
-                        ) : (
-                            <>Reject all</>
-                        )}
-                </Button>
-            </div>
+    <Button 
+        className="bg-[#149911]" 
+        onClick={handleAccept} 
+        disabled={!selectedPosition || isloading} // Button is disabled if no position is selected or if it is loading
+    >
+        {isloading ? (
+            <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Accepting...
+            </>
+            ) : (
+                <>Accept</>
+            )
+        }
+    </Button>
+    <Button 
+        className="bg-[#da3a4a]" 
+        onClick={handleReject} 
+        disabled={!selectedPosition || loading} // Button is disabled if no position is selected or if it is loading
+    >
+        {loading ? (
+            <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Rejecting all...
+            </>
+            ) : (
+                <>Reject all</>
+            )
+        }
+    </Button>
+</div>
+
             {/* ... */}
         </Dialog.Panel>
     </div>
@@ -348,12 +413,12 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                                     
 
                                     <button
-                                    type="button"
-                                    data-testid="dismiss-button"
-                                    onClick={() => setOpen(false)}
-                                    className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                                        type="button"
+                                        data-testid="dismiss-button"
+                                        onClick={() => setOpen(false)}
+                                        className="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
                                     >
-                                    Click to close
+                                        Click to close
                                     </button>
                                 </div>
                                 </div>

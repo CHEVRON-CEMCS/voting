@@ -104,8 +104,8 @@ function Nominatedposition() {
                     <td className="border p-3">{result.name}</td>
                     <td className="border p-3">{result.empno}</td>
                     <td className="border p-3">{result.counts[0].positionName}</td>
-                    <td className={`border p-3 ${result.nominatedPosition !== 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {result.nominatedPosition !== 0 ? 'Accepted' : 'Not Done'}
+                    <td className={`border p-3 ${result.accepted !== "0" ? 'text-green-500' : 'text-red-500'}`}>
+                      {result.accepted !== "0" ? 'Accepted' : 'Not Done'}
                     </td>
                     <td className="border p-3">{result.counts[0].count}</td>
                   </tr>
