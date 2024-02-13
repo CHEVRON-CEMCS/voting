@@ -99,13 +99,24 @@ function Nominatedposition() {
                 </tr>
               </thead>
               <tbody>
-                {results.map(result => (
+                {/* {results.map(result => (
                   <tr key={result.empno}>
                     <td className="border p-3">{result.name}</td>
                     <td className="border p-3">{result.empno}</td>
                     <td className="border p-3">{result.counts[0].positionName}</td>
                     <td className={`border p-3 ${result.accepted !== "0" ? 'text-green-500' : 'text-red-500'}`}>
                       {result.accepted !== "0" ? 'Accepted' : 'Not Done'}
+                    </td>
+                    <td className="border p-3">{result.counts[0].count}</td>
+                  </tr>
+                ))} */}
+                {results.map(result => (
+                  <tr key={result.empno}>
+                    <td className="border p-3">{result.name}</td>
+                    <td className="border p-3">{result.empno}</td>
+                    <td className="border p-3">{result.counts[0].positionName}</td>
+                    <td className={`border p-3 ${result.accepted === "1" ? 'text-green-500' : result.accepted === "2" ? 'text-red-500' : 'text-gray-500'}`}>
+                      {result.accepted === "1" ? 'Accepted' : result.accepted === "2" ? 'Rejected' : 'Not Done'}
                     </td>
                     <td className="border p-3">{result.counts[0].count}</td>
                   </tr>
