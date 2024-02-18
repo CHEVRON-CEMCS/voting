@@ -287,22 +287,18 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
 
 <div className="flex flex-col items-center justify-center md:h-screen mt-24 md:mt-0">
 
-{isOpen && (
+{/* {isOpen && (
     <Dialog
     open={isOpen} 
     onClose={closeModal}
     className="relative z-50"
 >
-    {/* The backdrop, rendered as a fixed sibling to the panel container */}
     <div className="fixed inset-0 bg-black/30 backdrop-blur-md" aria-hidden="true" />
 
-    {/* Full-screen container to center the panel */}
     <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        {/* The actual dialog panel  */}
         <Dialog.Panel className="mx-auto max-w-xl w-[50rem] h-3/5 rounded bg-white">
             <Dialog.Title className="text-center mb-2 mt-3 font-bold text-xl lg:text-2xl">Congratulations!!</Dialog.Title>
             <Dialog.Description className="text-center">
-                {/* You have been Nominated for the position of <p className='font-bold'>{nominatedPositionName}</p> */}
                 Congratulations on your nomination.
             </Dialog.Description>
 
@@ -316,7 +312,6 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                 <p>However, if you do not wish to accept any of the positions you have been nominated for, you can click on the Reject all button.</p>
             </div>
             <div>
-                {/* Select dropdown for position */}
     <div className='flex flex-col items-center mt-2 px-10'>
         <Label className="text-lg mb-2">Select Position:</Label>
         <select
@@ -369,11 +364,10 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
     </Button>
 </div>
 
-            {/* ... */}
         </Dialog.Panel>
     </div>
 </Dialog>
-)}
+)} */}
     
     {currentStageData === 'Nomination' ? (
             <div>
@@ -517,14 +511,14 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                     <div>
                         {/* ... (existing code) */}
                         <div className='p-5 text-white bg-[#1E2C8A]'>
-                            <p className='font-bold text-2xl'>Campaign stage will be active on the 22nd of February according to the election time table.</p>
-                        {/* <ul>
+                            {/* <p className='font-bold text-2xl'>Campaign stage will be active on the 22nd of February according to the election time table.</p> */}
+                        <ul>
                             <li> • Welcome to our voting platform!</li>
                             <li> • Currently, members have exclusive access to the Campaign section.</li>
                             <li> • It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time.</li>
                             <li> • This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes.</li>
                             <li> • Keep an eye out for further instructions as we move through the stages of the voting process together!</li>
-                        </ul> */}
+                        </ul>
                                  
                                 </div>
                     </div>
@@ -672,24 +666,6 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
             </CardContent>
         </Card>
 
-        <Card className="w-[350px]">
-<CardHeader>
-<CardTitle className="mb-3">Campaign Stage</CardTitle>
-<CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
-</CardHeader>
-<CardContent>
-{currentStageData === 'Nomination' ? (
-<Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
-Go to Campaign
-</Button>
-) : (
-<Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
-Go to Campaign
-</Button>
-)}
-</CardContent>
-</Card>
-
         {/* <Card className="w-[350px]">
 <CardHeader>
 <CardTitle className="mb-3">Campaign Stage</CardTitle>
@@ -701,12 +677,30 @@ Go to Campaign
 Go to Campaign
 </Button>
 ) : (
-<Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>
+<Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
 Go to Campaign
-</Link>
+</Button>
 )}
 </CardContent>
 </Card> */}
+
+        <Card className="w-[350px]">
+            <CardHeader>
+                <CardTitle className="mb-3">Campaign Stage</CardTitle>
+                <CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
+            </CardHeader>
+            <CardContent>
+                {currentStageData === 'Nomination' ? (
+                <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>
+                    Go to Campaign
+                </Button>
+                ) : (
+                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/landingcampaign'>
+                    Go to Campaign
+                </Link>
+                )}
+            </CardContent>
+        </Card>
 
 
         <Card className="w-[350px]">

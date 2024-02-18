@@ -189,7 +189,7 @@ function Seecampaigns() {
         <>
 
 {loading ? (
-        <p>Loading...</p>
+        <p>Loading...</p> 
       ) : (
         <div className='mt-20'>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -202,7 +202,7 @@ function Seecampaigns() {
                 <div className='flex flex-col justify-center items-center'>
                   <p className='mt-5 mb-2 text-gray-600 font-bold text-xl'>{campaign.name}</p>
                   <p className='text-gray-700 text-base font-bold'>Nomination: {campaign.position_name}</p>
-                  <p className='mb-5 text-gray-700 text-base text-center' style={{ width: '18rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{campaign.message}</p>
+                  {/* <p className='mb-5 text-gray-700 text-base text-center' style={{ width: '18rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{campaign.message}</p> */}
                   {/* <p>Nominated: {campaign.nominated}</p>
                   <p>Position ID: {campaign.positionId}</p> */}
                 </div>

@@ -30,6 +30,8 @@ function Campaign() {
   const [currentStageData, setCurrentStageData] = useState(null);
 
   const inputRef = useRef(null);
+  const inputRefs = useRef(null);
+
   const { employeeNumber } = useNewAuth();
   const { code, name } = useNewAuth();
   const { currentStage } = useNewAuth();
@@ -78,8 +80,19 @@ function Campaign() {
     }
   };
 
+  const handleImageChanges = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
+
   const openFileInput = () => {
     inputRef.current.click();
+  };
+
+  const openFileInputs = () => {
+    inputRefs.current.click();
   };
 
   useEffect(() => {
@@ -208,9 +221,9 @@ const isPreviewEnabled = editorState.trim() !== '' && selectedImage !== null;
             <div className="relative h-[300px] sm:h-[400px] lg:h-[300px] xl:h-[300px] 2xl:h-[300px]">
               <img src='/office2.jpg' layout="fill" objectFit="cover" alt="" className='h-[300px] w-full object-cover' />
               <div className="absolute bottom-[-70px] left-1/2 transform translate-x-[-50%]">
-              <div className="relative w-32 h-32 cursor-pointer" onClick={openFileInput}>
-  <Image src='/white.jpg' layout="fill" alt="" className="absolute inset-0 w-full h-full object-cover rounded-full" />
-  {/* <User className="absolute inset-0 w-full h-full object-cover rounded-full" /> */}
+
+<div className="relative w-32 h-32 cursor-pointer" onClick={openFileInput}>
+  <img src='/white.jpg' layout="fill" alt="" className="absolute inset-0 w-full h-full object-cover rounded-full" />
   {selectedImage ? (
     <img
       src={URL.createObjectURL(selectedImage)}
@@ -230,6 +243,25 @@ const isPreviewEnabled = editorState.trim() !== '' && selectedImage !== null;
     </>
   )}
 </div>
+
+{selectedImage && (
+  <>
+  <input
+        type="file"
+        accept="image/*"
+        ref={inputRefs}
+        style={{ display: 'none' }}
+        onChange={handleImageChanges}
+      />
+    <button
+      className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      onClick={openFileInputs}
+    >
+      Change Picture
+    </button>
+  </>
+)}
+
 
               </div>
             </div>
