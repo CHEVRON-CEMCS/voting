@@ -511,14 +511,14 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
                     <div>
                         {/* ... (existing code) */}
                         <div className='p-5 text-white bg-[#1E2C8A]'>
-                            {/* <p className='font-bold text-2xl'>Campaign stage will be active on the 22nd of February according to the election time table.</p> */}
-                        <ul>
+                            <p className='font-bold text-2xl'>Campaign stage will be active on the 22nd of February according to the election time table.</p>
+                        {/* <ul>
                             <li> • Welcome to our voting platform!</li>
                             <li> • Currently, members have exclusive access to the Campaign section.</li>
                             <li> • It is important to note that you cannot proceed to the Nomination stage and the Voting stage at this time.</li>
                             <li> • This phase is dedicated to campaigns, where members can showcase and promote their candidates or causes.</li>
                             <li> • Keep an eye out for further instructions as we move through the stages of the voting process together!</li>
-                        </ul>
+                        </ul> */}
                                  
                                 </div>
                     </div>
@@ -666,7 +666,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
             </CardContent>
         </Card>
 
-        {/* <Card className="w-[350px]">
+        <Card className="w-[350px]">
 <CardHeader>
 <CardTitle className="mb-3">Campaign Stage</CardTitle>
 <CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
@@ -682,9 +682,9 @@ Go to Campaign
 </Button>
 )}
 </CardContent>
-</Card> */}
+</Card>
 
-        <Card className="w-[350px]">
+        {/* <Card className="w-[350px]">
             <CardHeader>
                 <CardTitle className="mb-3">Campaign Stage</CardTitle>
                 <CardDescription>This will navigate you to the Campaign stage where you can start your campaign</CardDescription>
@@ -700,7 +700,7 @@ Go to Campaign
                 </Link>
                 )}
             </CardContent>
-        </Card>
+        </Card> */}
 
 
         <Card className="w-[350px]">
