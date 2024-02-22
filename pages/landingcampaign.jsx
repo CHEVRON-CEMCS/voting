@@ -26,13 +26,15 @@ import { Drawer } from 'vaul';
 
 function LandingCampaign() {
 
-  const { employeeNumber, currentStage, code } = useNewAuth();
+  const { employeeNumber, currentStage, code, accepted } = useNewAuth();
   const [open, setOpen] = useState(false);
 
 
   const [buttonText, setButtonText] = useState('Create Campaign'); // Initialize button text
   const [Links, setLinks] = useState('/campaign')
   const [currentStageData, setCurrentStageData] = useState(null);
+
+  console.log('accept:', accepted);
 
   useEffect(() => {
     async function fetchCurrentStage() {
@@ -88,7 +90,7 @@ function LandingCampaign() {
             </CardHeader>
             <CardContent>
               {/* Use the buttonText state variable for the button text */}
-              {currentStageData === 'Voting' || currentStageData === 'Nomination' ? (
+              {currentStageData === 'Voting' || currentStageData === 'Nomination' || accepted === "0" ? (
                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>{buttonText}</Button>
               ) : (
                 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href={Links}>{buttonText}</Link>
