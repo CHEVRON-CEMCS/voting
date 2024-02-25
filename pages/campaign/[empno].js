@@ -59,7 +59,7 @@ function Test({ apiData }) {
         }
       );
 
-      console.log('Vote Response:', response.data);
+      // console.log('Vote Response:', response.data);
 
       if (response.data.error === false) {
         setVoted(true);

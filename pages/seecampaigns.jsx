@@ -206,7 +206,7 @@ function Seecampaigns() {
                   {/* <p>Nominated: {campaign.nominated}</p>
                   <p>Position ID: {campaign.positionId}</p> */}
                 </div>
-                <div className='mb-5 w-1/2'>
+                <div className='mb-5 w-1/2 mt-5'>
                 <Link href={`/campaign/${campaign.empno}`} className='border pl-5 pr-5 pt-2 pb-2 rounded-lg bg-[#2187C0] text-white'>View Campaign</Link>
                   {/* <Button
                     className="w-full"
