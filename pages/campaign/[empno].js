@@ -157,7 +157,7 @@ export async function getServerSideProps(context) {
       throw new Error(`Request failed with status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
 
     return {
       props: {

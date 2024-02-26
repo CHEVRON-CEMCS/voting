@@ -66,7 +66,7 @@ function LandingCampaign() {
         if (foundEmployee) {
           // Update the button text to "Update Campaign" if employeeNumber is found
           setButtonText('Update Campaign');
-          setLinks('/updatecampaign');
+          setLinks('/updateCampaignMessage');
         }
       })
       .catch((error) => {
@@ -93,8 +93,8 @@ function LandingCampaign() {
               {currentStageData === 'Voting' || currentStageData === 'Nomination' || accepted === "0" ? (
                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>{buttonText}</Button>
               ) : (
-                // <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href={Links}>{buttonText}</Link>
-                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/campaign'>Create Campaign</Link>
+                <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href={Links}>{buttonText}</Link>
+                // <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href='/campaign'>Create Campaign</Link>
               ) }
             </CardContent>
           </Card>
