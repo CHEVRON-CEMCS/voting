@@ -105,7 +105,7 @@ function Test({ apiData }) {
               </h1>
               <div className='flex justify-center mt-3'>
 
-              {currentStageData === 'Campaign' ? (
+              {/* {currentStageData === 'Campaign' ? (
                 null
               ):(
                 <Button onClick={handleVote} className="bg-[#2187C0]" disabled={isloading}>
@@ -118,7 +118,7 @@ function Test({ apiData }) {
                       <>Vote For Me</>
                     )}
                 </Button>
-              )}
+              )} */}
             </div>
               <p className='text-lg text-gray-500 text-center'>
                 Running for the Position of {apiData.data[0]?.position_name}

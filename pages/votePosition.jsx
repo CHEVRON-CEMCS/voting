@@ -55,7 +55,7 @@ function VotePosition() {
     const worksheet = XLSX.utils.json_to_sheet(results);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Nominations');
-    XLSX.writeFile(workbook, 'nominationsbyposition.xlsx');
+    XLSX.writeFile(workbook, 'votingbyposition.xlsx');
   };
 
   return (
