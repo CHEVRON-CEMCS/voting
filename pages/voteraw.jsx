@@ -26,7 +26,7 @@ const VoteRaw = () => {
             setError(null);
 
             try {
-                const response = await axios.get('https://virtual.chevroncemcs.com/voting/votes/raw', {
+                const response = await axios.get('https://virtual.chevroncemcs.com/voting/votes-raw', {
                     headers: {
                         Authorization: `Bearer ${userToken}`, // Replace with your actual token
                     },
@@ -35,6 +35,7 @@ const VoteRaw = () => {
                     },
                 });
                 setNominations(response.data.data);
+                console.log(response.data)
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setError(error);
@@ -98,8 +99,8 @@ const VoteRaw = () => {
                         className="p-2 border rounded-md focus:outline-none"
                     >
                         <option value="position">Position</option>
-                        <option value="nominee">Candidate</option>
-                        <option value="nominatedBy">Voted By</option>
+                        <option value="voted_for">Candidate</option>
+                        <option value="voted_by">Voted By</option>
                         <option value="timestamp">Timestamp</option>
                     </select>
                     <button
@@ -129,8 +130,8 @@ const VoteRaw = () => {
                         {sortedNominations.map((nomination) => (
                             <tr key={nomination.id} className="border-b">
                                 <td className="p-3">{nomination.position}</td>
-                                <td className="p-3">{nomination.nominee}</td>
-                                <td className="p-3">{nomination.nominatedBy}</td>
+                                <td className="p-3">{nomination.voted_for}</td>
+                                <td className="p-3">{nomination.voted_by}</td>
                                 <td className="p-3">{nomination.timestamp}</td>
                             </tr>
                         ))}

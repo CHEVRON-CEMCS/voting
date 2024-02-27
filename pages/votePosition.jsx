@@ -95,8 +95,8 @@ function VotePosition() {
                   <th className="p-3 text-left">Name</th>
                   <th className="p-3 text-left">Employee Number</th>
                   <th className="p-3 text-left">Position</th>
-                  <th className="p-3 text-left">Status</th>
                   <th className="p-3 text-left">Count</th>
+                  {/* <th className="p-3 text-left">Count</th> */}
                 </tr>
               </thead>
               <tbody>
