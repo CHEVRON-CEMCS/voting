@@ -38,11 +38,13 @@ function Navbar() {
 
             <div className='flex items-center space-x-8'>
                 <Link href='/admin'>Home</Link>
-                <Link href='/upload'>Upload Candidates</Link>
+                {/* <Link href='/upload'>Upload Candidates</Link> */}
                 <Link href='/nominations'>See Nominations</Link>
                 <Link href='/nominatedposition'>Nominate Position</Link>
                 <Link href='/testtable'>Raw Nominations</Link>
-                <Link href='/seevotes'>Votes</Link>
+                {/* <Link href='/seevotes'>Votes</Link> */}
+                <Link href='/voteraw'>Raw Votes</Link>
+                <Link href='/votePosition'>Vote Position</Link>
 
                 {/* <Link href='/upload'>Upload</Link>
                 <Link href='/ballotresultspage'>Draw</Link> */}

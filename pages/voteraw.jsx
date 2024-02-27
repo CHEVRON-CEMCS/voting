@@ -120,8 +120,8 @@ const VoteRaw = () => {
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="p-3 text-left">Position</th>
-                            <th className="p-3 text-left">Nominee</th>
-                            <th className="p-3 text-left">Nominated By</th>
+                            <th className="p-3 text-left">Candidate</th>
+                            <th className="p-3 text-left">Voted By</th>
                             <th className="p-3 text-left">Timestamp</th>
                         </tr>
                     </thead>
