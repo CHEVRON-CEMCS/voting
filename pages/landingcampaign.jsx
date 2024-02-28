@@ -90,7 +90,7 @@ function LandingCampaign() {
             </CardHeader>
             <CardContent>
               {/* Use the buttonText state variable for the button text */}
-              {currentStageData === 'Voting' || currentStageData === 'Nomination' || accepted === "0" ? (
+              {currentStageData === '' || currentStageData === 'Nomination' || accepted === "0" ? (
                 <Button className='border p-2.5 rounded-md bg-[#2187C0] text-white' disabled>{buttonText}</Button>
               ) : (
                 <Link className='border p-2.5 rounded-md bg-[#2187C0] text-white' href={Links}>{buttonText}</Link>
