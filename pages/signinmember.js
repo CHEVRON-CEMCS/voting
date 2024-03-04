@@ -84,7 +84,7 @@ function Signin() {
             <PartyPopper className='ml-1 h-8 w-8'/>
           </h1>
           <p className="text-sm text-muted-foreground text-center">
-            Enter your employee number to sign in to your account and for retirees enter your your CEMCS membership number.
+            Enter your employee number to sign in to your account and for retirees enter your CEMCS membership number.
           </p>
         </div>
         <Input 
