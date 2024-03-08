@@ -293,6 +293,9 @@ const [open, setOpen] = useState(false);
 
       // Close the modal after the votes are sent
     closeModal();
+
+    // Refresh the page after a successful voting process
+    window.location.reload();
   
     } catch (error) {
       const errorMessage = `Vote Request Error: ${error.message}`;
