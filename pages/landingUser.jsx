@@ -274,7 +274,7 @@ const nominatedPositionName = nominatedPosition ? nominatedPosition.name : 'Posi
 
     return (
         <div>
-            {canLogin === 0 || "0" ? (
+            {canLogin === 0 ? (
                 <div>
                     <MemberNavbar />
                 <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500 text-center w-10/12">

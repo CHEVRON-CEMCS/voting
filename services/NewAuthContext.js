@@ -165,7 +165,7 @@ useEffect(() => {
   }
 
   if (storedCanLogin) {
-    setCanLogin(storedCanLogin);
+    setCanLogin(parseInt(storedCanLogin));
   }
 
   if (storedMessage) {

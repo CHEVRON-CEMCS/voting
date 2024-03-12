@@ -26,7 +26,7 @@ import { Drawer } from 'vaul';
 
 function LandingCampaign() {
 
-  const { employeeNumber, currentStage, code, accepted } = useNewAuth();
+  const { employeeNumber, currentStage, code, accepted, canLogin, message } = useNewAuth();
   const [open, setOpen] = useState(false);
 
 
@@ -80,6 +80,15 @@ function LandingCampaign() {
     <div>
       <MemberNavbar />
 
+      {canLogin === 0 ? (
+                <div>
+                    <MemberNavbar />
+                <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500 text-center w-10/12">
+                  <h1 className='text-lg lg:text-2xl'>{message}</h1>
+                </div>
+              </div>
+            ):(
+
       <div className="flex items-center justify-center h-screen">
         <div className='max-w-6xl mx-auto flex md:flex-row flex-col space-y-5 md:space-y-0 md:space-x-8'>
           
@@ -110,6 +119,7 @@ function LandingCampaign() {
           </Card>
         </div>
       </div>
+            )}
     </div>
   )
 }

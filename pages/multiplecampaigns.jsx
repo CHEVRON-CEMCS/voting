@@ -68,7 +68,7 @@ const [open, setOpen] = useState(false);
   
   console.log(employeeNumber);
 
-  const {code} = useNewAuth();
+  const {code, canLogin, message} = useNewAuth();
 
   console.log(code);
 
@@ -340,6 +340,9 @@ const [open, setOpen] = useState(false);
     <div>
       <MemberNavbar />
 
+        <div>
+          
+        
       {currentStageData === 'Campaign' ? (
         <div>
           <MemberNavbar />
@@ -361,7 +364,14 @@ const [open, setOpen] = useState(false);
             THE VOTING STAGE HAS NOT STARTED
           </div>
         </div>
-      ) : (
+      ) : canLogin === 0 ? (
+        <div>
+            <MemberNavbar />
+        <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500 text-center w-10/12">
+          <h1 className='text-lg lg:text-2xl'>{message}</h1>
+        </div>
+      </div>
+    ):(
         <>
 
       <div className='mt-20 max-w-6xl mx-auto'>
@@ -645,6 +655,7 @@ const [open, setOpen] = useState(false);
 
         
       </div> */}
+      </div>
     </div>
   );
 }
