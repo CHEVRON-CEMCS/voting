@@ -98,6 +98,7 @@ const VoteRaw = () => {
                         onChange={handleFilterChange}
                         className="p-2 border rounded-md focus:outline-none"
                     >
+                        <option value="voted_by_empno">Employee Number</option>
                         <option value="position">Position</option>
                         <option value="voted_for">Candidate</option>
                         <option value="voted_by">Voted By</option>
@@ -120,6 +121,7 @@ const VoteRaw = () => {
                 <table className="min-w-full mt-4 border border-gray-300">
                     <thead className="bg-gray-200">
                         <tr>
+                            <th className='p-3 text-left'>Empno</th>
                             <th className="p-3 text-left">Position</th>
                             <th className="p-3 text-left">Candidate</th>
                             <th className="p-3 text-left">Voted By</th>
@@ -129,6 +131,7 @@ const VoteRaw = () => {
                     <tbody>
                         {sortedNominations.map((nomination) => (
                             <tr key={nomination.id} className="border-b">
+                                <td className='p-3'>{nomination.voted_by_empno}</td>
                                 <td className="p-3">{nomination.position}</td>
                                 <td className="p-3">{nomination.voted_for}</td>
                                 <td className="p-3">{nomination.voted_by}</td>
