@@ -11,14 +11,13 @@ function VotePosition() {
   const [loading, setLoading] = useState(false);
 
   const { user } = useAuth();
-    const userToken = user?.token;
-    const userEmail = user?.email;
+  const userToken = user?.token;
+  const userEmail = user?.email;
 
   useEffect(() => {
-    // Fetch positions from the first API endpoint
     axios.get('https://virtual.chevroncemcs.com/voting/position')
       .then(response => {
-        setPositions(response.data.data);
+        setPositions([{ id: 'all', name: 'All' }, ...response.data.data]); // Add "All" option to positions
       })
       .catch(error => {
         console.error('Error fetching positions:', error);
@@ -26,29 +25,48 @@ function VotePosition() {
   }, []);
 
   const handlePositionChange = (event) => {
-    // Handle position selection and fetch data from the second API endpoint
     const selectedPositionId = event.target.value;
     setSelectedPosition(selectedPositionId);
     setLoading(true);
 
-    axios.get(`https://virtual.chevroncemcs.com/voting/votes/${selectedPositionId}`, {
-      headers: {
-        Authorization: `Bearer ${userToken}`, // Replace with your actual token
-      },
-      params: {
-        email: userEmail
-      }
-    })
-      .then(response => {
-        setResults(response.data.data);
-        console.log(response.data.data);
-      })
-      .catch(error => {
+    if (selectedPositionId === 'all') {
+      // Fetch results for all positions
+      Promise.all(positions.slice(1).map(position => // Skip the first "All" option
+        axios.get(`https://virtual.chevroncemcs.com/voting/votes/${position.id}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          params: {
+            email: userEmail
+          }
+        }).then(response => response.data.data)
+      )).then(allResults => {
+        setResults(allResults.flat()); // Combine and set results
+      }).catch(error => {
         console.error('Error fetching results:', error);
-      })
-      .finally(() => {
+      }).finally(() => {
         setLoading(false);
       });
+    } else {
+      // Fetch results for a single position
+      axios.get(`https://virtual.chevroncemcs.com/voting/votes/${selectedPositionId}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        params: {
+          email: userEmail
+        }
+      })
+        .then(response => {
+          setResults(response.data.data);
+        })
+        .catch(error => {
+          console.error('Error fetching results:', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   const exportToExcel = () => {
@@ -81,57 +99,42 @@ function VotePosition() {
         {loading && <div className="text-center mt-4">Loading Results...</div>}
 
         {selectedPosition && !loading && (
-        <div className='mb-10'>
+          <div className='mb-10'>
             <button
               onClick={exportToExcel}
               className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
             >
               Export to Excel
             </button>
-          <div className="overflow-x-auto">
-            <table className="min-w-full mt-4 border border-gray-300">
-              <thead className='bg-gray-200'>
-                <tr>
-                  <th className="p-3 text-left">Name</th>
-                  <th className="p-3 text-left">Employee Number</th>
-                  <th className="p-3 text-left">Position</th>
-                  <th className="p-3 text-left">Count</th>
-                  {/* <th className="p-3 text-left">Count</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {/* {results.map(result => (
-                  <tr key={result.empno}>
-                    <td className="border p-3">{result.name}</td>
-                    <td className="border p-3">{result.empno}</td>
-                    <td className="border p-3">{result.counts[0].positionName}</td>
-                    <td className={`border p-3 ${result.accepted !== "0" ? 'text-green-500' : 'text-red-500'}`}>
-                      {result.accepted !== "0" ? 'Accepted' : 'Not Done'}
-                    </td>
-                    <td className="border p-3">{result.counts[0].count}</td>
+            <div className="overflow-x-auto">
+              <table className="min-w-full mt-4 border border-gray-300">
+                <thead className='bg-gray-200'>
+                  <tr>
+                    <th className="p-3 text-left">Name</th>
+                    <th className="p-3 text-left">Employee Number</th>
+                    <th className="p-3 text-left">Position</th>
+                    <th className="p-3 text-left">Count</th>
                   </tr>
-                ))} */}
-                {results.map(result => (
-                  <tr key={result.empno}>
-                    <td className="border p-3">{result.name}</td>
-                    <td className="border p-3">{result.empno}</td>
-                    <td className="border p-3">{result.counts[0].positionName}</td>
-                    {/* <td className={`border p-3 ${result.accepted === "1" ? 'text-green-500' : result.accepted === "2" ? 'text-red-500' : 'text-gray-500'}`}>
-                      {result.accepted === "1" ? 'Accepted' : result.accepted === "2" ? 'Rejected' : 'Not Done'}
-                    </td> */}
-                    <td className="border p-3">{result.counts[0].count}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            
-          </div>
+                </thead>
+                <tbody>
+                  {results.map(result => (
+                                        <tr key={result.empno}>
+                                        <td className="border p-3">{result.name}</td>
+                                        <td className="border p-3">{result.empno}</td>
+                                        <td className="border p-3">{result.counts[0].positionName}</td>
+                                        <td className="border p-3">{result.counts[0].count}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  }
+                  
+                  export default VotePosition;
+                  
 
-        </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default VotePosition;
