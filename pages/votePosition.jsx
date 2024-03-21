@@ -69,12 +69,29 @@ function VotePosition() {
     }
   };
 
+  // const exportToExcel = () => {
+  //   const worksheet = XLSX.utils.json_to_sheet(results);
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Nominations');
+  //   XLSX.writeFile(workbook, 'votingbyposition.xlsx');
+  // };
+
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(results);
+    // Transform the results data for Excel
+    const transformedResults = results.map(result => ({
+      Name: result.name, // Employee's name
+      EmployeeNumber: result.empno, // Employee's number
+      Position: result.counts[0]?.positionName, // First position's name from the counts array
+      Count: result.counts[0]?.count // First position's count from the counts array
+    }));
+  
+    // Convert the transformed data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(transformedResults);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Nominations');
     XLSX.writeFile(workbook, 'votingbyposition.xlsx');
   };
+  
 
   return (
     <div>
